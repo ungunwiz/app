@@ -1,0 +1,36 @@
+div#container {
+  width: 100%;
+  height: 100%;
+  padding: 20px 180px 20px 20px;
+}
+
+div.codeContainer {
+  border-radius: 10px;
+  border: 2px solid #5aa5ec;
+  height: 600px;
+  width: 100%;
+  min-width: 300px;
+  margin-bottom: 20px;
+}
+div.titlebar {
+  width: 100%;
+  font-weight: 18px;
+  background-color: #76bdff;
+  color: white;
+  text-align: left;
+  font-weight: bold;
+  padding: 10px 0 10px 15px;
+  border-radius: 8px 8px 0 0;
+}
+div.code {
+  overflow: scroll;
+  color: #76bdff;
+  background: #253146;
+  height: calc(100% - 40px);
+  width: 100%;
+  white-space: pre;
+  font-family: monospace;
+  font-size: 16px;
+  border-radius: 0 0 8px 8px;
+  padding: 10px;
+}

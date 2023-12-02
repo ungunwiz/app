@@ -1,0 +1,7 @@
+{
+  "name": "unknownwiz",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
