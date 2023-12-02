@@ -15,17 +15,19 @@
   </ion-header>
 
   <div *ngIf="!loading">
-
-    <div>
-
+    <div id="mainContainer" class="container">
       <div id="weaponSelectContainer">
-        <div class="weaponSelect" [class.selected]="isSelected(weapon)" *ngFor="let weapon of pubgData.weapons"
-          (click)="toggleWeapon(weapon)">
-          {{weapon.name}}
+        <span class="title">Weapons</span>
+        <div id="weaponSelectContainer2">
+          <div class="weaponSelect" [class.selected]="isSelected(weapon)" *ngFor="let weapon of pubgData.weapons"
+            (click)="toggleWeapon(weapon)">
+            {{weapon.name}}
+          </div>
         </div>
       </div>
 
-      <div id="graphcontainer">
+      <div id="graphContainer">
+        <span class="title">Damage Falloff over Distance</span>
         <canvas baseChart [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
           [legend]="lineChartLegend">
         </canvas>
@@ -50,6 +52,5 @@
         </tbody>
       </table>
     </div> -->
-
   </div>
 </ion-content>

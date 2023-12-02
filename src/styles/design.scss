@@ -1,0 +1,111 @@
+/* ------------------------ */
+/*         SCROLLBAR        */
+/* ------------------------ */
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #00000030;
+}
+body.dark ::-webkit-scrollbar-thumb {
+  background: #ffffff30;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00000050;
+}
+body.dark ::-webkit-scrollbar-thumb:hover {
+  background: #ffffff50;
+}
+
+:root {
+  --shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  --borderRadius: 20px;
+  --borderRadius2: 10px;
+  --borderRadius3: 5px;
+}
+
+* {
+  scrollbar-width: none !important;
+}
+
+/* ---------------------------------- */
+/*          LISTS AND INPUTS          */
+/* ---------------------------------- */
+
+ion-list-header {
+  margin: 0 !important;
+}
+ion-list-header,
+ion-item {
+  --background: var(--ion-color-step-100);
+}
+ion-list {
+  border-radius: 20px;
+  padding: 0 0 !important;
+}
+ion-item * {
+  min-height: 30px;
+}
+ion-select {
+  background: var(--ion-color-step-50);
+  border-radius: 10px;
+  padding: 0 10px;
+  width: 100%;
+  height: 35px;
+}
+
+/* ------------- Toggles ------------ */
+
+ion-toggle {
+  --track-background: var(--ion-color-step-200);
+  --track-background-checked: rgba(var(--ion-color-primary-rgb), 0.8);
+
+  --handle-background: var(--ion-background-color);
+  --handle-background-checked: var(--ion-background-color);
+
+  --handle-width: 23px;
+  --handle-height: 23px;
+
+  --handle-border-radius: 50%;
+  --handle-box-shadow: none;
+
+  width: 58px;
+}
+
+ion-toggle::part(track) {
+  height: 30px;
+  width: 50px;
+  overflow: visible; // iOS!
+  padding: 0 4px;
+}
+
+/* ---------------------------------- */
+/*              CONTAINER             */
+/* ---------------------------------- */
+
+div.container {
+  border-radius: var(--borderRadius);
+  background-color: var(--ion-color-light);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+// body:not(.dark):not(.amoled) div.container {
+//   box-shadow: var(--shadow);
+// }
+
+span.title {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: var(--ion-color-step-800);
+  display: block;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--borderRadius);
+  background-color: var(--ion-color-step-100);
+  padding: 10px 0;
+}

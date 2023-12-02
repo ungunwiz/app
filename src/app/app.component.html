@@ -1,9 +1,11 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="sidebar-list">
-          <ion-list-header>Unknown Wiz</ion-list-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <ion-list-header>
+            <ion-label text-wrap>Unknown Wiz</ion-label>
+          </ion-list-header>
           <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages; let i = index">
             <ion-item *ngIf="page.type === 'route'" routerDirection="root" [routerLink]="page.url"
               [disabled]="page.disabled" lines="none" detail="false" routerLinkActive="selected">

@@ -5,39 +5,67 @@ ion-content * {
 }
 
 /* ---------------------------------- */
+/*           MAIN CONTAINER           */
+/* ---------------------------------- */
+
+div#mainContainer {
+  height: 600px;
+  width: 100%;
+}
+
+/* ---------------------------------- */
 /*            WEAPON SELECT           */
 /* ---------------------------------- */
 
 div#weaponSelectContainer {
-  height: auto;
-  position: relative;
-  border: 2px solid #5aa5ec;
-  padding: 5px;
-  background: #253146;
-  color: #76bdff;
-  width: 350px;
+  float: left;
+  width: 300px;
+  min-width: 200px;
+  max-width: 20%;
   height: 100%;
+}
+div#weaponSelectContainer2 {
+  height: calc(100% - 60px);
+  width: 100%;
   overflow-y: scroll;
   user-select: none;
-  float: left;
 }
 
 div.weaponSelect {
-  position: relative;
-  width: 113px;
-  height: 113px;
-  border: 2px solid #5aa5ec;
-  background: #253146;
-  color: #76bdff;
+  width: calc(50% - 2px);
+  height: 60px;
+  line-height: 60px;
+  background-color: var(--ion-color-step-100);
   text-align: center;
-  margin: 5px;
-  line-height: 100px;
-  border-radius: 20px;
-  float: left;
+  color: var(--ion-color-step-800);
   cursor: pointer;
+  border-radius: var(--borderRadius2);
+  margin-top: 2px;
+  font-weight: bold;
+  float: left;
+  transition: background-color 0.2s ease-out;
 }
+div.weaponSelect:nth-child(1n) {
+  margin-right: 2px;
+}
+// div.weaponSelect:first-of-type {
+//   border-top-left-radius: var(--borderRadius);
+// }
+// div.weaponSelect:nth-of-type(2) {
+//   border-top-right-radius: var(--borderRadius);
+// }
+// div.weaponSelect:last-of-type {
+//   border-bottom-right-radius: var(--borderRadius);
+// }
+// div.weaponSelect:nth-last-of-type(2) {
+//   border-bottom-left-radius: var(--borderRadius);
+// }
 div.weaponSelect.selected {
-  background: #506da0;
+  background-color: rgba(var(--ion-color-primary-rgb), 0.75);
+  color: #fff;
+}
+div.weaponSelect:hover {
+  background-color: rgba(var(--ion-color-primary-rgb), 0.5);
   color: #fff;
 }
 
@@ -45,19 +73,14 @@ div.weaponSelect.selected {
 /*                GRAPH               */
 /* ---------------------------------- */
 
-div#graphcontainer {
-  border: 2px solid var(--ion-color-light);
-  border-radius: 25px;
-  padding: 10px;
-  float: left;
-  min-width: 200px;
-  width: calc(50%);
-  aspect-ratio: 16/9;
+div#graphContainer {
+  padding: 0 20px 0 10px;
   float: right;
+  width: 50%;
+  height: 100%;
 }
-div#graphcontainer canvas {
-  width: 100% !important;
-  height: 100% !important;
+div#graphContainer canvas {
+  height: calc(100% - 60px) !important;
 }
 
 /* ---------------------------------- */
