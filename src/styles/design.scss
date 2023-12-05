@@ -3,23 +3,18 @@
 /* ------------------------ */
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 15px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(var(--ion-color-primary-rgb), 0.05);
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #00000030;
-}
-body.dark ::-webkit-scrollbar-thumb {
-  background: #ffffff30;
+  background: rgba(var(--ion-color-primary-rgb), 0.8);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00000050;
-}
-body.dark ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff50;
+  background: rgba(var(--ion-color-primary-rgb), 0.5);
 }
 
 :root {
@@ -30,8 +25,32 @@ body.dark ::-webkit-scrollbar-thumb:hover {
 }
 
 * {
-  scrollbar-width: none !important;
+  // scrollbar-width: none !important;
 }
+*:not(ion-item) {
+  color: var(--ion-color-step-800);
+}
+
+/* ---------------------------------- */
+/*                MENU                */
+/* ---------------------------------- */
+
+ion-header,
+ion-toolbar {
+  --background: var(--ion-color-light);
+  text-align: center;
+  margin: 10px 0;
+  box-shadow: none !important;
+}
+ion-title {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: var(--ion-color-primary);
+}
+
+/* ---------------------------------- */
+/*               CONTENT              */
+/* ---------------------------------- */
 
 /* ---------------------------------- */
 /*          LISTS AND INPUTS          */
@@ -45,7 +64,7 @@ ion-item {
   --background: var(--ion-color-step-100);
 }
 ion-list {
-  border-radius: 20px;
+  border-radius: var(--borderRadius2);
   padding: 0 0 !important;
 }
 ion-item * {
@@ -53,7 +72,7 @@ ion-item * {
 }
 ion-select {
   background: var(--ion-color-step-50);
-  border-radius: 10px;
+  border-radius: var(--borderRadius3);
   padding: 0 10px;
   width: 100%;
   height: 35px;
@@ -92,7 +111,12 @@ div.container {
   border-radius: var(--borderRadius);
   background-color: var(--ion-color-light);
   padding: 20px;
-  box-shadow: var(--shadow);
+  // box-shadow: var(--shadow);
+  width: 100%;
+}
+body.dark div.container,
+body.amoled div.container {
+  background-color: var(--ion-color-step-150);
 }
 // body:not(.dark):not(.amoled) div.container {
 //   box-shadow: var(--shadow);
@@ -101,11 +125,10 @@ div.container {
 span.title {
   font-weight: bold;
   font-size: 1.5em;
-  color: var(--ion-color-step-800);
   display: block;
   width: 100%;
   text-align: center;
-  border-radius: var(--borderRadius);
+  border-radius: var(--borderRadius2);
   background-color: var(--ion-color-step-100);
   padding: 10px 0;
 }

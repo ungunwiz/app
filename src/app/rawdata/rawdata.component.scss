@@ -6,7 +6,7 @@ div#container {
 
 div.codeContainer {
   border-radius: 10px;
-  border: 2px solid #5aa5ec;
+  border: 2px solid var(--ion-color-primary);
   height: 600px;
   width: 100%;
   min-width: 300px;
@@ -15,17 +15,18 @@ div.codeContainer {
 div.titlebar {
   width: 100%;
   font-weight: 18px;
-  background-color: #76bdff;
-  color: white;
+  background-color: var(--ion-color-primary);
   text-align: left;
   font-weight: bold;
   padding: 10px 0 10px 15px;
   border-radius: 8px 8px 0 0;
 }
+div.titlebar span {
+  color: white;
+}
 div.code {
-  overflow: scroll;
-  color: #76bdff;
-  background: #253146;
+  overflow-y: scroll;
+  background: var(--ion-color-light);
   height: calc(100% - 40px);
   width: 100%;
   white-space: pre;
@@ -33,4 +34,7 @@ div.code {
   font-size: 16px;
   border-radius: 0 0 8px 8px;
   padding: 10px;
+}
+div.code span {
+  color: var(--ion-color-primary);
 }
