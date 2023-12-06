@@ -40,7 +40,7 @@ export class WeaponProfilesPage implements OnInit {
         display: true,
         position: 'top',
         labels: {
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
           font: {
             size: 16,
           },
@@ -67,7 +67,7 @@ export class WeaponProfilesPage implements OnInit {
         stacked: false,
         grid: {
           display: true,
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
           borderDash: [1, 2],
           tickBorderDash: [1, 2],
           lineWidth: 1,
@@ -78,14 +78,14 @@ export class WeaponProfilesPage implements OnInit {
         title: {
           display: true,
           text: 'Distance',
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
 
           font: {
             size: 20,
           },
         },
         ticks: {
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
           stepSize: 100,
           callback: function (value, index, values) {
             return `${value}m`;
@@ -96,7 +96,7 @@ export class WeaponProfilesPage implements OnInit {
         stacked: false,
         grid: {
           display: true,
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
           borderDash: [1, 2],
           tickBorderDash: [1, 2],
 
@@ -107,13 +107,13 @@ export class WeaponProfilesPage implements OnInit {
         title: {
           display: true,
           text: 'Damage',
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
           font: {
             size: 20,
           },
         },
         ticks: {
-          color: this.getStyleColor('--ion-color-step-400'),
+          color: this.getStyleColor('--ion-color-step-text-800'),
           stepSize: 25,
           callback: function (value, index, values) {
             return `${value}`;
@@ -208,9 +208,8 @@ export class WeaponProfilesPage implements OnInit {
   }
 
   getStyleColor(variable: string) {
-    const color = getComputedStyle(document.documentElement).getPropertyValue(
-      variable
-    );
+    const body = document.getElementsByTagName('body')[0];
+    const color = getComputedStyle(body).getPropertyValue(variable);
     return color;
   }
 }

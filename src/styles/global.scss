@@ -30,5 +30,10 @@
 @import "./variables-dark.scss";
 @import "./variables-amoled.scss";
 
+// Transparency Variables:
+@import "./variables-light-t.scss";
+@import "./variables-dark-t.scss";
+@import "./variables-amoled-t.scss";
+
 // Custom Design
 @import "./design.scss";

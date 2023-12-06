@@ -22,6 +22,6 @@ export class SettingsPage implements OnInit {
 
   saveSettings() {
     this.settingsService.saveSettings();
-    this.settingsService.applyColor();
+    this.settingsService.apply();
   }
 }

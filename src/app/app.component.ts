@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
   onSystemDarkModechange() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     prefersDark.addListener((mediaQuery) => {
-      this.settingsService.applyColor();
+      this.settingsService.apply();
     });
   }
 

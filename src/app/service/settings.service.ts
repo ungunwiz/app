@@ -13,11 +13,18 @@ export class SettingsService {
     ui: {
       darkMode: '0',
       darkModeAmoled: false,
+      transparency: false,
     },
   };
 
   init() {
     this.loadSettings();
+    this.apply();
+  }
+
+  apply() {
+    this.applyColor();
+    this.applyTransparency();
   }
 
   loadSettings() {
@@ -61,6 +68,16 @@ export class SettingsService {
       document.body.classList.add('dark');
     else if (darkMode == '2' && darkModeAmoled)
       document.body.classList.add('amoled');
+  }
+
+  async applyTransparency() {
+    const transparency = this.settings.ui.transparency;
+
+    document.body.classList.remove('transparency');
+
+    if (transparency) {
+      document.body.classList.add('transparency');
+    }
   }
 
   isDarkMode() {

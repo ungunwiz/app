@@ -1,14 +1,10 @@
 /* ------------- Content ------------ */
 
-ion-content * {
-  margin-bottom: 10px;
-}
-
 /* ---------------------------------- */
 /*           MAIN CONTAINER           */
 /* ---------------------------------- */
 
-div#mainContainer {
+#mainContainer {
   height: 600px;
   width: 100%;
 }
@@ -17,36 +13,36 @@ div#mainContainer {
 /*            WEAPON SELECT           */
 /* ---------------------------------- */
 
-div#weaponSelectContainer {
+#weaponSelectContainer {
   float: left;
   width: 300px;
   min-width: 200px;
   max-width: 20%;
   height: 100%;
 }
-div#weaponSelectContainer2 {
+#weaponSelectContainer .title {
+  width: calc(100% - 10px);
+}
+#weaponSelectContainer2 {
   height: calc(100% - 60px);
   width: 100%;
   overflow-y: scroll;
   user-select: none;
 }
 
-div.weaponSelect {
-  width: calc(50% - 2px);
+.weaponSelect {
+  width: calc(100% - 10px);
   height: 60px;
   line-height: 60px;
   background-color: var(--ion-color-step-100);
   text-align: center;
-  color: var(--ion-color-step-800);
+  color: var(--ion-color-step-text-800);
   cursor: pointer;
-  border-radius: var(--borderRadius2);
+  border-radius: var(--borderRadius3);
   margin-top: 2px;
   font-weight: bold;
-  float: left;
+  // float: left;
   transition: background-color 0.2s ease-out;
-}
-div.weaponSelect:nth-child(1n) {
-  margin-right: 2px;
 }
 // div.weaponSelect:first-of-type {
 //   border-top-left-radius: var(--borderRadius);
@@ -60,11 +56,11 @@ div.weaponSelect:nth-child(1n) {
 // div.weaponSelect:nth-last-of-type(2) {
 //   border-bottom-left-radius: var(--borderRadius);
 // }
-div.weaponSelect.selected {
+.weaponSelect.selected {
   background-color: rgba(var(--ion-color-primary-rgb), 0.75);
   color: #fff;
 }
-div.weaponSelect:hover {
+.weaponSelect:hover {
   background-color: rgba(var(--ion-color-primary-rgb), 0.5);
   color: #fff;
 }
@@ -73,13 +69,13 @@ div.weaponSelect:hover {
 /*                GRAPH               */
 /* ---------------------------------- */
 
-div#graphContainer {
+#graphContainer {
   padding: 0 20px 0 10px;
   float: right;
   width: 50%;
   height: 100%;
 }
-div#graphContainer canvas {
+#graphContainer canvas {
   height: calc(100% - 60px) !important;
 }
 
@@ -87,7 +83,7 @@ div#graphContainer canvas {
 /*                TABLE               */
 /* ---------------------------------- */
 
-div#tableContainer {
+#tableContainer {
   width: 100%;
   overflow-x: scroll;
 }
