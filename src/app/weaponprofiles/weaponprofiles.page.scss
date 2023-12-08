@@ -15,9 +15,7 @@
 
 #weaponSelectContainer {
   float: left;
-  width: 300px;
-  min-width: 200px;
-  max-width: 20%;
+  width: 325px;
   height: 100%;
 }
 #weaponSelectContainer .title {
@@ -32,16 +30,12 @@
 
 .weaponSelect {
   width: calc(100% - 10px);
-  height: 60px;
-  line-height: 60px;
-  background-color: var(--ion-color-step-100);
-  text-align: center;
-  color: var(--ion-color-step-text-800);
+  height: 80px;
+  background-color: var(--ion-color-step-150);
   cursor: pointer;
   border-radius: var(--borderRadius3);
-  margin-top: 2px;
+  margin-top: 4px;
   font-weight: bold;
-  // float: left;
   transition: background-color 0.2s ease-out;
 }
 // div.weaponSelect:first-of-type {
@@ -58,11 +52,56 @@
 // }
 .weaponSelect.selected {
   background-color: rgba(var(--ion-color-primary-rgb), 0.75);
-  color: #fff;
 }
 .weaponSelect:hover {
   background-color: rgba(var(--ion-color-primary-rgb), 0.5);
+}
+.weaponSelect.selected span,
+.weaponSelect:hover span {
   color: #fff;
+}
+
+div.weaponInfoContainer {
+  width: 100%;
+  float: left;
+  padding: 5px;
+  position: relative;
+}
+div.weaponInfoContainer.top {
+  height: 30px;
+}
+div.weaponInfoContainer.below {
+  height: calc(100% - 30px);
+}
+div.weaponInfoSubContainer {
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+span.weaponInfo {
+  display: block;
+  width: 100%;
+  height: 50%;
+  color: var(--ion-color-step-text-600);
+  float: left;
+  font-size: 0.9em;
+}
+span.weaponInfoValue {
+  color: var(--ion-color-step-text-800);
+}
+span.weaponName {
+  font-size: 1.2em;
+  color: var(--ion-color-primary);
+  line-height: 30px;
+}
+span.weaponType {
+  color: var(--ion-color-step-text-800);
+  font-size: 0.8em;
+  margin-top: 6px;
+  margin-left: 5px;
+  font-weight: bold;
+  position: absolute;
 }
 
 /* ---------------------------------- */

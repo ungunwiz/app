@@ -1,5 +1,13 @@
+body:not(.transparency) ion-menu {
+  --background: rgba(var(--ion-color-light-rgb), 1);
+}
+body.transparency ion-menu {
+  --background: rgba(var(--ion-color-light-rgb), 0.75);
+}
 ion-menu {
-  backdrop-filter: blur(10px);
+  border-radius: 0 var(--borderRadius) var(--borderRadius) 0;
+  max-width: 400px;
+  --max-width: 400px;
 }
 ion-list {
   background: transparent;
@@ -13,7 +21,7 @@ ion-list-header {
   text-align: center;
   margin-top: 20px !important;
   margin-bottom: 20px !important;
-  --background: transparent;
+  background: transparent;
 }
 ion-label {
   color: var(--ion-color-primary);

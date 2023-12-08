@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
       };
       localStorage.setItem('pubgData', JSON.stringify(pubgData));
       this.pubgData = pubgData;
+      console.debug(`pubgData:`, pubgData);
     });
   }
 
