@@ -7,22 +7,21 @@ import { Injectable } from '@angular/core';
 export class PubgDataService {
   constructor(private http: HttpClient) {}
 
+  // endpoint = "https://api.ungunwiz.app";
+  endpoint = 'http://127.0.0.1:8080';
+
   /* ------------ Get Data ------------ */
 
   getWeapons() {
-    return this.http.get('http://192.168.178.25:8080/pubg_parser/weapons');
+    return this.http.get(`${this.endpoint}/weapons`);
   }
   getDamageFalloffs() {
-    return this.http.get(
-      'http://192.168.178.25:8080/pubg_parser/damagefalloffs'
-    );
+    return this.http.get(`${this.endpoint}/damagefalloffs`);
   }
   getVelocityFalloffs() {
-    return this.http.get(
-      'http://192.168.178.25:8080/pubg_parser/velocityfalloffs'
-    );
+    return this.http.get(`${this.endpoint}/velocityfalloffs`);
   }
   getDamageAreas() {
-    return this.http.get('http://192.168.178.25:8080/pubg_parser/damageareas');
+    return this.http.get(`${this.endpoint}/damageareas`);
   }
 }

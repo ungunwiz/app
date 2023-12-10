@@ -22,13 +22,18 @@ export class WeaponProfilesPage implements OnInit {
     '#009688',
   ];
 
-  selectedWeapon: any = [];
+  selectedWeapons: any = [];
+  selectedWeaponCounter: number = 0;
 
   /* -------------- Chart ------------- */
-  lineChartData: ChartConfiguration<'line'>['data'] = {
+  lineChartDataDamage: ChartConfiguration<'line'>['data'] = {
     datasets: [],
   };
-  lineChartOptions: ChartOptions<'line'> = {
+  lineChartDataVelocity: ChartConfiguration<'line'>['data'] = {
+    datasets: [],
+  };
+  // TODO: Fix tooltip color of weapon not matching line color:
+  lineChartOptionsDefault: any = {
     responsive: true,
     interaction: {
       mode: 'index',
@@ -46,21 +51,6 @@ export class WeaponProfilesPage implements OnInit {
           },
         },
       },
-      tooltip: {
-        axis: 'x',
-        callbacks: {
-          label: function (context: any) {
-            var label = context.dataset.label || '';
-            if (label) {
-              label += ': ';
-            }
-            if (context.parsed.y !== null) {
-              label += context.parsed.y.toFixed(2);
-            }
-            return '  ' + label;
-          },
-        },
-      },
     },
     scales: {
       x: {
@@ -68,8 +58,8 @@ export class WeaponProfilesPage implements OnInit {
         grid: {
           display: true,
           color: this.getStyleColor('--ion-color-step-text-800'),
-          borderDash: [1, 2],
-          tickBorderDash: [1, 2],
+          borderDash: [1, 5],
+          tickBorderDash: [1, 5],
           lineWidth: 1,
         },
         type: 'linear',
@@ -77,9 +67,7 @@ export class WeaponProfilesPage implements OnInit {
         max: 1000,
         title: {
           display: true,
-          text: 'Distance',
           color: this.getStyleColor('--ion-color-step-text-800'),
-
           font: {
             size: 20,
           },
@@ -87,9 +75,6 @@ export class WeaponProfilesPage implements OnInit {
         ticks: {
           color: this.getStyleColor('--ion-color-step-text-800'),
           stepSize: 100,
-          callback: function (value, index, values) {
-            return `${value}m`;
-          },
         },
       },
       y: {
@@ -97,16 +82,14 @@ export class WeaponProfilesPage implements OnInit {
         grid: {
           display: true,
           color: this.getStyleColor('--ion-color-step-text-800'),
-          borderDash: [1, 2],
-          tickBorderDash: [1, 2],
-
+          borderDash: [1, 5],
+          tickBorderDash: [1, 5],
           lineWidth: 1,
         },
         type: 'linear',
         min: 0,
         title: {
           display: true,
-          text: 'Damage',
           color: this.getStyleColor('--ion-color-step-text-800'),
           font: {
             size: 20,
@@ -114,18 +97,28 @@ export class WeaponProfilesPage implements OnInit {
         },
         ticks: {
           color: this.getStyleColor('--ion-color-step-text-800'),
-          stepSize: 25,
-          callback: function (value, index, values) {
-            return `${value}`;
-          },
         },
       },
     },
   };
+  lineChartOptionsDMG: any = JSON.parse(
+    JSON.stringify(this.lineChartOptionsDefault)
+  );
+  lineChartOptionsVel: any = JSON.parse(
+    JSON.stringify(this.lineChartOptionsDefault)
+  );
   lineChartLegend = true;
 
   ngOnInit() {
     this.pubgData = JSON.parse(localStorage.getItem('pubgData') || '{}');
+
+    this.lineChartOptionsDMG.scales.x.title.text = 'Distance (m)';
+    this.lineChartOptionsDMG.scales.y.title.text = 'Damage';
+    this.lineChartOptionsDMG.scales.y.ticks.stepSize = 10;
+
+    this.lineChartOptionsVel.scales.x.title.text = 'Distance (m)';
+    this.lineChartOptionsVel.scales.y.title.text = 'Velocity (m/s)';
+    this.lineChartOptionsVel.scales.y.ticks.stepSize = 100;
 
     this.loading = false;
   }
@@ -136,27 +129,27 @@ export class WeaponProfilesPage implements OnInit {
 
   toggleWeapon(weapon: any) {
     if (this.isSelected(weapon)) {
-      this.selectedWeapon = this.selectedWeapon.filter((w: any) => {
+      this.selectedWeapons = this.selectedWeapons.filter((w: any) => {
         return w.name !== weapon.name;
       });
     } else {
-      if (this.selectedWeapon.length >= this.colors.length * 2) {
+      if (this.selectedWeapons.length >= this.colors.length * 2) {
         return;
       }
-      this.selectedWeapon.push(weapon);
+      this.selectedWeapons.push(weapon);
     }
     this.updateGraph();
   }
 
   isSelected(weapon: any) {
-    return this.selectedWeapon.includes(weapon);
+    return this.selectedWeapons.includes(weapon);
   }
 
   addGraph(weapon: any) {
-    var data: any = [];
-    const color =
-      this.colors[this.lineChartData.datasets.length % this.colors.length];
+    const color = this.colors[this.selectedWeaponCounter % this.colors.length];
 
+    /* ------------- Damage ------------- */
+    var dataDMG: any = [];
     const weaponDamageFalloff = this.pubgData.damageFalloffs.filter(
       (entry: any) => {
         return entry.weapon_name === weapon.name;
@@ -164,27 +157,27 @@ export class WeaponProfilesPage implements OnInit {
     );
 
     if (weaponDamageFalloff.length === 0) {
-      data.push({
+      dataDMG.push({
         x: 0,
         y: weapon.damage,
       });
     } else {
       weaponDamageFalloff.forEach((damageFalloff: any) => {
-        data.push({
+        dataDMG.push({
           x: damageFalloff.distance,
           y: damageFalloff.multiplier * weapon.damage,
         });
       });
     }
-    if (data[data.length - 1].x < 1000) {
-      data.push({
+    if (dataDMG[dataDMG.length - 1].x < 1000) {
+      dataDMG.push({
         x: 1000,
-        y: data[data.length - 1].y,
+        y: dataDMG[dataDMG.length - 1].y,
       });
     }
 
-    this.lineChartData.datasets.push({
-      data,
+    this.lineChartDataDamage.datasets.push({
+      data: dataDMG,
       label: weapon.name,
       fill: false,
       tension: 0,
@@ -197,14 +190,64 @@ export class WeaponProfilesPage implements OnInit {
       //   this.lineChartData.datasets.length >= this.colors.length ? 1 : 0,
       // ],
     });
+
+    /* ------------ Velocity ------------ */
+
+    var dataVel: any = [];
+    const weaponVelocityFalloff = this.pubgData.velocityFalloffs.filter(
+      (entry: any) => {
+        return entry.weapon_name === weapon.name;
+      }
+    );
+    console.debug(`weaponVelocityFalloff:`, weaponVelocityFalloff);
+
+    if (weaponVelocityFalloff.length === 0) {
+      dataVel.push({
+        x: 0,
+        y: 0,
+      });
+    } else {
+      weaponVelocityFalloff.forEach((velocityFalloff: any) => {
+        dataVel.push({
+          x: velocityFalloff.distance,
+          y: velocityFalloff.velocity,
+        });
+      });
+    }
+
+    if (dataVel[dataVel.length - 1].x < 1000) {
+      dataVel.push({
+        x: 1000,
+        y: dataVel[dataVel.length - 1].y,
+      });
+    }
+
+    this.lineChartDataVelocity.datasets.push({
+      data: dataVel,
+      label: weapon.name,
+      fill: false,
+      tension: 0,
+      borderColor: color,
+      backgroundColor: `#ffffff00`,
+      borderWidth: 3,
+      pointRadius: 0,
+      // borderDash: [1, 5],
+    });
+
+    /* ---------------- - --------------- */
+
+    this.selectedWeaponCounter++;
   }
 
   updateGraph() {
-    this.lineChartData.datasets = [];
-    this.selectedWeapon.forEach((weapon: any) => {
+    this.selectedWeaponCounter = 0;
+    this.lineChartDataDamage.datasets = [];
+    this.lineChartDataVelocity.datasets = [];
+    this.selectedWeapons.forEach((weapon: any) => {
       this.addGraph(weapon);
     });
-    this.lineChartData = { ...this.lineChartData };
+    this.lineChartDataDamage = { ...this.lineChartDataDamage };
+    this.lineChartDataVelocity = { ...this.lineChartDataVelocity };
   }
 
   getStyleColor(variable: string) {

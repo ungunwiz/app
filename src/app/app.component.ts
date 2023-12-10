@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
   public pubgData: any = {};
 
   ngOnInit() {
+    // localStorage.removeItem('pubgData');
     this.onSystemDarkModechange();
-
     this.generateDistances();
 
     Promise.all([

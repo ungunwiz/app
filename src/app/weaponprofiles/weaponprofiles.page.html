@@ -16,7 +16,7 @@
 
   <!-- ----- Sorry 4 Being Messy ----- -->
   <div *ngIf="!loading">
-    <div id="mainContainer" class="container">
+    <div class="container">
       <div id="weaponSelectContainer">
         <span class="title">Weapons</span>
         <div id="weaponSelectContainer2">
@@ -58,10 +58,18 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="container">
       <div id="graphContainer">
         <span class="title">Damage Falloff over Distance</span>
-        <canvas baseChart [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
+        <canvas baseChart [type]="'line'" [data]="lineChartDataDamage" [options]="lineChartOptionsDMG"
+          [legend]="lineChartLegend">
+        </canvas>
+      </div>
+      <div id="graphContainer">
+        <span class="title">Velocity Falloff over Distance</span>
+        <canvas baseChart [type]="'line'" [data]="lineChartDataVelocity" [options]="lineChartOptionsVel"
           [legend]="lineChartLegend">
         </canvas>
       </div>
