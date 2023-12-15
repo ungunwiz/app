@@ -43,6 +43,12 @@ ion-toolbar {
   margin: 10px 0;
   box-shadow: none !important;
 }
+@media (min-width: 651px) {
+  ion-header,
+  ion-toolbar {
+    margin: 10px 0;
+  }
+}
 ion-title {
   font-weight: bold;
   font-size: 1.5em;
@@ -66,6 +72,12 @@ body {
 
 ion-content {
   --background: none;
+}
+@media (min-width: 651px) {
+  ion-content {
+    --padding-start: var(--ion-padding, 16px);
+    --padding-end: var(--ion-padding, 16px);
+  }
 }
 
 /* ---------------------------------- */

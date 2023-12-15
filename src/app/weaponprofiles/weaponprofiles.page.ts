@@ -145,6 +145,24 @@ export class WeaponProfilesPage implements OnInit {
     return this.selectedWeapons.includes(weapon);
   }
 
+  categorizedWeapons(category: string) {
+    let weapons: any = {};
+
+    this.pubgData.weapons.forEach((weapon: any) => {
+      if (!weapons[weapon[category]]) {
+        weapons[weapon[category]] = [];
+      }
+      weapons[weapon[category]].push(weapon);
+    });
+
+    const data = {
+      weapons: weapons,
+      categories: Object.keys(weapons),
+    };
+
+    return data;
+  }
+
   addGraph(weapon: any) {
     const color = this.colors[this.selectedWeaponCounter % this.colors.length];
 
@@ -199,7 +217,6 @@ export class WeaponProfilesPage implements OnInit {
         return entry.weapon_name === weapon.name;
       }
     );
-    console.debug(`weaponVelocityFalloff:`, weaponVelocityFalloff);
 
     if (weaponVelocityFalloff.length === 0) {
       dataVel.push({

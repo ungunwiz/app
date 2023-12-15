@@ -8,7 +8,7 @@ export class PubgDataService {
   constructor(private http: HttpClient) {}
 
   // endpoint = "https://api.ungunwiz.app";
-  endpoint = 'http://127.0.0.1:8080';
+  endpoint = 'http://192.168.178.25:8080';
 
   /* ------------ Get Data ------------ */
 

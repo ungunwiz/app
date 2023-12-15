@@ -1,15 +1,25 @@
 {
   "name": "ungunwiz",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Frederik 'zlyfer' Shull",
+  "homepage": "https://zlyfer.net/",
+  "description": "A PUBG Weapon Stats App",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "lint": "ng lint"
+    "start": "ionic serve",
+    "run": "ionic cap run -l --external",
+    "generate-assets": "npx cordova-res --skip-config --copy",
+    "run-android": "ionic cap run android -l --external",
+    "run-ios": "ionic cap run ios -l --external",
+    "sync": "ionic cap sync",
+    "build": "ionic cap build",
+    "build-production": "ionic cap build --prod",
+    "build-android": "ionic cap build android",
+    "build-ios": "ionic cap build ios",
+    "eslint": "npx eslint src/app",
+    "eslint-quiet": "npx eslint --quiet src/app",
+    "eslint-fix": "npx eslint --fix src/app",
+    "eslint-quiet-fix": "npx eslint --quiet --fix src/app",
+    "run-freddy": "ionic cap run android -l --external --public-host=192.168.178.25 --target=2748e267"
   },
   "private": true,
   "dependencies": {
@@ -62,6 +72,5 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ts-node": "^8.3.0",
     "typescript": "~5.2.2"
-  },
-  "description": "An Ionic project"
+  }
 }
