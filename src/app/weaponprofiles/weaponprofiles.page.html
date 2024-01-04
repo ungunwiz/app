@@ -15,48 +15,23 @@
   </ion-header>
 
   <div *ngIf="!loading">
-    <div class="container">
-      <div id="weaponSelectContainer">
-        <span class="title">Weapons</span>
-        <div id="weaponSelectContainer2">
-          <div class="weaponSelectCatContainer" *ngFor="let category of categorizedWeapons('type')['categories']">
-            <span class="weaponSelectCategory">{{category}}</span>
-            <div class="weaponSelect" *ngFor="let weapon of categorizedWeapons('type')['weapons'][category]"
-              [class.selected]="isSelected(weapon)" (click)="toggleWeapon(weapon)">
-
-              <div class="weaponInfoContainer top">
-                <span class="weaponName">{{weapon.name}}
-                </span>
-                <span class="weaponType">{{weapon.type}}</span>
-                <!-- <span class="weaponInfo weaponType">{{weapon.type}}</span> -->
-              </div>
-
-              <div class="weaponInfoContainer below">
-                <div class="weaponInfoSubContainer left">
-                  <span class="weaponInfo weaponDamage">
-                    Base DMG:
-                    <span class="weaponInfoValue">{{weapon.damage}}</span>
-                  </span>
-                  <span class="weaponInfo weaponClip">
-                    Clip:
-                    <span class="weaponInfoValue">{{weapon.clip}} x {{weapon.ammo}}</span>
-                  </span>
-                </div>
-
-                <div class="weaponInfoSubContainer right">
-                  <span class="weaponInfo weaponTBS">
-                    TBS:
-                    <span class="weaponInfoValue">{{weapon.tbs | number:'1.2-4' }}</span>
-                  </span>
-                  <span class="weaponInfo weaponVelocity">
-                    Velocity:
-                    <span class="weaponInfoValue">{{weapon.speed}} m/s</span>
-                  </span>
-                </div>
-
-              </div>
-            </div>
-          </div>
+    <div class="container" id="weaponSelectContainer">
+      <span class="title">Weapons</span>
+      <div class="weaponSelectCatContainer" *ngFor="let category of categorizedWeapons('type')['categories']">
+        <span class="weaponSelectCategory">{{category}}</span>
+        <div class="weaponSelect" *ngFor="let weapon of categorizedWeapons('type')['weapons'][category]"
+          [class.selected]="isSelected(weapon)" (click)="toggleWeapon(weapon)">
+          <!-- <span class="weaponName">{{weapon.name}}</span>
+          <span class="weaponType">{{weapon.type}}</span> -->
+          <img [src]="getWeaponIcon(weapon, false)" [alt]="'Icon of ' + weapon.name" class="weaponImage" />
+          <!-- <span> Base DMG:</span>
+          <span class="weaponInfoValue">{{weapon.damage}}</span>
+          <span> Clip:</span>
+          <span class="weaponInfoValue">{{weapon.clip}} x {{weapon.ammo}}</span>
+          <span> TBS:</span>
+          <span class="weaponInfoValue">{{weapon.tbs | number:'1.2-4' }}</span>
+          <span> Velocity:</span>
+          <span class="weaponInfoValue">{{weapon.speed}} m/s</span> -->
         </div>
       </div>
     </div>

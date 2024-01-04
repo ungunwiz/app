@@ -63,18 +63,8 @@ body.amoled .container {
 /* ---------------------------------- */
 
 #weaponSelectContainer {
-  float: left;
-  width: 100%;
-  height: 100%;
-}
-#weaponSelectContainer .title {
-  width: calc(100% - 10px);
-}
-#weaponSelectContainer2 {
-  height: calc(100% - 60px);
-  width: 100%;
-  overflow-y: scroll;
-  user-select: none;
+  width: 350px;
+  overflow-y: auto;
 }
 
 .weaponSelectCategory {
@@ -92,11 +82,11 @@ body.amoled .container {
   position: sticky;
   top: 0;
   z-index: 1000;
-  width: 50%;
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  // display: flex;
+  // justify-content: center;
   align-items: center;
-  margin-left: 25%;
+  // margin-left: 25%;
   margin-top: 25px;
   margin-bottom: 10px;
 }
@@ -112,14 +102,15 @@ body.transparency .weaponSelectCategory {
 }
 
 .weaponSelect {
-  width: calc(100% - 10px);
-  height: 80px;
+  width: calc(100%);
+  height: 200px;
   background-color: var(--ion-color-step-150);
   cursor: pointer;
   border-radius: var(--borderRadius3);
   margin-top: 4px;
   font-weight: bold;
   transition: background-color 0.2s ease-out;
+  position: relative;
 }
 // div.weaponSelect:first-of-type {
 //   border-top-left-radius: var(--borderRadius);
@@ -165,6 +156,12 @@ div.weaponInfoSubContainer.left {
 }
 div.weaponInfoSubContainer.right {
   width: 45%;
+}
+
+img.weaponImage {
+  width: 100px;
+  height: 100px;
+  aspect-ratio: 1/1;
 }
 
 span.weaponInfo {

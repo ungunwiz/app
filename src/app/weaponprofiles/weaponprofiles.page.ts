@@ -275,4 +275,9 @@ export class WeaponProfilesPage implements OnInit {
     const color = getComputedStyle(body).getPropertyValue(variable);
     return color;
   }
+
+  getWeaponIcon(weapon: any, simple: boolean = false) {
+    const wepDir = simple ? 'weaponsSimple' : 'weapons';
+    return `assets/gameAssets/${wepDir}/${weapon.name.replace(/\s/g, '_')}.png`;
+  }
 }
