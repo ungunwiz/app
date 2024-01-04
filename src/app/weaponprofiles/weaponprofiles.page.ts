@@ -1,5 +1,8 @@
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { Component, OnInit } from '@angular/core';
+import { register } from 'swiper/element/bundle';
+
+register();
 
 @Component({
   selector: 'app-weaponprofiles',
@@ -114,11 +117,11 @@ export class WeaponProfilesPage implements OnInit {
 
     this.lineChartOptionsDMG.scales.x.title.text = 'Distance (m)';
     this.lineChartOptionsDMG.scales.y.title.text = 'Damage';
-    this.lineChartOptionsDMG.scales.y.ticks.stepSize = 10;
+    this.lineChartOptionsDMG.scales.y.ticks.stepSize = 25;
 
     this.lineChartOptionsVel.scales.x.title.text = 'Distance (m)';
     this.lineChartOptionsVel.scales.y.title.text = 'Velocity (m/s)';
-    this.lineChartOptionsVel.scales.y.ticks.stepSize = 100;
+    this.lineChartOptionsVel.scales.y.ticks.stepSize = 250;
 
     this.loading = false;
   }

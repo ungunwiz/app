@@ -7,6 +7,7 @@ import { WeaponProfilesPage } from './weaponprofiles.page';
 import { WeaponProfilesPageRoutingModule } from './weaponprofiles-routing.module';
 
 import { NgChartsModule } from 'ng2-charts';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [WeaponProfilesPage],
@@ -17,5 +18,6 @@ import { NgChartsModule } from 'ng2-charts';
     WeaponProfilesPageRoutingModule,
     NgChartsModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class WeaponProfilesPageModule {}

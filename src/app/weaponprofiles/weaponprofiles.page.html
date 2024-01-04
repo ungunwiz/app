@@ -7,14 +7,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content id="weaponProfiles" [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Weapon Profiles</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <!-- ----- Sorry 4 Being Messy ----- -->
   <div *ngIf="!loading">
     <div class="container">
       <div id="weaponSelectContainer">
@@ -62,22 +61,22 @@
       </div>
     </div>
 
-    <div class="container">
-      <div id="graphContainer">
-        <span class="title">Damage Falloff over Distance</span>
-        <canvas baseChart [type]="'line'" [data]="lineChartDataDamage" [options]="lineChartOptionsDMG"
-          [legend]="lineChartLegend">
-        </canvas>
-      </div>
-    </div>
-
-    <div class="container">
-      <div id="graphContainer">
-        <span class="title">Velocity Falloff over Distance</span>
-        <canvas baseChart [type]="'line'" [data]="lineChartDataVelocity" [options]="lineChartOptionsVel"
-          [legend]="lineChartLegend">
-        </canvas>
-      </div>
+    <div class="container graph">
+      <!-- TODO: Swiping Indicator -->
+      <swiper-container style="height: 100%;">
+        <swiper-slide>
+          <span class="title">Damage Falloff over Distance</span>
+          <canvas baseChart [type]="'line'" [data]="lineChartDataDamage" [options]="lineChartOptionsDMG"
+            [legend]="lineChartLegend">
+          </canvas>
+        </swiper-slide>
+        <swiper-slide>
+          <span class="title">Velocity Falloff over Distance</span>
+          <canvas baseChart [type]="'line'" [data]="lineChartDataVelocity" [options]="lineChartOptionsVel"
+            [legend]="lineChartLegend">
+          </canvas>
+        </swiper-slide>
+      </swiper-container>
     </div>
   </div>
 
@@ -100,3 +99,18 @@
       </table>
     </div> -->
 </ion-content>
+
+<ion-menu side="end" menuId="weaponMenu" contentId="weaponProfiles">
+  <ion-header class="filter module">
+    <ion-toolbar>
+      <ion-title class="ion-text-center">Weapons</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label position="floating">Hello World</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>

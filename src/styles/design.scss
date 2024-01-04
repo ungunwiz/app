@@ -35,12 +35,19 @@
 /*                MENU                */
 /* ---------------------------------- */
 
+ion-header {
+  background: var(--ion-color-step-100);
+  margin: 0 !important;
+  border-bottom-left-radius: var(--borderRadius);
+  border-bottom-right-radius: var(--borderRadius);
+  backdrop-filter: blur(5px);
+}
+ion-toolbar {
+  --background: transparent;
+}
 ion-header,
 ion-toolbar {
-  --background: var(--ion-color-light);
-  --background: transparent;
   text-align: center;
-  margin: 10px 0;
   box-shadow: none !important;
 }
 @media (min-width: 651px) {
@@ -59,12 +66,6 @@ ion-title {
 /* ---------------------------------- */
 /*               CONTENT              */
 /* ---------------------------------- */
-
-/* ------------- COLORS -------------
-#903a00
-#ae6a00
-#fbc71d
-  ---------------- - --------------- */
 
 body {
   background-color: var(--ion-color-light-shade);
@@ -139,4 +140,31 @@ ion-toggle::part(track) {
 
 span.normal {
   font-weight: normal !important;
+}
+
+/* ---------------------------------- */
+/*          ION-SLIDES/SWIPER         */
+/* ---------------------------------- */
+
+swiper-container {
+  --swiper-pagination-bullet-inactive-color: var(--ion-color-step-200, #cccccc);
+  --swiper-pagination-color: var(--ion-color-primary, #3880ff);
+  --swiper-pagination-progressbar-bg-color: rgba(
+    var(--ion-text-color-rgb, 0, 0, 0),
+    0.25
+  );
+  --swiper-scrollbar-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
+  --swiper-scrollbar-drag-bg-color: rgba(
+    var(--ion-text-color-rgb, 0, 0, 0),
+    0.5
+  );
+}
+
+swiper-slide {
+  width: 100%;
+  height: 100%;
+
+  font-size: 18px;
+
+  box-sizing: border-box;
 }

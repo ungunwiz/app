@@ -1,11 +1,10 @@
-body:not(.transparency) ion-menu {
-  --background: rgba(var(--ion-color-light-rgb), 1);
+ion-menu:not(.transparency) {
+  --background: rgba(var(--ion-color-light-rgb), 1) !important;
 }
-body.transparency ion-menu {
-  --background: rgba(var(--ion-color-light-rgb), 0.75);
+ion-menu.transparency {
+  --background: rgba(var(--ion-color-light-rgb), 0.5) !important;
 }
 ion-menu {
-  border-radius: 0 var(--borderRadius) var(--borderRadius) 0;
   max-width: 400px;
   --max-width: 400px;
 }
