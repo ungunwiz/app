@@ -5,7 +5,7 @@
   "homepage": "https://zlyfer.net/",
   "description": "A PUBG Weapon Stats App",
   "scripts": {
-    "start": "ionic serve",
+    "start": "ionic serve --no-open",
     "run": "ionic cap run -l --external",
     "generate-assets": "npx cordova-res --skip-config --copy",
     "run-android": "ionic cap run android -l --external",

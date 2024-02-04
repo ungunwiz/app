@@ -1,10 +1,10 @@
-div#container {
+#container {
   width: 100%;
   height: 100%;
   padding: 20px 180px 20px 20px;
 }
 
-div.codeContainer {
+.codeContainer {
   border-radius: 10px;
   border: 2px solid var(--ion-color-primary);
   height: 600px;
@@ -12,7 +12,7 @@ div.codeContainer {
   min-width: 300px;
   margin-bottom: 20px;
 }
-div.titlebar {
+.titlebar {
   width: 100%;
   font-weight: 18px;
   background-color: var(--ion-color-primary);
@@ -20,11 +20,13 @@ div.titlebar {
   font-weight: bold;
   padding: 10px 0 10px 15px;
   border-radius: 8px 8px 0 0;
+
+  & span {
+    color: white;
+  }
 }
-div.titlebar span {
-  color: white;
-}
-div.code {
+
+.code {
   overflow-y: scroll;
   background: var(--ion-color-light);
   height: calc(100% - 40px);
@@ -34,7 +36,8 @@ div.code {
   font-size: 16px;
   border-radius: 0 0 8px 8px;
   padding: 10px;
-}
-div.code span {
-  color: var(--ion-color-primary);
+
+  & span {
+    color: var(--ion-color-primary);
+  }
 }

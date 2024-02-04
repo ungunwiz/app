@@ -11,7 +11,8 @@
           </ion-list-header>
           <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages; let i = index">
             <ion-item *ngIf="page.type === 'route'" routerDirection="root" [routerLink]="page.url"
-              [disabled]="page.disabled" lines="none" detail="false" routerLinkActive="selected">
+              [disabled]="page.disabled" [class.disabled]="page.disabled" lines="none" detail="false"
+              routerLinkActive="selected">
               <ion-icon aria-hidden="true" slot="start" [ios]="page.icon + '-outline'"
                 [md]="page.icon + '-sharp'"></ion-icon>
               <ion-label>{{ page.title }}</ion-label>
