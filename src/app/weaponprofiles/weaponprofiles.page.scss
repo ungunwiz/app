@@ -1,228 +1,89 @@
-/* ---------------------------------- */
-/*              CONTAINER             */
-/* ---------------------------------- */
-
-@media (max-width: 650px) {
-  .container {
-    // border-radius: var(--borderRadius2);
-    border-radius: 0;
-    // background: none;
-  }
-}
-
-@media (min-width: 651px) {
-  .container {
-    border-radius: var(--borderRadius2);
-  }
-}
-
-.container {
-  background: var(--ion-color-light);
-  max-width: 650px;
-  padding: 0 5px 5px 5px;
-  // box-shadow: var(--shadow);
-  height: 500px;
-  margin: 30px 0;
-}
-
-body {
-  &.dark .container,
-  &.amoled .container {
-    background: var(--ion-color-step-100);
-  }
-
-  &.transparency .container {
-    background: rgba(var(--ion-color-light-rgb), 0.5);
-  }
-}
-
-.container {
-  &:last-of-type {
-    margin-bottom: 100px;
-  }
-
-  &.graph {
-    height: 350px;
-    padding-right: 10px;
-    padding-bottom: 20px;
-  }
-}
-
-.title {
-  font-weight: bold;
-  font-size: 1em;
-  display: block;
-  width: 90%;
-  margin-left: 5%;
-  text-align: center;
-  padding: 10px 0;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  color: var(--ion-color-dark);
+ion-content {
+  --padding-top: 10px;
 }
 
 /* ---------------------------------- */
 /*            WEAPON SELECT           */
 /* ---------------------------------- */
 
-#wepSelectContainer {
-  width: 350px;
-  overflow-y: auto;
-}
-
-.wepSelectCategory {
-  position: sticky;
-  z-index: 1000;
-  height: 40px;
-  line-height: 40px;
-  top: 10px;
-  padding: 0;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  -moz-backdrop-filter: blur(20px);
-  background: var(--ion-color-light);
-  border-radius: var(--borderRadius2);
-  // border: 2px solid var(--ion-color-step-50);
-  // box-shadow: var(--shadow);
-
-  &::after {
-    content: "s";
-  }
-
-  &:first-of-type .weaponSelectCategory {
-    margin-top: 0px;
-  }
-}
-// body.transparency .wepSelectCategory {
-//   backdrop-filter: blur(10px);
-//   background: rgba(var(--ion-color-light-rgb), 0.25);
-// }
-
-.wepSelect {
+.weapon {
   position: relative;
   cursor: pointer;
-  width: 100%;
-  height: 150px;
-  background-color: var(--ion-color-step-200);
-  margin-top: 5px;
+  height: 120px;
+  background-color: var(--ion-color-light);
+  margin: 8px 15px;
   font-weight: bold;
+  border-radius: var(--borderRadius);
   transition: background-color 0.2s ease-out;
-  border: 2px solid var(--ion-color-light);
-  border-radius: var(--borderRadius3);
+  box-shadow: 0 0 5px 0 var(--ion-color-light-shade);
 
-  &.selected {
-    background-color: rgba(var(--ion-color-primary-rgb), 0.75);
+  & img {
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+  & img:not(.weaponImage) {
+    height: 80%;
+    margin: 3px 3px;
+    // background-color: rgba(var(--ion-color-dark-rgb), 0.1);
+    // border-radius: 5px;
+  }
+  & img.sprite {
+    filter: drop-shadow(0 0 1px rgba(var(--ion-color-dark-rgb), 0.25))
+      brightness(1.05);
+  }
+  & img.icon {
+    padding: 3px;
   }
 
-  &:hover {
-    background-color: rgba(var(--ion-color-primary-rgb), 0.5);
-  }
-  &.selected .weaponName,
-  &:hover .weaponName {
-    background-color: var(--ion-color-primary);
-    border: 2px solid var(--ion-color-primary);
-  }
-
-  &.selected .weaponName {
-    border-radius: var(--borderRadius3);
-  }
-
-  &.selected span,
-  &:hover span {
-    color: #fff;
-  }
-
-  & .weaponName,
-  & .weaponType,
-  & .weaponInfo {
+  & span.weaponType {
     position: absolute;
+    color: var(--ion-color-step-text-800);
+    top: 10px;
+    left: 10px;
+    font-size: 0.7em;
+  }
+  & span.weaponName {
+    position: absolute;
+    color: var(--ion-color-primary);
+    font-weight: bold;
+    top: 25px;
+    left: 10px;
+    font-size: 1.2em;
   }
 
-  & .weaponType,
-  & .weaponInfo {
-    border: 1px solid lawngreen;
+  & .weaponInfoStrip.basic {
+    top: 50px;
   }
-}
+  & .weaponInfoStrip.extra {
+    top: 80px;
+  }
+  & .weaponInfoStrip {
+    position: absolute;
+    left: 10px;
+    width: calc(100% - 120px - 10px);
+    height: 30px;
+    background-color: var(--ion-color-light);
 
-span.weaponName {
-  position: absolute;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  transform-origin: center;
-  font-size: 16px;
-  color: var(--ion-color-primary);
-  line-height: 30px;
-  text-align: center;
-  height: 32px;
-  width: calc(150px - 4px);
-  left: 16px;
-  top: 50%;
-  background-color: var(--ion-color-step-50);
-  border-radius: calc(var(--borderRadius3) - 2px);
-}
-
-img.weaponImage {
-  width: 100px;
-  height: 100px;
-  aspect-ratio: 1/1;
-}
-span.weaponType {
-  color: var(--ion-color-step-text-800);
-  font-size: 0.8em;
-  margin-top: 6px;
-  margin-left: 5px;
-  font-weight: bold;
-}
-span.weaponInfo {
-  color: var(--ion-color-step-text-600);
-  font-size: 0.9em;
-}
-
-/* ---------------------------------- */
-/*                GRAPH               */
-/* ---------------------------------- */
-
-canvas.mainGraph {
-  height: calc(100% - 60px) !important;
-}
-
-/* ---------------------------------- */
-/*                TABLE               */
-/* ---------------------------------- */
-
-#tableContainer {
-  width: 100%;
-  overflow-x: scroll;
-}
-table {
-  width: calc(100% - 10px);
-  border: 2px solid #5aa5ec;
-  background: #253146;
-  color: #76bdff;
-}
-th {
-  padding: 5px;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  background-color: #506da0;
-}
-tr {
-  border: 1px solid #5aa5ec;
-}
-td {
-  padding: 5px;
-
-  &:not(:last-child) {
-    border-right: 1px solid #5aa5ec;
+    & * {
+      float: left;
+    }
+    & .seperator {
+      width: 0px;
+      height: 80%;
+      margin-top: 2.5px;
+      margin: 0 3px;
+      // border-right: 1px solid rgba(var(--ion-color-dark-rgb), 0.5);
+    }
   }
 
-  &.distanceCell {
-    text-align: right;
-    min-width: 80px;
+  & span.weaponInfo {
+    color: var(--ion-color-step-text-800);
+    height: 100%;
+    line-height: 30px;
   }
 
-  &.damageCell {
-    min-width: 200px;
-    text-align: center;
+  & img.weaponImage {
+    position: absolute;
+    right: 0;
   }
 }

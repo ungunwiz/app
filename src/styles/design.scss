@@ -19,54 +19,84 @@
 
 :root {
   --shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  --borderRadius: 20px;
+  --borderRadius: 15px;
   --borderRadius2: 10px;
   --borderRadius3: 5px;
 }
 
-// * {
-//   scrollbar-width: none !important;
-// }
-// *:not(ion-item) {
-//   color: var(--ion-color-step-text-800);
-// }
-
 /* ---------------------------------- */
-/*                MENU                */
+/*               HEADER               */
 /* ---------------------------------- */
 
-ion-toolbar {
-  --background: transparent;
+/* ----------- Black Line ----------- */
+.header::after,
+.header-md::after,
+.footer::before,
+.footer-md::before {
+  content: none !important;
+  /* ------------ Fallback ------------ */
+  background: none !important;
 }
 
-ion-header,
-ion-toolbar {
+ion-header {
   box-shadow: none !important;
-}
 
-ion-title {
-  font-weight: bold;
+  & ion-toolbar {
+    /* --------------- IOS -------------- */
+    --border-width: 0 !important;
+    /* -------------- Blur -------------- */
+    // backdrop-filter: blur(10px);
+    // --background: rgba(var(--ion-color-light-rgb), 0.5);
+    /* ------------- No Blur ------------ */
+    --background: var(--ion-color-light-tint);
+
+    & ion-title {
+      font-weight: bold;
+      text-align: center;
+      margin-left: -50px;
+    }
+  }
 }
 
 /* ---------------------------------- */
 /*               CONTENT              */
 /* ---------------------------------- */
 
-// ion-content {
-// }
+ion-content {
+  --background: var(--ion-color-light-tint);
+}
 
 /* ---------------------------------- */
 /*            LISTS & ITEMS           */
 /* ---------------------------------- */
 
-// ion-list {
-// }
+ion-list {
+  background: var(--ion-color-light-tint) !important;
 
-// ion-list-header {
-// }
+  & ion-list-header {
+    font-weight: bold;
+    --color: var(--ion-color-dark-tint);
+    background: var(--ion-color-light-tint);
+  }
 
-// ion-item {
-// }
+  & ion-item {
+    font-weight: bold;
+    --color: var(--ion-color-dark-tint);
+    --background: var(--ion-color-light-tint);
+  }
+}
+
+/* ---------------------------------- */
+/*              SEARCHBAR             */
+/* ---------------------------------- */
+
+ion-searchbar {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  border-radius: 0 !important;
+  --border-radius: 30px !important;
+  --background: var(--ion-color-step-150) !important;
+}
 
 /* ---------------------------------- */
 /*               SELECT               */

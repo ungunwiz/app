@@ -1,39 +1,45 @@
-<ion-header [translucent]="true">
+<ion-header fullscreen>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <ion-searchbar mode="ios" [(ngModel)]="searchText" (ionInput)="search()" (ionCancel)="search()"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="weaponProfiles" [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Weapon Profiles</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content fullscreen id="weaponProfiles">
   <div *ngIf="!loading">
-    <div class="container" id="wepSelectContainer">
-      <!-- <span class="title">Weapons</span> -->
+    <div class="weapon" *ngFor="let weapon of filteredWeapons">
 
-      <div class="wepSelectCatContainer" *ngFor="let category of categorizedWeapons('type')['categories']">
-        <span class="title wepSelectCategory">{{category}}</span>
-        <div class="wepSelect" *ngFor="let weapon of categorizedWeapons('type')['weapons'][category]"
-          [class.selected]="isSelected(weapon)" (click)="toggleWeapon(weapon)">
-          <span class="weaponName">{{weapon.name}}</span>
-          <!-- <img [src]="getWeaponIcon(weapon, false)" [alt]="'Icon of ' + weapon.name" class="weaponImage" />
-          <span class="weaponInfo"> Base DMG: <span>{{weapon.damage}}</span></span>
-          <span class="weaponInfo"> Clip: <span>{{weapon.clip}} x {{weapon.ammo}}</span></span>
-          <span class="weaponInfo"> TBS: <span>{{weapon.tbs | number:'1.2-4' }}</span></span>
-          <span class="weaponInfo"> Velocity: <span>{{weapon.speed}} m/s</span></span> -->
-        </div>
+      <span class="weaponType">{{weapon.type}}</span>
+      <span class="weaponName">{{weapon.name}}</span>
 
+      <div class="weaponInfoStrip basic">
+        <img class="icon" src="../../assets/otherIcons/damage.svg" />
+        <span class="weaponInfo"> {{weapon.damage}}</span>
+        <div class="seperator"></div>
+        <img class="sprite " [src]="getWeaponAmmoIcon(weapon)" />
+        <span class="weaponInfo">x{{weapon.clip}}</span>
+        <div class="seperator"></div>
       </div>
+
+      <div class="weaponInfoStrip extra">
+        <img class="icon" src="../../assets/otherIcons/tbs.svg" />
+        <span class="weaponInfo"> {{weapon.tbs | number:'1.2-3' }}</span>
+        <div class="seperator"></div>
+        <img class="icon" src="../../assets/otherIcons/velocity.svg" />
+        <span class="weaponInfo"> {{weapon.speed}} m/s</span>
+      </div>
+
+      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
     </div>
 
-    <div class="container graph">
-      <!-- TODO: Swiping Indicator -->
+    <!-- <div class="container graph">
       <swiper-container style="height: 100%;">
         <swiper-slide>
           <span class="title">Damage Falloff over Distance</span>
@@ -48,7 +54,7 @@
           </canvas>
         </swiper-slide>
       </swiper-container>
-    </div>
+    </div> -->
   </div>
 
   <!-- <div id="tableContainer">
@@ -70,18 +76,3 @@
       </table>
     </div> -->
 </ion-content>
-
-<ion-menu side="end" menuId="weaponMenu" contentId="weaponProfiles">
-  <ion-header class="filter module">
-    <ion-toolbar>
-      <ion-title class="ion-text-center">Weapons</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item lines="none">
-        <ion-label position="floating">Hello World</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>

@@ -71,7 +71,7 @@ export class SettingsService {
     });
     if (this.platform.is('android')) {
       const style = getComputedStyle(document.body);
-      const bgColor = style.getPropertyValue('--ion-color-light').trim();
+      const bgColor = style.getPropertyValue('--ion-color-light-tint').trim();
       await StatusBar.setBackgroundColor({ color: bgColor }).catch((e) => {
         console.error(e);
       });

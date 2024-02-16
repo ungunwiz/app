@@ -1,17 +1,11 @@
-// ion-content {
-//   --padding-start: 0 !important;
-//   --padding-end: 0 !important;
-//   --padding-top: 0 !important;
-//   --padding-bottom: 0 !important;
-// }
-
 ion-list {
   width: 100%;
   height: 100%;
 }
+
 ion-list-header {
   font-size: 22px;
-  font-weight: 600;
+  font-weight: bold;
   min-height: 20px;
   text-align: center;
   margin: 20px 0;
