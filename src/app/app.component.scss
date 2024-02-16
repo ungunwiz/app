@@ -19,7 +19,8 @@ ion-list-header {
 }
 
 ion-item {
-  transition: all 0.1s ease-in;
+  border-radius: var(--borderRadius3);
+  margin: 1px 5px;
 
   &.disabled,
   &.disabled ion-icon {
@@ -29,7 +30,7 @@ ion-item {
   &.selected,
   &.selected ion-icon {
     --color: var(--ion-color-primary-contrast);
-    --background: rgba(var(--ion-color-primary-rgb), 0.35);
+    --background: rgba(var(--ion-color-primary-rgb), 0.8);
     color: var(--ion-color-primary-contrast);
   }
 }

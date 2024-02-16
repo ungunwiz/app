@@ -25,10 +25,6 @@ export class SettingsService {
     }, 10);
   }
 
-  apply() {
-    this.applyColor();
-  }
-
   loadSettings() {
     const avail_settings = localStorage.getItem('settings');
     if (avail_settings) {
@@ -53,14 +49,17 @@ export class SettingsService {
     this.apply();
   }
 
+  apply() {
+    this.applyColor();
+    this.applyStatusbarColor();
+  }
+
   async applyColor() {
     document.body.classList.remove('dark');
 
     if (this.isDarkMode()) {
       document.body.classList.add('dark');
     }
-
-    this.applyStatusbarColor();
   }
 
   async applyStatusbarColor() {
@@ -83,9 +82,10 @@ export class SettingsService {
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
+    console.debug(`prefersDark:`, prefersDark);
     const darkMode = this.settings.ui.darkMode;
     const autoTheme = this.settings.ui.autoTheme;
 
-    return (autoTheme && prefersDark) || darkMode;
+    return (autoTheme && prefersDark) || (!autoTheme && darkMode);
   }
 }

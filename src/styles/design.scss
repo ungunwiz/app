@@ -35,10 +35,6 @@
 /*                MENU                */
 /* ---------------------------------- */
 
-ion-header {
-  margin: 0 !important;
-}
-
 ion-toolbar {
   --background: transparent;
 }
@@ -47,12 +43,6 @@ ion-header,
 ion-toolbar {
   box-shadow: none !important;
 }
-// @media (min-width: 651px) {
-//   ion-header,
-//   ion-toolbar {
-//     margin: 10px 0;
-//   }
-// }
 
 ion-title {
   font-weight: bold;
@@ -62,11 +52,7 @@ ion-title {
 /*               CONTENT              */
 /* ---------------------------------- */
 
-// @media (min-width: 651px) {
-//   ion-content {
-//     --padding-start: var(--ion-padding, 16px);
-//     --padding-end: var(--ion-padding, 16px);
-//   }
+// ion-content {
 // }
 
 /* ---------------------------------- */

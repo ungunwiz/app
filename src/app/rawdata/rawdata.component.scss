@@ -1,17 +1,11 @@
-#container {
-  width: 100%;
-  height: 100%;
-  padding: 20px 180px 20px 20px;
+ion-content {
+  --padding-bottom: 60px;
 }
 
 .codeContainer {
-  border-radius: 10px;
-  border: 2px solid var(--ion-color-primary);
-  height: 600px;
-  width: 100%;
-  min-width: 300px;
-  margin-bottom: 20px;
+  height: 300px;
 }
+
 .titlebar {
   width: 100%;
   font-weight: 18px;
@@ -19,7 +13,6 @@
   text-align: left;
   font-weight: bold;
   padding: 10px 0 10px 15px;
-  border-radius: 8px 8px 0 0;
 
   & span {
     color: white;
@@ -28,14 +21,11 @@
 
 .code {
   overflow-y: scroll;
-  background: var(--ion-color-light);
   height: calc(100% - 40px);
-  width: 100%;
   white-space: pre;
   font-family: monospace;
-  font-size: 16px;
-  border-radius: 0 0 8px 8px;
-  padding: 10px;
+  font-size: 14px;
+  padding: 6px;
 
   & span {
     color: var(--ion-color-primary);
