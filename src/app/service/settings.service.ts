@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  constructor() {
+  constructor(private platform: Platform) {
     this.init();
   }
 
   public settings: any;
   public defaultSettings: any = {
     ui: {
-      darkMode: '0',
-      darkModeAmoled: false,
-      transparency: false,
+      autoTheme: true,
+      darkMode: true,
     },
   };
 
@@ -21,12 +22,11 @@ export class SettingsService {
     this.loadSettings();
     setTimeout(() => {
       this.apply();
-    }, 200);
+    }, 10);
   }
 
   apply() {
     this.applyColor();
-    this.applyTransparency();
   }
 
   loadSettings() {
@@ -54,43 +54,28 @@ export class SettingsService {
   }
 
   async applyColor() {
-    const darkMode = this.settings.ui.darkMode;
-    const darkModeAmoled = this.settings.ui.darkModeAmoled;
-
-    const menu = document.querySelector('ion-menu');
-
     document.body.classList.remove('dark');
-    document.body.classList.remove('amoled');
-    menu?.classList.remove('dark');
-    menu?.classList.remove('amoled');
 
     if (this.isDarkMode()) {
-      if (darkModeAmoled) {
-        document.body.classList.add('amoled');
-        menu?.classList.add('amoled');
-      } else {
-        document.body.classList.add('dark');
-        menu?.classList.add('dark');
-      }
-    } else if (darkMode == '2' && !darkModeAmoled) {
       document.body.classList.add('dark');
-      menu?.classList.add('dark');
-    } else if (darkMode == '2' && darkModeAmoled)
-      document.body.classList.add('amoled');
-    menu?.classList.add('amoled');
+    }
+
+    this.applyStatusbarColor();
   }
 
-  async applyTransparency() {
-    const transparency = this.settings.ui.transparency;
-
-    const menu = document.querySelector('ion-menu');
-
-    document.body.classList.remove('transparency');
-    menu?.classList.remove('transparency');
-
-    if (transparency) {
-      document.body.classList.add('transparency');
-      menu?.classList.add('transparency');
+  async applyStatusbarColor() {
+    const isDark = this.isDarkMode();
+    await StatusBar.setStyle({
+      style: isDark ? Style.Dark : Style.Light,
+    }).catch((e) => {
+      console.error(e);
+    });
+    if (this.platform.is('android')) {
+      const style = getComputedStyle(document.body);
+      const bgColor = style.getPropertyValue('--ion-color-light').trim();
+      await StatusBar.setBackgroundColor({ color: bgColor }).catch((e) => {
+        console.error(e);
+      });
     }
   }
 
@@ -99,8 +84,8 @@ export class SettingsService {
       '(prefers-color-scheme: dark)'
     ).matches;
     const darkMode = this.settings.ui.darkMode;
-    return (
-      (darkMode != '1' && darkMode != '0') || (darkMode == 0 && prefersDark)
-    );
+    const autoTheme = this.settings.ui.autoTheme;
+
+    return (autoTheme && prefersDark) || darkMode;
   }
 }

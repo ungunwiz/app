@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Settings</ion-title>
@@ -19,21 +19,14 @@
       <ion-label text-wrap>User Interface</ion-label>
     </ion-list-header>
     <ion-item lines="none">
-      <!-- <ion-label text-wrap>App Theme</ion-label> -->
-      <ion-select mode="ios" interface="action-sheet" label="App Theme" [(ngModel)]="settings.ui.darkMode"
-        (ionChange)="saveSettings()">
-        <ion-select-option value="0">Auto</ion-select-option>
-        <ion-select-option value="1">Light</ion-select-option>
-        <ion-select-option value="2">Dark</ion-select-option>
-      </ion-select>
+      <ion-label>Follow System Theme</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.ui.autoTheme" (ionChange)="saveSettings()">
+      </ion-toggle>
     </ion-item>
-    <ion-item lines="none" *ngIf="settings.ui.darkMode != 1">
-      <ion-label text-wrap>AMOLED Dark Theme (experimental)</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="settings.ui.darkModeAmoled" (ionChange)="saveSettings()"></ion-toggle>
-    </ion-item>
-    <ion-item lines="none">
-      <ion-label text-wrap>Enable Transparency (experimental)</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="settings.ui.transparency" (ionChange)="saveSettings()"></ion-toggle>
+    <ion-item lines="none" [disabled]="settings.ui.autoTheme">
+      <ion-label>Dark Mode</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.ui.darkMode" (ionChange)="saveSettings()">
+      </ion-toggle>
     </ion-item>
   </ion-list>
 </ion-content>

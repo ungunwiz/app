@@ -24,23 +24,19 @@
   --borderRadius3: 5px;
 }
 
-* {
-  // scrollbar-width: none !important;
-}
-*:not(ion-item) {
-  color: var(--ion-color-step-text-800);
-}
+// * {
+//   scrollbar-width: none !important;
+// }
+// *:not(ion-item) {
+//   color: var(--ion-color-step-text-800);
+// }
 
 /* ---------------------------------- */
 /*                MENU                */
 /* ---------------------------------- */
 
 ion-header {
-  background: var(--ion-color-step-100);
   margin: 0 !important;
-  border-bottom-left-radius: var(--borderRadius);
-  border-bottom-right-radius: var(--borderRadius);
-  backdrop-filter: blur(5px);
 }
 
 ion-toolbar {
@@ -49,78 +45,54 @@ ion-toolbar {
 
 ion-header,
 ion-toolbar {
-  text-align: center;
   box-shadow: none !important;
 }
-@media (min-width: 651px) {
-  ion-header,
-  ion-toolbar {
-    margin: 10px 0;
-  }
-}
+// @media (min-width: 651px) {
+//   ion-header,
+//   ion-toolbar {
+//     margin: 10px 0;
+//   }
+// }
 
 ion-title {
   font-weight: bold;
-  font-size: 1.5em;
-  color: var(--ion-color-primary);
-  --background: transparent;
 }
 
 /* ---------------------------------- */
 /*               CONTENT              */
 /* ---------------------------------- */
 
-body {
-  background-color: var(--ion-color-light-shade);
-}
-
-ion-content {
-  --background: none;
-}
-@media (min-width: 651px) {
-  ion-content {
-    --padding-start: var(--ion-padding, 16px);
-    --padding-end: var(--ion-padding, 16px);
-  }
-}
+// @media (min-width: 651px) {
+//   ion-content {
+//     --padding-start: var(--ion-padding, 16px);
+//     --padding-end: var(--ion-padding, 16px);
+//   }
+// }
 
 /* ---------------------------------- */
 /*            LISTS & ITEMS           */
 /* ---------------------------------- */
 
-ion-list {
-  border-radius: var(--borderRadius2);
-  padding: 0 0 !important;
-}
+// ion-list {
+// }
 
-ion-list-header {
-  margin: 0 !important;
-}
+// ion-list-header {
+// }
 
-ion-list-header,
-ion-item {
-  --background: var(--ion-color-step-100);
-}
-
-ion-item {
-  &:hover,
-  &:active,
-  &:focus {
-    --background: var(--ion-color-step-50);
-  }
-}
+// ion-item {
+// }
 
 /* ---------------------------------- */
 /*               SELECT               */
 /* ---------------------------------- */
 
-ion-select {
-  background: var(--ion-color-step-200);
-  border-radius: var(--borderRadius3);
-  padding: 0 10px;
-  width: 100%;
-  height: 35px;
-}
+// ion-select {
+//   background: var(--ion-color-step-200);
+//   border-radius: var(--borderRadius3);
+//   padding: 0 10px;
+//   width: 100%;
+//   height: 35px;
+// }
 
 /* ---------------------------------- */
 /*               TOGGLES              */
@@ -128,10 +100,7 @@ ion-select {
 
 ion-toggle {
   --track-background: var(--ion-color-step-200);
-  --track-background-checked: rgba(var(--ion-color-primary-rgb), 0.8);
-
   --handle-background: var(--ion-background-color);
-  --handle-background-checked: var(--ion-background-color);
 
   --handle-width: 23px;
   --handle-height: 23px;
