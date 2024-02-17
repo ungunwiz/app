@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PubgDataService } from '@service/pubgData.service';
 import { SettingsService } from '@service/settings.service';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     // localStorage.removeItem('pubgData');
     this.onSystemDarkModechange();
     this.generateDistances();
+    this.setAppDetails();
 
     Promise.all([
       this.getWeapons(),
@@ -59,6 +61,32 @@ export class AppComponent implements OnInit {
       this.pubgData = pubgData;
       console.debug(`pubgData:`, pubgData);
     });
+  }
+
+  /* ---------------------------------- */
+  /*               SYSTEM               */
+  /* ---------------------------------- */
+
+  async setAppDetails() {
+    await App.getInfo()
+      .then((res) => {
+        const appInfo = {
+          package: res.id,
+          version: res.version,
+          build: res.build,
+          name: res.name,
+        };
+        localStorage.setItem('appInfo', JSON.stringify(appInfo));
+      })
+      .catch((err) => {
+        const appInfo = {
+          package: 'dev',
+          version: 'dev',
+          build: 'dev',
+          name: 'dev',
+        };
+        localStorage.setItem('appInfo', JSON.stringify(appInfo));
+      });
   }
 
   /* ---------------------------------- */

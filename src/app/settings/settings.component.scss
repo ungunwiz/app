@@ -1,7 +1,29 @@
+ion-content {
+  --padding-bottom: 85px;
+}
+
 ion-item {
   line-height: 30px;
 
   & * {
     min-height: 30px;
   }
+}
+
+/* ----------- App Version ---------- */
+
+div.version {
+  position: absolute;
+  width: calc(100% - 40px) !important;
+  margin: 0 20px;
+  bottom: 50px;
+  text-align: center !important;
+}
+ion-label.version {
+  font-size: 1em;
+  font-weight: bold;
+  color: var(--ion-color-medium) !important;
+}
+span.appName {
+  color: var(--ion-color-primary);
 }

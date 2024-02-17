@@ -20,23 +20,30 @@
       <span class="weaponName">{{weapon.name}}</span>
 
       <div class="weaponInfoStrip basic">
-        <img class="icon" src="../../assets/otherIcons/damage.svg" />
-        <span class="weaponInfo"> {{weapon.damage}}</span>
-        <div class="seperator"></div>
-        <img class="sprite " [src]="getWeaponAmmoIcon(weapon)" />
-        <span class="weaponInfo">x{{weapon.clip}}</span>
-        <div class="seperator"></div>
+        <div class="infoPill">
+          <img class="icon" src="../../assets/otherIcons/damage.svg" />
+          <span class="weaponInfo"> {{weapon.damage}} </span>
+        </div>
+        <!-- <div class="seperator"></div> -->
+        <div class="infoPill">
+          <span class="weaponInfo">{{weapon.clip}} x</span>
+          <img class="sprite " [src]="getWeaponAmmoIcon(weapon)" />
+        </div>
       </div>
 
       <div class="weaponInfoStrip extra">
-        <img class="icon" src="../../assets/otherIcons/tbs.svg" />
-        <span class="weaponInfo"> {{weapon.tbs | number:'1.2-3' }}</span>
-        <div class="seperator"></div>
-        <img class="icon" src="../../assets/otherIcons/velocity.svg" />
-        <span class="weaponInfo"> {{weapon.speed}} m/s</span>
+        <div class="infoPill">
+          <img class="icon" src="../../assets/otherIcons/tbs.svg" />
+          <span class="weaponInfo"> {{weapon.tbs | number:'1.2-3' }}</span>
+        </div>
+        <!-- <div class="seperator"></div> -->
+        <div class="infoPill">
+          <img class="icon" src="../../assets/otherIcons/velocity.svg" />
+          <span class="weaponInfo"> {{weapon.speed}} m/s</span>
+        </div>
       </div>
 
-      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
+      <img [id]="weapon.name" class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
     </div>
 
     <!-- <div class="container graph">

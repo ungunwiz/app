@@ -1,5 +1,6 @@
 ion-content {
   --padding-top: 10px;
+  --padding-bottom: 15px;
 }
 
 /* ---------------------------------- */
@@ -21,18 +22,14 @@ ion-content {
     height: 100%;
     aspect-ratio: 1/1;
   }
-  & img:not(.weaponImage) {
-    height: 80%;
-    margin: 3px 3px;
-    // background-color: rgba(var(--ion-color-dark-rgb), 0.1);
-    // border-radius: 5px;
-  }
   & img.sprite {
     filter: drop-shadow(0 0 1px rgba(var(--ion-color-dark-rgb), 0.25))
       brightness(1.05);
   }
   & img.icon {
-    padding: 3px;
+    height: 80%;
+    margin: 3px 0px;
+    margin-right: 3px;
   }
 
   & span.weaponType {
@@ -51,39 +48,161 @@ ion-content {
     font-size: 1.2em;
   }
 
+  & .weaponInfoStrip {
+    position: absolute;
+    left: 10px;
+    width: calc(100% - 120px - 10px);
+    height: 26px;
+    background-color: var(--ion-color-light);
+
+    & * {
+      float: left;
+    }
+    & .infoPill {
+      height: 100%;
+      background-color: rgba(var(--ion-color-dark-rgb), 0.1);
+      padding: 0 10px;
+      border-radius: var(--borderRadius);
+      min-width: 50px;
+      margin-right: 2px;
+    }
+    & .seperator {
+      width: 0px;
+      height: 50%;
+      margin: 8px 5px 0 5px;
+      border-right: 1px solid rgba(var(--ion-color-dark-rgb), 0.5);
+    }
+    & span.weaponInfo {
+      color: var(--ion-color-step-text-800);
+      height: 100%;
+      line-height: 26px;
+      font-size: 0.75em;
+    }
+  }
   & .weaponInfoStrip.basic {
     top: 50px;
   }
   & .weaponInfoStrip.extra {
     top: 80px;
   }
-  & .weaponInfoStrip {
-    position: absolute;
-    left: 10px;
-    width: calc(100% - 120px - 10px);
-    height: 30px;
-    background-color: var(--ion-color-light);
-
-    & * {
-      float: left;
-    }
-    & .seperator {
-      width: 0px;
-      height: 80%;
-      margin-top: 2.5px;
-      margin: 0 3px;
-      // border-right: 1px solid rgba(var(--ion-color-dark-rgb), 0.5);
-    }
-  }
-
-  & span.weaponInfo {
-    color: var(--ion-color-step-text-800);
-    height: 100%;
-    line-height: 30px;
-  }
 
   & img.weaponImage {
     position: absolute;
-    right: 0;
+    // right: 0;
+    right: 15px;
+    top: -20px;
+    transform: rotate(-40.5deg);
+  }
+
+  & img.weaponImage#AUG {
+    transform: rotate(-38.8deg);
+  }
+  & img.weaponImage#Beryl\ M762 {
+    transform: rotate(-41deg);
+  }
+  & img.weaponImage#Crossbow {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#DBS {
+    transform: rotate(-39.5deg);
+  }
+  & img.weaponImage#DP-28 {
+    transform: rotate(-41deg);
+  }
+  & img.weaponImage#Deagle {
+    transform: rotate(-33deg);
+  }
+  & img.weaponImage#Deagle {
+    transform: rotate(-33deg);
+  }
+  & img.weaponImage#Famas {
+    transform: rotate(-45deg);
+  }
+  & img.weaponImage#G36C {
+    transform: rotate(-41deg);
+  }
+  & img.weaponImage#Groza {
+    transform: rotate(-45.5deg);
+  }
+  & img.weaponImage#JS9 {
+    transform: rotate(-45deg);
+  }
+  & img.weaponImage#K2 {
+    transform: rotate(-42deg);
+  }
+  & img.weaponImage#Kar98k {
+    transform: rotate(-39deg);
+  }
+  & img.weaponImage#LynxAMR {
+    transform: rotate(-42deg);
+  }
+  & img.weaponImage#M249 {
+    transform: rotate(-41deg);
+  }
+  & img.weaponImage#MG3 {
+    transform: rotate(-42deg);
+  }
+  & img.weaponImage#MK12 {
+    transform: rotate(-42deg);
+  }
+  & img.weaponImage#MP5K {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#MP9 {
+    transform: rotate(-37.5deg);
+  }
+  & img.weaponImage#Micro\ UZI {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#Mutant\ MK47 {
+    transform: rotate(-41deg);
+  }
+  & img.weaponImage#O12 {
+    transform: rotate(-44deg);
+  }
+  & img.weaponImage#P18C {
+    transform: rotate(-33deg);
+  }
+  & img.weaponImage#P1911 {
+    transform: rotate(-31deg);
+  }
+  & img.weaponImage#P90 {
+    transform: rotate(-42.5deg);
+  }
+  & img.weaponImage#P92 {
+    transform: rotate(-34deg);
+  }
+  & img.weaponImage#QBU {
+    transform: rotate(-41deg);
+  }
+  & img.weaponImage#QBZ {
+    transform: rotate(-42deg);
+  }
+  & img.weaponImage#R1895 {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#R45 {
+    transform: rotate(-32deg);
+  }
+  & img.weaponImage#S1897 {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#SLR {
+    transform: rotate(-42deg);
+  }
+  & img.weaponImage#Sawed-Off {
+    transform: rotate(-38deg);
+  }
+  & img.weaponImage#Skorpion {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#UMP45 {
+    transform: rotate(-38deg);
+  }
+  & img.weaponImage#Vector {
+    transform: rotate(-37deg);
+  }
+  & img.weaponImage#Win94 {
+    transform: rotate(-38deg);
   }
 }
