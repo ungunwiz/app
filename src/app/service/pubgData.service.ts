@@ -1,27 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PubgDataService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log(`Production: ${environment.production}`);
+  }
 
-  // endpoint = "https://api.ungunwiz.app";
-  endpoint = 'http://192.168.178.25:8080';
+  private api = environment.api;
 
   /* ------------ Get Data ------------ */
 
   getWeapons() {
-    return this.http.get(`${this.endpoint}/weapons`);
+    return this.http.get(`${this.api}/weapons`);
   }
   getDamageFalloffs() {
-    return this.http.get(`${this.endpoint}/damagefalloffs`);
+    return this.http.get(`${this.api}/damagefalloffs`);
   }
   getVelocityFalloffs() {
-    return this.http.get(`${this.endpoint}/velocityfalloffs`);
+    return this.http.get(`${this.api}/velocityfalloffs`);
   }
   getDamageAreas() {
-    return this.http.get(`${this.endpoint}/damageareas`);
+    return this.http.get(`${this.api}/damageareas`);
   }
 }
