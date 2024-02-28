@@ -23,7 +23,7 @@
 
       <div class="weaponInfoStrip basic">
         <div class="infoPill">
-          <img class="icon" src="../../assets/otherIcons/damage.svg" />
+          <img class="icon" src="assets/otherIcons/damage.svg" />
           <span class="weaponInfo"> {{weapon.damage}} </span>
         </div>
         <!-- <div class="seperator"></div> -->
@@ -40,13 +40,12 @@
         </div>
         <!-- <div class="seperator"></div> -->
         <div class="infoPill">
-          <img class="icon" src="../../assets/otherIcons/velocity.svg" />
+          <img class="icon" src="assets/otherIcons/velocity.svg" />
           <span class="weaponInfo"> {{weapon.speed}} m/s</span>
         </div>
       </div>
 
-      <img class="sprite weaponImage" src="assets/gameAssets/weapons/ACE32.png" appDraggable />
-      <!-- <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" appDraggable /> -->
+      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" appDraggable />
     </div>
 
     <!-- <div class="container graph">
