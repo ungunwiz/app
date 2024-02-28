@@ -11,7 +11,7 @@
     "run-android": "ionic cap run android -l --external",
     "run-ios": "ionic cap run ios -l --external",
     "sync": "ionic cap sync",
-    "build-website": "chmod -R 755  src/assets/gameAssets || true && npx ionic build --configuration=production && npx cap copy",
+    "build-website": "node pre-build.js && npx ionic build --configuration=production && npx cap copy",
     "build": "ionic cap build",
     "build-production": "ionic cap build --prod",
     "build-android": "ionic cap build android",
