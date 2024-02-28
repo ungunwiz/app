@@ -18,13 +18,19 @@ ion-content {
   transition: background-color 0.2s ease-out;
   box-shadow: 0 0 5px 0 var(--ion-color-light-shade);
 
+  & .debugBox {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border-top: 1px solid lawngreen;
+    border-right: 1px solid lawngreen;
+    width: calc(100% - 15px);
+    height: calc(100% - 15px);
+  }
+
   & img {
     height: 100%;
     aspect-ratio: 1/1;
-  }
-  & img.sprite {
-    filter: drop-shadow(0 0 1px rgba(var(--ion-color-dark-rgb), 0.25))
-      brightness(1.05);
   }
   & img.icon {
     height: 80%;
@@ -88,121 +94,122 @@ ion-content {
 
   & img.weaponImage {
     position: absolute;
-    // right: 0;
-    right: 15px;
+    right: 20px;
     top: -20px;
+    // right: 15px;
+    // top: -20px;
     transform: rotate(-40.5deg);
   }
+}
 
-  & img.weaponImage#AUG {
-    transform: rotate(-38.8deg);
-  }
-  & img.weaponImage#Beryl\ M762 {
-    transform: rotate(-41deg);
-  }
-  & img.weaponImage#Crossbow {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#DBS {
-    transform: rotate(-39.5deg);
-  }
-  & img.weaponImage#DP-28 {
-    transform: rotate(-41deg);
-  }
-  & img.weaponImage#Deagle {
-    transform: rotate(-33deg);
-  }
-  & img.weaponImage#Deagle {
-    transform: rotate(-33deg);
-  }
-  & img.weaponImage#Famas {
-    transform: rotate(-45deg);
-  }
-  & img.weaponImage#G36C {
-    transform: rotate(-41deg);
-  }
-  & img.weaponImage#Groza {
-    transform: rotate(-45.5deg);
-  }
-  & img.weaponImage#JS9 {
-    transform: rotate(-45deg);
-  }
-  & img.weaponImage#K2 {
-    transform: rotate(-42deg);
-  }
-  & img.weaponImage#Kar98k {
-    transform: rotate(-39deg);
-  }
-  & img.weaponImage#LynxAMR {
-    transform: rotate(-42deg);
-  }
-  & img.weaponImage#M249 {
-    transform: rotate(-41deg);
-  }
-  & img.weaponImage#MG3 {
-    transform: rotate(-42deg);
-  }
-  & img.weaponImage#MK12 {
-    transform: rotate(-42deg);
-  }
-  & img.weaponImage#MP5K {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#MP9 {
-    transform: rotate(-37.5deg);
-  }
-  & img.weaponImage#Micro\ UZI {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#Mutant\ MK47 {
-    transform: rotate(-41deg);
-  }
-  & img.weaponImage#O12 {
-    transform: rotate(-44deg);
-  }
-  & img.weaponImage#P18C {
-    transform: rotate(-33deg);
-  }
-  & img.weaponImage#P1911 {
-    transform: rotate(-31deg);
-  }
-  & img.weaponImage#P90 {
-    transform: rotate(-42.5deg);
-  }
-  & img.weaponImage#P92 {
-    transform: rotate(-34deg);
-  }
-  & img.weaponImage#QBU {
-    transform: rotate(-41deg);
-  }
-  & img.weaponImage#QBZ {
-    transform: rotate(-42deg);
-  }
-  & img.weaponImage#R1895 {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#R45 {
-    transform: rotate(-32deg);
-  }
-  & img.weaponImage#S1897 {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#SLR {
-    transform: rotate(-42deg);
-  }
-  & img.weaponImage#Sawed-Off {
-    transform: rotate(-38deg);
-  }
-  & img.weaponImage#Skorpion {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#UMP45 {
-    transform: rotate(-38deg);
-  }
-  & img.weaponImage#Vector {
-    transform: rotate(-37deg);
-  }
-  & img.weaponImage#Win94 {
-    transform: rotate(-38deg);
-  }
+.weapon#AUG .weaponImage {
+  transform: rotate(-38.8deg);
+}
+.weapon#Beryl\ M762 .weaponImage {
+  transform: rotate(-41deg);
+}
+.weapon#Crossbow .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#DBS .weaponImage {
+  transform: rotate(-39.5deg);
+}
+.weapon#DP-28 .weaponImage {
+  transform: rotate(-41deg);
+}
+.weapon#Deagle .weaponImage {
+  transform: rotate(-33deg);
+}
+.weapon#Deagle .weaponImage {
+  transform: rotate(-33deg);
+}
+.weapon#Famas .weaponImage {
+  transform: rotate(-45deg);
+}
+.weapon#G36C .weaponImage {
+  transform: rotate(-41deg);
+}
+.weapon#Groza .weaponImage {
+  transform: rotate(-45.5deg);
+}
+.weapon#JS9 .weaponImage {
+  transform: rotate(-45deg);
+}
+.weapon#K2 .weaponImage {
+  transform: rotate(-42deg);
+}
+.weapon#Kar98k .weaponImage {
+  transform: rotate(-39deg);
+}
+.weapon#LynxAMR .weaponImage {
+  transform: rotate(-42deg);
+}
+.weapon#M249 .weaponImage {
+  transform: rotate(-41deg);
+}
+.weapon#MG3 .weaponImage {
+  transform: rotate(-42deg);
+}
+.weapon#MK12 .weaponImage {
+  transform: rotate(-42deg);
+}
+.weapon#MP5K .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#MP9 .weaponImage {
+  transform: rotate(-37.5deg);
+}
+.weapon#Micro\ UZI .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#Mutant\ MK47 .weaponImage {
+  transform: rotate(-41deg);
+}
+.weapon#O12 .weaponImage {
+  transform: rotate(-44deg);
+}
+.weapon#P18C .weaponImage {
+  transform: rotate(-33deg);
+}
+.weapon#P1911 .weaponImage {
+  transform: rotate(-31deg);
+}
+.weapon#P90 .weaponImage {
+  transform: rotate(-42.5deg);
+}
+.weapon#P92 .weaponImage {
+  transform: rotate(-34deg);
+}
+.weapon#QBU .weaponImage {
+  transform: rotate(-41deg);
+}
+.weapon#QBZ .weaponImage {
+  transform: rotate(-42deg);
+}
+.weapon#R1895 .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#R45 .weaponImage {
+  transform: rotate(-32deg);
+}
+.weapon#S1897 .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#SLR .weaponImage {
+  transform: rotate(-42deg);
+}
+.weapon#Sawed-Off .weaponImage {
+  transform: rotate(-38deg);
+}
+.weapon#Skorpion .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#UMP45 .weaponImage {
+  transform: rotate(-38deg);
+}
+.weapon#Vector .weaponImage {
+  transform: rotate(-37deg);
+}
+.weapon#Win94 .weaponImage {
+  transform: rotate(-38deg);
 }

@@ -82,7 +82,6 @@ export class SettingsService {
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
-    console.debug(`prefersDark:`, prefersDark);
     const darkMode = this.settings.ui.darkMode;
     const autoTheme = this.settings.ui.autoTheme;
 

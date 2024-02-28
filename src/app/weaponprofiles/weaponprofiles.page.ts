@@ -148,6 +148,29 @@ export class WeaponProfilesPage implements OnInit {
     });
   }
 
+  printWeaponIDCSSValues() {
+    let log = '';
+    const props: any = ['top', 'right'];
+    this.filteredWeapons.forEach((weapon: any) => {
+      const wep = document.getElementById(weapon.name);
+      const wepImg = wep?.getElementsByClassName('weaponImage')[0];
+      const computedStyle = getComputedStyle(wepImg!);
+      const cssValues: any = {};
+      for (let i = 0; i < computedStyle.length; i++) {
+        const cssProp = computedStyle[i];
+        cssValues[cssProp] = computedStyle.getPropertyValue(cssProp);
+      }
+      log = log + `.weapon#${weapon.name} .weaponImage {\n`;
+      for (const prop in cssValues) {
+        if (props.includes(prop)) {
+          log = log + `  ${prop}: ${cssValues[prop]};\n`;
+        }
+      }
+      log = log + '}\n';
+    });
+    console.log(log);
+  }
+
   /* ---------------------------------- */
   /*              FUNCTIONS             */
   /* ---------------------------------- */

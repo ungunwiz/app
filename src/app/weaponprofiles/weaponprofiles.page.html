@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-searchbar mode="ios" [(ngModel)]="searchText" (ionInput)="search()" (ionCancel)="search()"></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="printWeaponIDCSSValues()">
         <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,7 +14,9 @@
 
 <ion-content fullscreen id="weaponProfiles">
   <div *ngIf="!loading">
-    <div class="weapon" *ngFor="let weapon of filteredWeapons">
+    <div [id]="weapon.name" class="weapon" *ngFor="let weapon of filteredWeapons">
+
+      <div class="debugBox"></div>
 
       <span class="weaponType">{{weapon.type}}</span>
       <span class="weaponName">{{weapon.name}}</span>
@@ -43,7 +45,7 @@
         </div>
       </div>
 
-      <img [id]="weapon.name" class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
+      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" appDraggable />
     </div>
 
     <!-- <div class="container graph">
