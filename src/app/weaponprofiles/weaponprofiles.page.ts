@@ -337,6 +337,6 @@ export class WeaponProfilesPage implements OnInit {
     if (ammoFix[ammo]) {
       ammo = ammoFix[ammo];
     }
-    return `../../assets/gameAssets/ammo/${ammo}.png`;
+    return `assets/gameAssets/ammo/${ammo}.png`;
   }
 }
