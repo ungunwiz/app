@@ -323,10 +323,7 @@ export class WeaponProfilesPage implements OnInit {
 
   getWeaponIcon(weapon: any, simple: boolean = false) {
     const wepDir = simple ? 'weaponsSimple' : 'weapons';
-    return `../../assets/gameAssets/${wepDir}/${weapon.name.replace(
-      /\s/g,
-      '_'
-    )}.png`;
+    return `assets/gameAssets/${wepDir}/${weapon.name.replace(/\s/g, '_')}.png`;
   }
   getWeaponAmmoIcon(weapon: any) {
     let ammo = weapon.ammo;
@@ -340,6 +337,6 @@ export class WeaponProfilesPage implements OnInit {
     if (ammoFix[ammo]) {
       ammo = ammoFix[ammo];
     }
-    return `../../assets/gameAssets/ammo/${ammo}.png`;
+    return `assets/gameAssets/ammo/${ammo}.png`;
   }
 }
