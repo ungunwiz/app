@@ -15,6 +15,7 @@ export class PubgDataService {
   private lastUpdated = JSON.parse(
     localStorage.getItem('pubgDataLastUpdated') || '0'
   );
+  private updateInterval = 3600;
 
   public pubgData: any;
 
@@ -47,7 +48,10 @@ export class PubgDataService {
         this.pubgData = JSON.parse(savedData);
       }
 
-      if (lastUpdated < Math.floor(Date.now() / 1000) - 60 || !this.pubgData) {
+      if (
+        lastUpdated < Math.floor(Date.now() / 1000) - this.updateInterval ||
+        !this.pubgData
+      ) {
         Promise.all([
           this.getWeapons(),
           this.getDamageFalloffs(),
@@ -78,7 +82,7 @@ export class PubgDataService {
       } else {
         const lastUpdate = new Date(lastUpdated * 1000).toLocaleTimeString();
         const nextUpdate = new Date(
-          (lastUpdated + 60) * 1000
+          (lastUpdated + this.updateInterval) * 1000
         ).toLocaleTimeString();
         console.log(
           `Using saved data. Last updated: ${lastUpdate}. Next update at ${nextUpdate}.`
