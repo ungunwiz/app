@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.ungunwiz.gg',
+  appId: 'app.ungunwiz.net',
   appName: 'ungunwiz',
   webDir: 'www',
   server: {

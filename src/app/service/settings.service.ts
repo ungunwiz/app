@@ -51,7 +51,9 @@ export class SettingsService {
 
   apply() {
     this.applyColor();
-    this.applyStatusbarColor();
+    if (this.platform.is('capacitor')) {
+      this.applyStatusbarColor();
+    }
   }
 
   async applyColor() {

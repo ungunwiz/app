@@ -2,7 +2,7 @@
   "name": "ungunwiz",
   "version": "0.0.1",
   "author": "Frederik 'zlyfer' Shull",
-  "homepage": "https://zlyfer.net/",
+  "homepage": "https://ungunwiz.net/",
   "description": "A PUBG Weapon Stats App",
   "scripts": {
     "start": "ionic serve --no-open",

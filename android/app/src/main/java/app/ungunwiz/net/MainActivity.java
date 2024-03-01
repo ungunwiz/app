@@ -1,4 +1,4 @@
-package app.ungunwiz.gg;
+package app.ungunwiz.net;
 
 import com.getcapacitor.BridgeActivity;
 

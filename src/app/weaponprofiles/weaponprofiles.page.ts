@@ -1,6 +1,8 @@
-import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { Component, OnInit } from '@angular/core';
+import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { register } from 'swiper/element/bundle';
+
+import { PubgDataService } from '@service/pubgData.service';
 
 register();
 
@@ -10,7 +12,7 @@ register();
   styleUrls: ['./weaponprofiles.page.scss'],
 })
 export class WeaponProfilesPage implements OnInit {
-  constructor() {}
+  constructor(private pubgDataService: PubgDataService) {}
 
   loading = true;
   pubgData: any = {};
@@ -117,8 +119,8 @@ export class WeaponProfilesPage implements OnInit {
   // );
   // lineChartLegend = true;
 
-  ngOnInit() {
-    this.pubgData = JSON.parse(localStorage.getItem('pubgData') || '{}');
+  async ngOnInit() {
+    this.pubgData = await this.pubgDataService.get();
 
     // this.lineChartOptionsDMG.scales.x.title.text = 'Distance (m)';
     // this.lineChartOptionsDMG.scales.y.title.text = 'Damage';
