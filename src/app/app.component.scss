@@ -10,6 +10,18 @@ ion-list-header {
   text-align: center;
   margin: 20px 0;
   background: transparent;
+
+  & img {
+    max-width: 64px;
+    max-height: 64px;
+    margin-right: 25px;
+  }
+
+  & ion-label.header {
+    text-align: left;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 }
 
 ion-item {
@@ -23,12 +35,12 @@ ion-item {
 
   &.selected,
   &.selected ion-icon {
-    --color: var(--ion-color-primary-contrast);
-    --background: rgba(var(--ion-color-primary-rgb), 0.8);
-    color: var(--ion-color-primary-contrast);
+    --color: var(--ion-color-tertiary-contrast);
+    --background: rgba(var(--ion-color-tertiary-rgb), 0.8);
+    color: var(--ion-color-tertiary-contrast);
   }
 }
 
 ion-label {
-  color: var(--ion-color-primary);
+  color: var(--ion-color-tertiary);
 }
