@@ -27,14 +27,11 @@ jobs:
           java-version: "11"
           distribution: "temurin"
 
-      - name: Install npm dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Generate Platform Resources
         run: npm run generate-assets
-
-      - name: Build Ionic app
-        run: npm run build
 
       - name: Build Android APK
         run: npm run build-android
