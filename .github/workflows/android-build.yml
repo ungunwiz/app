@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -61,12 +62,27 @@ jobs:
 #          name: ungunwiz
 #          path: android/app/build/outputs/apk/release/app-release.apk
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+#      - name: Upload Release Asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ./android/app/build/outputs/apk/release/app-release.apk
+#          asset_name: ungunwiz.apk
+#          asset_content_type: application/vnd.android.package-archive
+
+- name: Rename APK
+        run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/ungunwiz.apk
+
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: android/app/build/outputs/apk/release/ungunwiz.apk
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./android/app/build/outputs/apk/release/app-release.apk
-          asset_name: ungunwiz.apk
-          asset_content_type: application/vnd.android.package-archive
+
