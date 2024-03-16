@@ -13,6 +13,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Pull Game Assets
+        uses: actions/checkout@v4
+        with:
+          repository: "ungunwiz/assets"
+          path: "external-assets"
+
+      - name: Copy Game Assets
+        run: |
+          mkdir -p ./src/assets/gameAssets
+          cp -r external-assets/gameAssets/* ./src/assets/gameAssets/
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
