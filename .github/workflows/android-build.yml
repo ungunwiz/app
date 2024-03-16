@@ -17,6 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: "ungunwiz/assets"
+          token: ${{ secrets.ASSETS_REPO_ACCESS_TOKEN }}
           path: "external-assets"
 
       - name: Copy Game Assets
@@ -76,7 +77,7 @@ jobs:
           VERSION_NAME=$(grep versionName android/app/build.gradle | awk '{print $2}' | tr -d '"')
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
 
-      - name: Create Release and Upload Asset
+      - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
         with:
           files: android/app/build/outputs/apk/release/ungunwiz.apk
