@@ -24,7 +24,7 @@
     </ion-item>
   </ion-list>
 
-  <div class="version">
+  <div class="version" (click)="enableDevMode()">
     <ion-label class="version">
       <span class="appName">{{appName}}</span> {{appVersion}} Build {{appBuild}}
     </ion-label>

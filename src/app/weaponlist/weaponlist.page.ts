@@ -7,11 +7,11 @@ import { PubgDataService } from '@service/pubgData.service';
 register();
 
 @Component({
-  selector: 'app-weaponprofiles',
-  templateUrl: './weaponprofiles.page.html',
-  styleUrls: ['./weaponprofiles.page.scss'],
+  selector: 'app-weaponlist',
+  templateUrl: './weaponlist.page.html',
+  styleUrls: ['./weaponlist.page.scss'],
 })
-export class WeaponProfilesPage implements OnInit {
+export class WeaponListPage implements OnInit {
   constructor(private pubgDataService: PubgDataService) {}
 
   loading = true;

@@ -115,22 +115,21 @@ ion-searchbar {
 /* ---------------------------------- */
 
 ion-toggle {
-  --track-background: var(--ion-color-step-200);
-  --handle-background: var(--ion-background-color);
-
-  --handle-width: 23px;
-  --handle-height: 23px;
-
-  --handle-border-radius: 50%;
-  --handle-box-shadow: none;
-
-  width: 58px;
+  width: 60px;
 
   &::part(track) {
     height: 30px;
     width: 50px;
     overflow: visible; // iOS!
+    background: rgba(var(--ion-color-tertiary-rgb), 0.5);
     padding: 0 4px;
+  }
+
+  &::part(handle) {
+    background: var(--ion-color-tertiary);
+    border-radius: 50%;
+    // border: 2px solid var(--ion-color-light);
+    box-shadow: none;
   }
 }
 

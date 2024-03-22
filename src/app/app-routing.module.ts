@@ -4,14 +4,14 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'weaponprofiles',
+    redirectTo: 'weaponlist',
     pathMatch: 'full',
   },
   {
-    path: 'weaponprofiles',
+    path: 'weaponlist',
     loadChildren: () =>
-      import('./weaponprofiles/weaponprofiles.module').then(
-        (m) => m.WeaponProfilesPageModule
+      import('./weaponlist/weaponlist.module').then(
+        (m) => m.WeaponListPageModule
       ),
   },
   {

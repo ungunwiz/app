@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { App } from '@capacitor/app';
+import { environment } from 'src/environments/environment';
 
 import { PubgDataService } from '@service/pubgData.service';
 import { SettingsService } from '@service/settings.service';
@@ -15,29 +16,64 @@ export class AppComponent implements OnInit {
     private settingsService: SettingsService
   ) {}
 
-  public appPages = [
+  public appPages: any = [
     {
+      title: 'Weapons',
       type: 'route',
-      title: 'Weapon Profiles',
-      url: '/weaponprofiles',
-      icon: 'stats-chart',
+      url: 'weaponlist',
+      icon: 'stats-chart-sharp',
+      location: 'tabbar',
+      addDivider: false,
+      disabled: false,
+      hidden: false,
+      debug: false,
     },
-    { type: 'divider' },
-    { type: 'route', title: 'Raw Data', url: '/rawdata', icon: 'code' },
     {
+      title: 'Raw Data',
       type: 'route',
+      url: 'rawdata',
+      icon: 'code-sharp',
+      location: 'sidebar',
+      addDivider: true,
+      disabled: false,
+      hidden: false,
+      debug: true,
+    },
+    {
+      title: 'GitHub',
+      type: 'external',
+      url: 'https://github.com/ungunwiz/app',
+      icon: 'logo-github',
+      location: 'sidebar',
+      addDivider: false,
+      disabled: false,
+      hidden: false,
+      debug: false,
+    },
+    {
       title: 'About (WIP)',
-      url: '/about',
-      icon: 'information-circle',
+      type: 'route',
+      url: 'about',
+      icon: 'information-circle-sharp',
+      location: 'sidebar',
+      addDivider: false,
       disabled: true,
+      hidden: false,
+      debug: false,
     },
     {
-      type: 'route',
       title: 'Settings',
-      url: '/settings',
-      icon: 'settings',
+      type: 'route',
+      url: 'settings',
+      icon: 'settings-sharp',
+      location: 'sidebar',
+      addDivider: false,
+      disabled: false,
+      hidden: false,
+      debug: false,
     },
   ];
+  public environment = environment;
 
   async ngOnInit() {
     this.onSystemDarkModechange();
@@ -80,5 +116,10 @@ export class AppComponent implements OnInit {
     prefersDark.addListener((mediaQuery) => {
       this.settingsService.apply();
     });
+  }
+
+  tabbarPagesCount(): number {
+    return this.appPages.filter((page: any) => page.location === 'tabbar')
+      .length;
   }
 }

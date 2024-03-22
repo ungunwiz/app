@@ -14,6 +14,10 @@ export class SettingsPage implements OnInit {
   appVersion: any;
   appBuild: any;
 
+  buildTaps = 0;
+  buildTimeout: any;
+  devMode = localStorage.getItem('devMode') === 'true' || false;
+
   ngOnInit() {
     this.settings = this.settingsService.settings;
     this.getAppDetails();
@@ -34,5 +38,20 @@ export class SettingsPage implements OnInit {
     this.appName = appInfo.name;
     this.appVersion = appInfo.version;
     this.appBuild = appInfo.build;
+  }
+
+  enableDevMode() {
+    this.buildTaps++;
+    clearTimeout(this.buildTimeout);
+
+    if (this.buildTaps == 10) {
+      this.devMode = true;
+      localStorage.setItem('devMode', 'true');
+      // TODO: Mesasge: devMode enabled, restart app
+    } else {
+      this.buildTimeout = setTimeout(() => {
+        this.buildTaps = 0;
+      }, 2000);
+    }
   }
 }

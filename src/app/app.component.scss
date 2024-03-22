@@ -1,3 +1,7 @@
+/* ---------------------------------- */
+/*               SIDEBAR              */
+/* ---------------------------------- */
+
 ion-list {
   width: 100%;
   height: 100%;
@@ -43,4 +47,39 @@ ion-item {
 
 ion-label {
   color: var(--ion-color-tertiary);
+}
+
+.divider {
+  width: 80%;
+  height: 1px;
+  background: var(--ion-color-tertiary);
+  margin: 10px 0 10px 10%;
+}
+
+/* ---------------------------------- */
+/*               TABBAR               */
+/* ---------------------------------- */
+
+ion-tab-bar {
+  --background: var(--ion-color-step-100);
+  --border: none;
+  height: 78px;
+
+  & ion-tab-button {
+    --color-selected: var(--ion-color-step-800);
+
+    & ion-icon {
+      margin-bottom: 10px;
+      padding: 5px 20px;
+      border-radius: 20px;
+      height: 20px;
+    }
+  }
+
+  & ion-tab-button.tab-selected {
+    & ion-icon {
+      background-color: var(--ion-color-tertiary-shade);
+      color: var(--ion-color-step-800);
+    }
+  }
 }

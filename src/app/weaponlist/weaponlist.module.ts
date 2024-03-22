@@ -3,21 +3,21 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 
-import { WeaponProfilesPage } from './weaponprofiles.page';
-import { WeaponProfilesPageRoutingModule } from './weaponprofiles-routing.module';
+import { WeaponListPage } from './weaponlist.page';
+import { WeaponListPageRoutingModule } from './weaponlist-routing.module';
 
 import { NgChartsModule } from 'ng2-charts';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
-  declarations: [WeaponProfilesPage],
+  declarations: [WeaponListPage],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    WeaponProfilesPageRoutingModule,
+    WeaponListPageRoutingModule,
     NgChartsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class WeaponProfilesPageModule {}
+export class WeaponListPageModule {}

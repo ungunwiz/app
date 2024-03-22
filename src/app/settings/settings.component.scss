@@ -14,10 +14,17 @@ ion-item {
 
 div.version {
   position: absolute;
-  width: calc(100% - 40px) !important;
-  margin: 0 20px;
-  bottom: 50px;
+  width: calc(100% - 80px) !important;
+  margin: 0 40px;
+  bottom: 100px;
   text-align: center !important;
+  padding: 15px 0;
+  border-radius: 20px;
+  transition: all 1s ease-out;
+  user-select: none;
+}
+div.version:active {
+  background: rgba(var(--ion-color-dark-rgb), 0.1);
 }
 ion-label.version {
   font-size: 1em;
@@ -25,5 +32,5 @@ ion-label.version {
   color: var(--ion-color-medium) !important;
 }
 span.appName {
-  color: var(--ion-color-tertiary);
+  color: var(--ion-color-primary);
 }
