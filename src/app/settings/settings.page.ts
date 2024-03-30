@@ -65,7 +65,7 @@ export class SettingsPage implements OnInit {
     }
   }
 
-  private disableDebugMode() {
+  public disableDebugMode() {
     this.devMode = false;
     localStorage.setItem('devMode', 'false');
     this.notificationService.createCustom('Debug mode disabled', {
