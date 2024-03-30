@@ -83,6 +83,10 @@ ion-list {
     font-weight: bold;
     --color: var(--ion-color-dark-tint);
     --background: var(--ion-color-light-tint);
+
+    & ion-icon {
+      color: var(--ion-color-tertiary);
+    }
   }
 }
 
@@ -141,6 +145,26 @@ ion-toggle {
 
 span.normal {
   font-weight: normal !important;
+}
+
+/* ---------------------------------- */
+/*         NOTIFICATION TOASTS        */
+/* ---------------------------------- */
+
+ion-toast.notification {
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+}
+ion-toast.notification.ion-color-success {
+  color: white;
+}
+ion-toast.notification::part(button) {
+  border-left: 1px solid white;
+}
+ion-toast.notification.ion-color-warning::part(button) {
+  border-left: 1px solid black;
+}
+ion-toast.notification::part(header) {
+  font-weight: bold;
 }
 
 /* ---------------------------------- */

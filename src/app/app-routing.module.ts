@@ -15,6 +15,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'graph',
+    loadChildren: () =>
+      import('./graph/graph.module').then((m) => m.GraphPageModule),
+  },
+  {
     path: 'rawdata',
     loadChildren: () =>
       import('./rawdata/rawdata.module').then((m) => m.RawDataPageModule),

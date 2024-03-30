@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
       title: 'Weapons',
       type: 'route',
       url: 'weaponlist',
-      icon: 'stats-chart-sharp',
+      icon: 'stats-chart',
       location: 'tabbar',
       addDivider: false,
       disabled: false,
@@ -29,10 +29,21 @@ export class AppComponent implements OnInit {
       debug: false,
     },
     {
+      title: 'Graph',
+      type: 'route',
+      url: 'graph',
+      icon: 'analytics-sharp',
+      location: 'tabbar',
+      addDivider: false,
+      disabled: false,
+      hidden: false,
+      debug: true,
+    },
+    {
       title: 'Raw Data',
       type: 'route',
       url: 'rawdata',
-      icon: 'code-sharp',
+      icon: 'code',
       location: 'sidebar',
       addDivider: true,
       disabled: false,
@@ -54,7 +65,7 @@ export class AppComponent implements OnInit {
       title: 'About (WIP)',
       type: 'route',
       url: 'about',
-      icon: 'information-circle-sharp',
+      icon: 'information-circle',
       location: 'sidebar',
       addDivider: false,
       disabled: false,
@@ -74,8 +85,9 @@ export class AppComponent implements OnInit {
     },
   ];
   public environment = environment;
+  public devMode = localStorage.getItem('devMode') === 'true' || false;
 
-  async ngOnInit() {
+  ngOnInit() {
     this.onSystemDarkModechange();
     this.setAppDetails();
     this.pubgDataService.initData();
@@ -85,7 +97,7 @@ export class AppComponent implements OnInit {
   /*               SYSTEM               */
   /* ---------------------------------- */
 
-  async setAppDetails() {
+  private async setAppDetails() {
     await App.getInfo()
       .then((res) => {
         const appInfo = {
@@ -111,7 +123,7 @@ export class AppComponent implements OnInit {
   /*                 UI                 */
   /* ---------------------------------- */
 
-  onSystemDarkModechange() {
+  private onSystemDarkModechange() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     prefersDark.addListener((mediaQuery) => {
       this.settingsService.apply();

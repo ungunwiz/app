@@ -18,16 +18,6 @@ ion-content {
   transition: background-color 0.2s ease-out;
   box-shadow: 0 0 5px 0 var(--ion-color-light-shade);
 
-  & .debugBox {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    border-top: 1px solid lawngreen;
-    border-right: 1px solid lawngreen;
-    width: calc(100% - 15px);
-    height: calc(100% - 15px);
-  }
-
   & img {
     height: 100%;
     aspect-ratio: 1/1;
@@ -94,122 +84,276 @@ ion-content {
 
   & img.weaponImage {
     position: absolute;
-    right: 20px;
-    top: -20px;
-    // right: 15px;
-    // top: -20px;
-    transform: rotate(-40.5deg);
   }
 }
 
+.weapon#ACE32 .weaponImage {
+  right: 17px;
+  top: -26px;
+  transform: rotate(-40.5deg);
+}
+.weapon#AKM .weaponImage {
+  right: 19px;
+  top: -30px;
+  transform: rotate(-40.5deg);
+}
 .weapon#AUG .weaponImage {
+  right: 20px;
+  top: -20px;
   transform: rotate(-38.8deg);
 }
+.weapon#AWM .weaponImage {
+  right: 20px;
+  top: -20px;
+  transform: rotate(-40.5deg);
+}
 .weapon#Beryl\ M762 .weaponImage {
+  right: 20px;
+  top: -20px;
   transform: rotate(-41deg);
 }
 .weapon#Crossbow .weaponImage {
+  right: 20px;
+  top: -20px;
   transform: rotate(-37deg);
 }
 .weapon#DBS .weaponImage {
+  right: 20px;
+  top: -23px;
   transform: rotate(-39.5deg);
 }
 .weapon#DP-28 .weaponImage {
+  right: 28px;
+  top: -24px;
   transform: rotate(-41deg);
 }
 .weapon#Deagle .weaponImage {
+  right: 5px;
+  top: -20px;
   transform: rotate(-33deg);
 }
-.weapon#Deagle .weaponImage {
-  transform: rotate(-33deg);
+.weapon#Dragunov .weaponImage {
+  right: 23px;
+  top: -30px;
+  transform: rotate(-40.5deg);
 }
 .weapon#Famas .weaponImage {
+  right: 20px;
+  top: -22px;
   transform: rotate(-45deg);
 }
 .weapon#G36C .weaponImage {
+  right: 16px;
+  top: -20px;
   transform: rotate(-41deg);
 }
 .weapon#Groza .weaponImage {
+  right: 20px;
+  top: -17px;
   transform: rotate(-45.5deg);
 }
 .weapon#JS9 .weaponImage {
+  right: 23px;
+  top: -20px;
   transform: rotate(-45deg);
 }
 .weapon#K2 .weaponImage {
+  right: 20px;
+  top: -29px;
   transform: rotate(-42deg);
 }
 .weapon#Kar98k .weaponImage {
+  right: 17px;
+  top: -28px;
   transform: rotate(-39deg);
 }
 .weapon#LynxAMR .weaponImage {
+  right: 27px;
+  top: -27px;
   transform: rotate(-42deg);
 }
+.weapon#M16A4 .weaponImage {
+  right: 18px;
+  top: -26px;
+  transform: rotate(-40.5deg);
+}
+.weapon#M24 .weaponImage {
+  right: 20px;
+  top: -30px;
+  transform: rotate(-40.5deg);
+}
 .weapon#M249 .weaponImage {
+  right: 19px;
+  top: -24px;
   transform: rotate(-41deg);
 }
+.weapon#M416 .weaponImage {
+  right: 20px;
+  top: -28px;
+  transform: rotate(-40.5deg);
+}
 .weapon#MG3 .weaponImage {
+  right: 29px;
+  top: -28px;
   transform: rotate(-42deg);
 }
 .weapon#MK12 .weaponImage {
+  right: 25px;
+  top: -27px;
   transform: rotate(-42deg);
 }
+.weapon#MK14 .weaponImage {
+  right: 25px;
+  top: -29px;
+  transform: rotate(-40.5deg);
+}
 .weapon#MP5K .weaponImage {
+  right: 7px;
+  top: -11px;
   transform: rotate(-37deg);
 }
 .weapon#MP9 .weaponImage {
+  right: 20px;
+  top: -20px;
   transform: rotate(-37.5deg);
 }
 .weapon#Micro\ UZI .weaponImage {
+  right: 20px;
+  top: -20px;
   transform: rotate(-37deg);
 }
+.weapon#Mini-14 .weaponImage {
+  right: 24px;
+  top: -27px;
+  transform: rotate(-40.5deg);
+}
+.weapon#Mosin\ Nagant .weaponImage {
+  right: 20px;
+  top: -29px;
+  transform: rotate(-40.5deg);
+}
 .weapon#Mutant\ MK47 .weaponImage {
+  right: 20px;
+  top: -20px;
   transform: rotate(-41deg);
 }
 .weapon#O12 .weaponImage {
+  right: 22px;
+  top: -20px;
   transform: rotate(-44deg);
 }
 .weapon#P18C .weaponImage {
+  right: 1px;
+  top: -15px;
   transform: rotate(-33deg);
 }
 .weapon#P1911 .weaponImage {
+  right: 0px;
+  top: -18px;
   transform: rotate(-31deg);
 }
 .weapon#P90 .weaponImage {
+  right: 20px;
+  top: -12px;
   transform: rotate(-42.5deg);
 }
 .weapon#P92 .weaponImage {
+  right: -1px;
+  top: -20px;
   transform: rotate(-34deg);
 }
+.weapon#PP-19\ Bizon .weaponImage {
+  right: 23px;
+  top: -26px;
+  transform: rotate(-40.5deg);
+}
 .weapon#QBU .weaponImage {
+  right: 20px;
+  top: -25px;
   transform: rotate(-41deg);
 }
 .weapon#QBZ .weaponImage {
+  right: 20px;
+  top: -23px;
   transform: rotate(-42deg);
 }
 .weapon#R1895 .weaponImage {
+  right: 2px;
+  top: -21px;
   transform: rotate(-37deg);
 }
 .weapon#R45 .weaponImage {
+  right: 9px;
+  top: -19px;
   transform: rotate(-32deg);
 }
+.weapon#S12K .weaponImage {
+  right: 20px;
+  top: -31px;
+  transform: rotate(-40.5deg);
+}
 .weapon#S1897 .weaponImage {
+  right: 20px;
+  top: -29px;
   transform: rotate(-37deg);
 }
+.weapon#S686 .weaponImage {
+  right: 20px;
+  top: -29px;
+  transform: rotate(-40.5deg);
+}
+.weapon#SCAR-L .weaponImage {
+  right: 20px;
+  top: -23px;
+  transform: rotate(-40.5deg);
+}
+.weapon#SKS .weaponImage {
+  right: 20px;
+  top: -29px;
+  transform: rotate(-40.5deg);
+}
 .weapon#SLR .weaponImage {
+  right: 20px;
+  top: -32px;
   transform: rotate(-42deg);
 }
 .weapon#Sawed-Off .weaponImage {
+  right: 26px;
+  top: -24px;
   transform: rotate(-38deg);
 }
 .weapon#Skorpion .weaponImage {
+  right: 7px;
+  top: -15px;
   transform: rotate(-37deg);
 }
+.weapon#Tommy\ Gun .weaponImage {
+  right: 20px;
+  top: -27px;
+  transform: rotate(-40.5deg);
+}
 .weapon#UMP45 .weaponImage {
+  right: 16px;
+  top: -24px;
   transform: rotate(-38deg);
 }
+.weapon#VSS .weaponImage {
+  right: 20px;
+  top: -20px;
+  transform: rotate(-40.5deg);
+}
 .weapon#Vector .weaponImage {
+  right: 18px;
+  top: -20px;
   transform: rotate(-37deg);
 }
 .weapon#Win94 .weaponImage {
+  right: 25px;
+  top: -23px;
   transform: rotate(-38deg);
+}
+.weapon#PP-19\ Bizon .weaponImage {
+  right: 20px;
+  top: -20px;
+  transform: rotate(-40deg);
 }

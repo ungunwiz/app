@@ -18,7 +18,7 @@ export class PubgDataService {
 
   public pubgData: any;
 
-  get() {
+  public get() {
     return new Promise((resolve, reject) => {
       if (this.pubgData) {
         resolve(this.pubgData);
@@ -36,7 +36,7 @@ export class PubgDataService {
   /*             DATA FETCH             */
   /* ---------------------------------- */
 
-  initData() {
+  public initData() {
     return new Promise((resolve, reject) => {
       const savedData = localStorage.getItem('pubgData');
       const lastUpdated = JSON.parse(
@@ -91,7 +91,7 @@ export class PubgDataService {
     });
   }
 
-  getWeapons() {
+  private getWeapons() {
     return new Promise((resolve, reject) => {
       this.http.get(`${this.api}/weapons`).subscribe((data: any) => {
         if (data.status === 'success') {
@@ -102,7 +102,7 @@ export class PubgDataService {
       });
     });
   }
-  getDamageFalloffs() {
+  private getDamageFalloffs() {
     return new Promise((resolve, reject) => {
       this.http.get(`${this.api}/damagefalloffs`).subscribe((data: any) => {
         if (data.status === 'success') {
@@ -113,7 +113,7 @@ export class PubgDataService {
       });
     });
   }
-  getVelocityFalloffs() {
+  private getVelocityFalloffs() {
     return new Promise((resolve, reject) => {
       this.http.get(`${this.api}/velocityfalloffs`).subscribe((data: any) => {
         if (data.status === 'success') {
@@ -124,7 +124,7 @@ export class PubgDataService {
       });
     });
   }
-  getDamageAreas() {
+  private getDamageAreas() {
     return new Promise((resolve, reject) => {
       this.http.get(`${this.api}/damageareas`).subscribe((data: any) => {
         if (data.status === 'success') {
@@ -144,7 +144,7 @@ export class PubgDataService {
   calculatedDamageMultiplier: any = [];
   calculatedDamageFalloffs: any = {};
 
-  generateDamageFallOffs() {
+  private generateDamageFallOffs() {
     this.pubgData.weapons.forEach((weapon: any) => {
       this.calculatedDamageFalloffs[weapon.name] = [];
       this.distances.forEach((distance: any) => {
@@ -166,7 +166,7 @@ export class PubgDataService {
     });
   }
 
-  generateDamageFallOff(weapon: any, distance: number) {
+  private generateDamageFallOff(weapon: any, distance: number) {
     const damageFalloffs = this.pubgData.damageFalloffs.filter((entry: any) => {
       return entry.weapon_name === weapon.name;
     });
@@ -203,7 +203,7 @@ export class PubgDataService {
     return { start, end };
   }
 
-  calcDamage(weapon: any, options: any | null = null) {
+  public calcDamage(weapon: any, options: any | null = null) {
     let damage = weapon.damage;
     if (options.distance) {
       options.distance -= 1;
@@ -223,7 +223,7 @@ export class PubgDataService {
   /*          HELPER FUNCTIONS          */
   /* ---------------------------------- */
 
-  map(
+  private map(
     value: number,
     start1: number,
     stop1: number,

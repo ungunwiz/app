@@ -18,14 +18,14 @@ export class SettingsService {
     },
   };
 
-  init() {
+  private init() {
     this.loadSettings();
     setTimeout(() => {
       this.apply();
     }, 10);
   }
 
-  loadSettings() {
+  private loadSettings() {
     const avail_settings = localStorage.getItem('settings');
     if (avail_settings) {
       this.settings = {
@@ -38,25 +38,25 @@ export class SettingsService {
     this.saveSettings();
   }
 
-  resetSettings() {
+  public resetSettings() {
     this.settings = this.defaultSettings;
     this.saveSettings();
     this.init();
   }
 
-  saveSettings() {
+  public saveSettings() {
     localStorage.setItem('settings', JSON.stringify(this.settings));
     this.apply();
   }
 
-  apply() {
+  public apply() {
     this.applyColor();
     if (this.platform.is('capacitor')) {
       this.applyStatusbarColor();
     }
   }
 
-  async applyColor() {
+  private async applyColor() {
     document.body.classList.remove('dark');
 
     if (this.isDarkMode()) {
@@ -64,7 +64,7 @@ export class SettingsService {
     }
   }
 
-  async applyStatusbarColor() {
+  private async applyStatusbarColor() {
     const isDark = this.isDarkMode();
     await StatusBar.setStyle({
       style: isDark ? Style.Dark : Style.Light,
@@ -80,7 +80,7 @@ export class SettingsService {
     }
   }
 
-  isDarkMode() {
+  private isDarkMode() {
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;

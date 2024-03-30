@@ -69,11 +69,9 @@ Thumbs.db
 
 # --------- Generated Assets --------- #
 src/assets/gameAssets/**
-resources/ios/*
-resources/android/*
+resources/ios/**/*
+resources/android/**/*
 resources/windows/*
 
 # ----------- Boiler Plates ---------- #
-src/app/name__
-resources/ios/**/*
-resources/android/**/*
+src/app/name_*
