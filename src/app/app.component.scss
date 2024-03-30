@@ -18,7 +18,7 @@ ion-list-header {
   & img {
     max-width: 64px;
     max-height: 64px;
-    margin-right: 25px;
+    margin-right: 20px;
   }
 
   & ion-label.header {
@@ -32,6 +32,10 @@ ion-item {
   border-radius: var(--borderRadius3);
   margin: 1px 5px;
 
+  & ion-icon {
+    color: rgba(var(--ion-color-tertiary-contrast-rgb), 0.8);
+  }
+
   &.disabled,
   &.disabled ion-icon {
     opacity: 0.35;
@@ -39,9 +43,9 @@ ion-item {
 
   &.selected,
   &.selected ion-icon {
+    color: var(--ion-color-tertiary-contrast);
     --color: var(--ion-color-tertiary-contrast);
     --background: rgba(var(--ion-color-tertiary-rgb), 0.8);
-    color: var(--ion-color-tertiary-contrast);
   }
 }
 
@@ -61,12 +65,13 @@ ion-label {
 /* ---------------------------------- */
 
 ion-tab-bar {
-  --background: var(--ion-color-step-100);
-  --border: none;
+  --background: var(--ion-color-light-tint);
+  // --border: none;
+  --border: 1px solid var(--ion-color-step-100);
   height: 78px;
 
   & ion-tab-button {
-    --color-selected: var(--ion-color-step-800);
+    --color-selected: var(--ion-color-dark);
 
     & ion-icon {
       margin-bottom: 10px;
@@ -79,7 +84,7 @@ ion-tab-bar {
   & ion-tab-button.tab-selected {
     & ion-icon {
       background-color: var(--ion-color-tertiary-shade);
-      color: var(--ion-color-step-800);
+      color: white;
     }
   }
 }

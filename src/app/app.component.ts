@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 
-import { PubgDataService } from '@service/pubgData.service';
-import { SettingsService } from '@service/settings.service';
+import { PubgDataService } from 'src/app/services/pubgData.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -57,8 +57,8 @@ export class AppComponent implements OnInit {
       icon: 'information-circle-sharp',
       location: 'sidebar',
       addDivider: false,
-      disabled: true,
-      hidden: false,
+      disabled: false,
+      hidden: true,
       debug: false,
     },
     {
@@ -116,10 +116,5 @@ export class AppComponent implements OnInit {
     prefersDark.addListener((mediaQuery) => {
       this.settingsService.apply();
     });
-  }
-
-  tabbarPagesCount(): number {
-    return this.appPages.filter((page: any) => page.location === 'tabbar')
-      .length;
   }
 }

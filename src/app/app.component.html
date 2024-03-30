@@ -31,8 +31,7 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
-
-    <ion-tabs *ngIf="tabbarPagesCount() > 1">
+    <ion-tabs>
       <ion-tab-bar slot="bottom">
         <ng-container *ngFor="let page of appPages">
           <ion-tab-button

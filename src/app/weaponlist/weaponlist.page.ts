@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { register } from 'swiper/element/bundle';
 
-import { PubgDataService } from '@service/pubgData.service';
+import { PubgDataService } from 'src/app/services/pubgData.service';
 
 register();
 

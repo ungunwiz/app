@@ -21,7 +21,7 @@
     "lib": ["es2018", "dom"],
     "useDefineForClassFields": false,
     "paths": {
-      "@service/*": ["src/app/service/*"],
+      "@service/*": ["src/app/services/*"],
       "@modal/*": ["src/app/modals/*"],
       "@popover/*": ["src/app/popovers/*"],
       "@pipe/*": ["src/app/pipes/*"],

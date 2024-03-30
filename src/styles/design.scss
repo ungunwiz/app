@@ -121,16 +121,18 @@ ion-toggle {
     height: 30px;
     width: 50px;
     overflow: visible; // iOS!
-    background: rgba(var(--ion-color-tertiary-rgb), 0.5);
     padding: 0 4px;
   }
 
   &::part(handle) {
-    background: var(--ion-color-tertiary);
     border-radius: 50%;
-    // border: 2px solid var(--ion-color-light);
     box-shadow: none;
   }
+
+  --handle-background: rgba(var(--ion-color-tertiary-rgb), 0.75);
+  --handle-background-checked: var(--ion-color-tertiary);
+  --track-background: var(--ion-color-step-150);
+  --track-background-checked: rgba(var(--ion-color-tertiary-rgb), 0.3);
 }
 
 /* ---------------------------------- */

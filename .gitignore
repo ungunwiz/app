@@ -67,8 +67,11 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Generated Assets
+# --------- Generated Assets --------- #
 src/assets/gameAssets/**
 resources/ios/*
 resources/android/*
 resources/windows/*
+
+# ----------- Boiler Plates ---------- #
+src/app/name__
