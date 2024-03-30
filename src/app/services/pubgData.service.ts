@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PubgDataService {
   constructor(private http: HttpClient) {
-    console.log(`Production: ${environment.production}`);
+    console.info(`Production: ${environment.production}`);
   }
 
   private api = environment.api;
@@ -83,7 +83,7 @@ export class PubgDataService {
         const nextUpdate = new Date(
           (lastUpdated + this.updateInterval) * 1000
         ).toLocaleTimeString();
-        console.log(
+        console.info(
           `Using saved data. Last updated: ${lastUpdate}. Next update at ${nextUpdate}.`
         );
         resolve(true);
