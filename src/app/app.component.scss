@@ -33,7 +33,7 @@ ion-item {
   margin: 1px 5px;
 
   & ion-icon {
-    color: rgba(var(--ion-color-tertiary-contrast-rgb), 0.8);
+    color: rgba(var(--ion-color-dark-rgb), 0.8);
   }
 
   &.disabled,
@@ -43,8 +43,7 @@ ion-item {
 
   &.selected,
   &.selected ion-icon {
-    color: var(--ion-color-tertiary-contrast);
-    --color: var(--ion-color-tertiary-contrast);
+    color: var(--ion-color-dark);
     --background: rgba(var(--ion-color-tertiary-rgb), 0.8);
   }
 }
