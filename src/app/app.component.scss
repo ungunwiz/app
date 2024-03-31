@@ -44,6 +44,7 @@ ion-item {
   &.selected,
   &.selected ion-icon {
     color: white;
+    --color-hover: white;
     --background: rgba(var(--ion-color-tertiary-rgb), 0.8);
   }
 }

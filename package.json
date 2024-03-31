@@ -5,8 +5,9 @@
   "homepage": "https://ungunwiz.net/",
   "description": "A PUBG Weapon Stats App",
   "scripts": {
-    "start": "ionic serve --configuration=development",
-    "run-android": "ionic cap run android -l --external --configuration=app",
+    "start": "ionic serve --no-open --configuration=development",
+    "run-android": "ionic serve --no-open --configuration=app",
+    "run-android_": "ionic cap run android -l --external --configuration=app",
     "run-ios": "ionic cap run ios -l --external --configuration=app",
     "run-freddy": "ionic cap run android -l --external --public-host=192.168.178.25 --target=2748e267 --configuration=app",
     "build-website": "node preBuild.js && npx ionic build --configuration=production && npx cap copy",
