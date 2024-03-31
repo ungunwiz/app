@@ -69,6 +69,7 @@ Thumbs.db
 
 # --------- Generated Assets --------- #
 src/assets/gameAssets/**
+src/assets/version.json
 resources/ios/**/*
 resources/android/**/*
 resources/windows/*

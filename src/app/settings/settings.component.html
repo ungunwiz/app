@@ -30,7 +30,8 @@
 
   <div class="version" (click)="enableDevMode()">
     <ion-label class="version">
-      <span class="appName">{{appName}}</span> {{appVersion}} Build {{appBuild}}
+      <span class="appName">{{appName}}</span> v{{appVersion}}
+      {{devMode ? '| build ' + appBuild : null }}
     </ion-label>
   </div>
 </ion-content>

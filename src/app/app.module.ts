@@ -14,7 +14,7 @@ import { NgChartsModule } from 'ng2-charts';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ mode: 'md' }),
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

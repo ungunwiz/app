@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 import { PubgDataService } from 'src/app/services/pubgData.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -16,10 +17,9 @@ import { SettingsService } from 'src/app/services/settings.service';
 export class AppComponent implements OnInit {
   constructor(
     private pubgDataService: PubgDataService,
-    private settingsService: SettingsService
-  ) {
-    console.info('Env:', environment);
-  }
+    private settingsService: SettingsService,
+    private http: HttpClient
+  ) {}
 
   public appPages: any = [
     {
@@ -114,13 +114,18 @@ export class AppComponent implements OnInit {
         localStorage.setItem('appInfo', JSON.stringify(appInfo));
       })
       .catch((err) => {
-        const appInfo = {
-          package: 'UnGunWiz',
-          version: 'Web',
-          build: 'Web',
-          name: 'UnGunWiz',
-        };
-        localStorage.setItem('appInfo', JSON.stringify(appInfo));
+        this.http.get('/assets/version.json').subscribe({
+          next: (data: any) => {
+            const appInfo = {
+              package: 'app.ungunwiz.net',
+              version: data.version,
+              build: data.buildNumber,
+              name: 'UnGunWiz',
+            };
+            localStorage.setItem('appInfo', JSON.stringify(appInfo));
+          },
+          error: (error) => console.error('Error loading version info:', error),
+        });
       });
   }
 
