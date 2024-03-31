@@ -82,7 +82,7 @@ jobs:
         with:
           files: android/app/build/outputs/apk/release/ungunwiz.apk
           tag_name: ${{ github.ref }}
-          name: Release ${{ env.VERSION_NAME }}
+          name: Release v${{ env.VERSION_NAME }}
           draft: false
           prerelease: false
         env:
