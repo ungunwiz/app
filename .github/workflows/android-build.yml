@@ -50,8 +50,8 @@ jobs:
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > ./android/local.properties
 
-      - name: Build Web Assets
-        run: npm run build-website
+      - name: Build Web Assets with Android Configuration
+        run: npm run build-android
 
       - name: Decode JKS
         run: |
