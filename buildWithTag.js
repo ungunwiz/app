@@ -15,11 +15,7 @@ function getVersionAndBuildNumberFromGradle() {
 try {
   const { version, buildNumber } = getVersionAndBuildNumberFromGradle();
   const tagName = `v${version}`; // _b${buildNumber}`;
-  const assetsPath = "./src/assets/version.json";
-  const versionInfo = { version, buildNumber };
 
-  fs.writeFileSync(assetsPath, JSON.stringify(versionInfo, null, 2));
-  console.log(`Version info saved to ${assetsPath}`);
   execSync(`git tag ${tagName}`);
   execSync(`git push origin ${tagName}`);
 
