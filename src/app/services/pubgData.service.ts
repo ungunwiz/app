@@ -6,9 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class PubgDataService {
-  constructor(private http: HttpClient) {
-    console.info(`Production: ${environment.production}`);
-  }
+  constructor(private http: HttpClient) {}
 
   private api = environment.api;
   private lastUpdated = JSON.parse(

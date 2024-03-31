@@ -7,14 +7,19 @@ import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
+  templateUrl:
+    environment.platform === 'web'
+      ? 'app.component.html'
+      : 'app.component.app.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
   constructor(
     private pubgDataService: PubgDataService,
     private settingsService: SettingsService
-  ) {}
+  ) {
+    console.info('Env:', environment);
+  }
 
   public appPages: any = [
     {

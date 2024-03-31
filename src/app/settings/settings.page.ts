@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from 'src/app/services/settings.service';
+import { SettingsService } from '@service/settings.service';
 import { NotificationService } from '@service/notification.service';
+import { WordingService } from '@service/wording.service';
 
 @Component({
   selector: 'app-settings',
@@ -9,18 +10,22 @@ import { NotificationService } from '@service/notification.service';
 })
 export class SettingsPage implements OnInit {
   constructor(
-    public settingsService: SettingsService,
-    private notificationService: NotificationService
+    private settingsService: SettingsService,
+    private notificationService: NotificationService,
+    private wordingService: WordingService
   ) {}
 
   public settings: any;
   public appName: any;
   public appVersion: any;
   public appBuild: any;
-
-  public buildTaps = 0;
-  public buildTimeout: any;
   public devMode = localStorage.getItem('devMode') === 'true' || false;
+
+  private buildTaps = 0;
+  private buildTimeout: any;
+  private devModeMessage = `Please ${this.wordingService.getWord(
+    'restart'
+  )} the ${this.wordingService.getWord('app')} to apply the changes.`;
 
   ngOnInit() {
     this.settings = this.settingsService.settings;
@@ -55,7 +60,7 @@ export class SettingsPage implements OnInit {
         this.devMode = true;
         localStorage.setItem('devMode', 'true');
         this.notificationService.createCustom('Debug mode enabled', {
-          message: 'Please restart the app to apply the changes.',
+          message: this.devModeMessage,
         });
       }
     } else {
@@ -69,7 +74,7 @@ export class SettingsPage implements OnInit {
     this.devMode = false;
     localStorage.setItem('devMode', 'false');
     this.notificationService.createCustom('Debug mode disabled', {
-      message: 'Please restart the app to apply the changes.',
+      message: this.devModeMessage,
     });
   }
 }

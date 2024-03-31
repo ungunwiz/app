@@ -38,6 +38,14 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "production": {
               "budgets": [
                 {
@@ -59,13 +67,40 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
+            "app": {
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.app.ts"
+                }
+              ]
+            },
+            "app.production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.app.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
             },
             "ci": {
               "progress": false
@@ -81,6 +116,12 @@
             },
             "development": {
               "buildTarget": "app:build:development"
+            },
+            "app": {
+              "buildTarget": "app:build:app"
+            },
+            "app.production": {
+              "buildTarget": "app:build:app.production"
             },
             "ci": {
               "progress": false

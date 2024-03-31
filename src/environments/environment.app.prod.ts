@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  platform: 'web',
+  platform: 'app',
   api: 'https://api.ungunwiz.net',
 };

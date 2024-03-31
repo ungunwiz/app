@@ -43,7 +43,7 @@ ion-item {
 
   &.selected,
   &.selected ion-icon {
-    color: var(--ion-color-dark);
+    color: white;
     --background: rgba(var(--ion-color-tertiary-rgb), 0.8);
   }
 }
@@ -60,7 +60,7 @@ ion-label {
 }
 
 /* ---------------------------------- */
-/*               TABBAR               */
+/*            TABS & TABBAR           */
 /* ---------------------------------- */
 
 ion-tab-bar {

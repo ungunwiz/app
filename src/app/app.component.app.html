@@ -11,7 +11,8 @@
             <ion-label class="header" text-wrap>UnGunWiz</ion-label>
           </ion-list-header>
           <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages">
-            <ng-container *ngIf="!page.hidden && (!page.debug || (page.debug && (!environment.production || devMode)))">
+            <ng-container
+              *ngIf="page.location === 'sidebar' && !page.hidden && (!page.debug || (page.debug && (!environment.production || devMode)))">
               <ion-item *ngIf="page.type === 'route'" routerDirection="root" [routerLink]="page.url"
                 [disabled]="page.disabled" [class.disabled]="page.disabled" lines="none" detail="false"
                 routerLinkActive="selected">
@@ -31,5 +32,17 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
+    <ion-tabs mode="ios">
+      <ion-tab-bar slot="bottom">
+        <ng-container *ngFor="let page of appPages">
+          <ion-tab-button
+            *ngIf="page.location === 'tabbar' && !page.hidden && (!page.debug || (page.debug && (!environment.production || devMode))) "
+            [tab]="page.url">
+            <ion-icon [name]="page.icon"></ion-icon>
+            {{ page.title }}
+          </ion-tab-button>
+        </ng-container>
+      </ion-tab-bar>
+    </ion-tabs>
   </ion-split-pane>
 </ion-app>
