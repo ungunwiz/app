@@ -98,8 +98,7 @@ ion-searchbar {
   padding-bottom: 0 !important;
   padding-top: 0 !important;
   border-radius: 0 !important;
-  --border-radius: 30px !important;
-  --color: white !important;
+  --border-radius: var(--borderRadius) !important;
 }
 
 /* ---------------------------------- */

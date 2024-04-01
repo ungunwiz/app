@@ -5,9 +5,9 @@
     </ion-buttons>
     <ion-searchbar mode="ios" [(ngModel)]="searchText" (ionInput)="search()" (ionCancel)="search()"></ion-searchbar>
     <ion-buttons slot="end">
-      <!-- <ion-button>
+      <ion-button (click)="printWeaponIDCSSValues()">
         <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
-      </ion-button> -->
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -20,27 +20,26 @@
       <span class="weaponType">{{weapon.type}}</span>
       <span class="weaponName">{{weapon.name}}</span>
 
-      <div class="weaponInfoStrip basic">
-        <div class="infoPill">
-          <img class="icon" src="assets/otherIcons/damage.svg" />
-          <span class="weaponInfo"> {{weapon.damage}} </span>
+      <div class="statsContainer">
+        <div class="labelContainer">
+          <span class="label damage">Damage</span>
+          <span class="label speed">Velocity</span>
+          <span class="label clip">Clip Size</span>
+          <span class="label tbs">TBS</span>
         </div>
-        <!-- <div class="seperator"></div> -->
-        <div class="infoPill">
-          <span class="weaponInfo">{{weapon.clip}} x</span>
-          <img class="sprite" [src]="getWeaponAmmoIcon(weapon)" />
-        </div>
-      </div>
 
-      <div class="weaponInfoStrip extra">
-        <div class="infoPill">
-          <img class="icon" src="assets/otherIcons/tbs.svg" />
-          <span class="weaponInfo"> {{weapon.tbs | number:'1.2-3' }}</span>
-        </div>
-        <!-- <div class="seperator"></div> -->
-        <div class="infoPill">
-          <img class="icon" src="assets/otherIcons/velocity.svg" />
-          <span class="weaponInfo"> {{weapon.speed}} m/s</span>
+        <div class="barContainer">
+          <div class="bar damage"></div>
+          <div [style]="'width: 25%;'" class="bar damage active"></div>
+
+          <div class="bar speed"></div>
+          <div [style]="'width: 50%;'" class="bar speed active"></div>
+
+          <div class="bar clip"></div>
+          <div [style]="'width: 75%;'" class="bar clip active"></div>
+
+          <div class="bar tbs"></div>
+          <div [style]="'width: 100%;'" class="bar tbs active"></div>
         </div>
       </div>
 

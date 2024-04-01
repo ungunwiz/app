@@ -16,7 +16,8 @@ ion-content {
   font-weight: bold;
   border-radius: var(--borderRadius);
   transition: background-color 0.2s ease-out;
-  box-shadow: 0 0 5px 0 var(--ion-color-light-shade);
+  box-shadow: 0 0 10px 0 rgba(var(--ion-color-tertiary-rgb), 0.05);
+  border: 2px solid var(--ion-color-light);
   user-select: none;
 
   & img {
@@ -31,8 +32,8 @@ ion-content {
 
   & span.weaponType {
     position: absolute;
-    color: var(--ion-color-step-text-800);
-    top: 10px;
+    color: var(--ion-color-step-text-400);
+    top: 7px;
     left: 10px;
     font-size: 0.7em;
   }
@@ -40,66 +41,106 @@ ion-content {
     position: absolute;
     color: var(--ion-color-primary);
     font-weight: bold;
-    top: 25px;
+    top: 22px;
     left: 10px;
-    font-size: 1.2em;
+    font-size: 1em;
   }
-
-  & .weaponInfoStrip {
-    position: absolute;
-    left: 10px;
-    width: calc(100% - 120px - 10px);
-    height: 26px;
-
-    & * {
-      float: left;
-    }
-    & .infoPill {
-      height: 100%;
-      background-color: rgba(var(--ion-color-dark-rgb), 0.1);
-      padding: 0 10px;
-      border-radius: var(--borderRadius);
-      min-width: 50px;
-      margin-right: 2px;
-    }
-    & .seperator {
-      width: 0px;
-      height: 50%;
-      margin: 8px 5px 0 5px;
-      border-right: 1px solid rgba(var(--ion-color-dark-rgb), 0.5);
-    }
-    & span.weaponInfo {
-      color: var(--ion-color-step-text-700);
-      height: 100%;
-      line-height: 26px;
-      font-size: 0.75em;
-    }
-  }
-  & .weaponInfoStrip.basic {
-    top: 50px;
-  }
-  & .weaponInfoStrip.extra {
-    top: 80px;
-  }
-
   & img.weaponImage {
     position: absolute;
+  }
+
+  & .statsContainer {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 50%;
+    height: 60px;
+    background-color: rgba(var(--ion-color-tertiary-rgb), 0.075);
+    border-radius: var(--borderRadius2);
+    border: 1px solid rgba(var(--ion-color-tertiary-rgb), 0.2);
+    box-sizing: content-box;
+    max-width: 300px;
+
+    & .labelContainer {
+      position: absolute;
+      left: 6px;
+      width: calc(30% - 6px);
+      height: 100%;
+
+      & span {
+        display: block;
+        height: 25%;
+        line-height: 14px;
+        width: 100%;
+        font-size: 8px;
+        text-align: left;
+      }
+
+      & span.damage {
+        color: var(--ion-color-danger);
+      }
+      & span.speed {
+        color: var(--ion-color-warning);
+      }
+      & span.clip {
+        color: var(--ion-color-primary);
+      }
+      & span.tbs {
+        color: var(--ion-color-success);
+      }
+    }
+
+    & .barContainer {
+      position: absolute;
+      right: 6px;
+      height: 100%;
+      width: calc(70% - 6px);
+
+      & .bar {
+        height: 7px;
+        position: absolute;
+        width: 100%;
+        border-radius: var(--borderRadius);
+      }
+
+      & .bar.damage {
+        top: calc((0 * 15px) + 4px);
+        background: rgba(var(--ion-color-danger-rgb), 0.2);
+      }
+      & .bar.active.damage {
+        background: rgba(var(--ion-color-danger-rgb), 1);
+      }
+      & .bar.speed {
+        top: calc((1 * 15px) + 4px);
+        background: rgba(var(--ion-color-warning-rgb), 0.2);
+      }
+      & .bar.active.speed {
+        background: rgba(var(--ion-color-warning-rgb), 1);
+      }
+      & .bar.clip {
+        top: calc((2 * 15px) + 4px);
+        background: rgba(var(--ion-color-primary-rgb), 0.2);
+      }
+      & .bar.active.clip {
+        background: rgba(var(--ion-color-primary-rgb), 1);
+      }
+      & .bar.tbs {
+        top: calc((3 * 15px) + 4px);
+        background: rgba(var(--ion-color-success-rgb), 0.2);
+      }
+      & .bar.active.tbs {
+        background: rgba(var(--ion-color-success-rgb), 1);
+      }
+    }
   }
 }
 
 .weapon.selected {
   background-color: rgba(var(--ion-color-tertiary-rgb), 0.1);
+  border: 2px solid rgba(var(--ion-color-tertiary-rgb), 0.25);
+
   & span.weaponType {
     color: rgba(var(--ion-color-tertiary-rgb), 0.7);
-  }
-
-  & .weaponInfoStrip {
-    & .infoPill {
-      background-color: rgba(var(--ion-color-tertiary-rgb), 0.1);
-    }
-    & span.weaponInfo {
-      color: rgba(var(--ion-color-tertiary-rgb), 0.7);
-    }
   }
 }
 

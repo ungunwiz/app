@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
-import { register } from 'swiper/element/bundle';
-
+// import { register } from 'swiper/element/bundle';
 import { PubgDataService } from 'src/app/services/pubgData.service';
 
-register();
+// register();
 
 @Component({
   selector: 'app-weaponlist',
@@ -33,19 +32,6 @@ export class WeaponListPage implements OnInit {
     '#E91E63',
     '#009688',
   ];
-
-  public toggleWeapon(weapon: any) {
-    if (this.isSelected(weapon)) {
-      this.selectedWeapons = this.selectedWeapons.filter((w: any) => {
-        return w.name !== weapon.name;
-      });
-    } else {
-      this.selectedWeapons.push(weapon);
-    }
-  }
-  public isSelected(weapon: any) {
-    return this.selectedWeapons.includes(weapon);
-  }
 
   /* -------------- Chart ------------- */
   // lineChartDataDamage: ChartConfiguration<'line'>['data'] = {
@@ -148,7 +134,33 @@ export class WeaponListPage implements OnInit {
     this.loading = false;
   }
 
-  search() {
+  printWeaponIDCSSValues() {
+    let log = '';
+    const props: any = ['top', 'right'];
+    this.weapons.forEach((weapon: any) => {
+      const wep = document.getElementById(weapon.name);
+      const wepImg = wep?.getElementsByClassName('weaponImage')[0];
+      const computedStyle = getComputedStyle(wepImg!);
+      const cssValues: any = {};
+      for (let i = 0; i < computedStyle.length; i++) {
+        const cssProp = computedStyle[i];
+        cssValues[cssProp] = computedStyle.getPropertyValue(cssProp);
+      }
+      log = log + `.weapon#${weapon.name} .weaponImage {\n`;
+      for (const prop in cssValues) {
+        if (props.includes(prop)) {
+          if (prop === 'top') {
+            cssValues[prop] = parseFloat(cssValues[prop]) - 10;
+          }
+          log = log + `  ${prop}: ${cssValues[prop]};\n`;
+        }
+      }
+      log = log + '}\n';
+    });
+    console.log(log);
+  }
+
+  public search() {
     const searchText = this.searchText.toLowerCase();
 
     this.weapons = this.pubgData.weapons.filter((weapon: any) => {
@@ -156,7 +168,7 @@ export class WeaponListPage implements OnInit {
     });
   }
 
-  sortWeapons() {
+  private sortWeapons() {
     this.weapons.sort((a: any, b: any) => {
       return a[this.sortType] > b[this.sortType] ? 1 : -1;
     });
@@ -165,6 +177,40 @@ export class WeaponListPage implements OnInit {
   /* ---------------------------------- */
   /*              FUNCTIONS             */
   /* ---------------------------------- */
+
+  public toggleWeapon(weapon: any) {
+    if (this.isSelected(weapon)) {
+      this.selectedWeapons = this.selectedWeapons.filter((w: any) => {
+        return w.name !== weapon.name;
+      });
+    } else {
+      this.selectedWeapons.push(weapon);
+    }
+  }
+
+  public isSelected(weapon: any) {
+    return this.selectedWeapons.includes(weapon);
+  }
+
+  public getWeaponIcon(weapon: any, simple: boolean = false) {
+    const wepDir = simple ? 'weaponsSimple' : 'weapons';
+    return `assets/gameAssets/${wepDir}/${weapon.name.replace(/\s/g, '_')}.png`;
+  }
+
+  public getWeaponAmmoIcon(weapon: any) {
+    let ammo = weapon.ammo;
+    const ammoFix: any = {
+      '300Magnum': '300_Magnum',
+      '5Cal': '.50_Caliber',
+      '12Guage': '12_Guage',
+      '12GuageSlug': '12_Guage_Slug',
+      '45ACP': '45_ACP',
+    };
+    if (ammoFix[ammo]) {
+      ammo = ammoFix[ammo];
+    }
+    return `assets/gameAssets/ammo/${ammo}.png`;
+  }
 
   // toggleWeapon(weapon: any) {
   //   if (this.isSelected(weapon)) {
@@ -311,23 +357,4 @@ export class WeaponListPage implements OnInit {
   //   const color = getComputedStyle(body).getPropertyValue(variable);
   //   return color;
   // }
-
-  getWeaponIcon(weapon: any, simple: boolean = false) {
-    const wepDir = simple ? 'weaponsSimple' : 'weapons';
-    return `assets/gameAssets/${wepDir}/${weapon.name.replace(/\s/g, '_')}.png`;
-  }
-  getWeaponAmmoIcon(weapon: any) {
-    let ammo = weapon.ammo;
-    const ammoFix: any = {
-      '300Magnum': '300_Magnum',
-      '5Cal': '.50_Caliber',
-      '12Guage': '12_Guage',
-      '12GuageSlug': '12_Guage_Slug',
-      '45ACP': '45_ACP',
-    };
-    if (ammoFix[ammo]) {
-      ammo = ammoFix[ammo];
-    }
-    return `assets/gameAssets/ammo/${ammo}.png`;
-  }
 }
