@@ -96,7 +96,9 @@ export class AppComponent implements OnInit {
     this.onSystemDarkModechange();
     this.setAppDetails();
     this.pubgDataService.initData().then((pubgData: any) => {
-      console.debug(`pubgData:`, pubgData);
+      if (this.devMode) {
+        console.debug(`pubgData:`, pubgData);
+      }
     });
   }
 

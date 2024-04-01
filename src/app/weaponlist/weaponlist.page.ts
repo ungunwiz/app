@@ -18,10 +18,12 @@ export class WeaponListPage implements OnInit {
   public weapons: any = [];
   public searchText: string = '';
   public selectedWeapons: any = [];
+  public weaponStats: any = {};
   // selectedWeapons: any = [];
   // selectedWeaponCounter: number = 0;
 
   private sortType: string = 'name';
+
   private colors: any = [
     '#F44336',
     '#2196F3',
@@ -130,34 +132,9 @@ export class WeaponListPage implements OnInit {
 
     this.search();
     this.sortWeapons();
+    this.scaleWeaponStats();
 
     this.loading = false;
-  }
-
-  printWeaponIDCSSValues() {
-    let log = '';
-    const props: any = ['top', 'right'];
-    this.weapons.forEach((weapon: any) => {
-      const wep = document.getElementById(weapon.name);
-      const wepImg = wep?.getElementsByClassName('weaponImage')[0];
-      const computedStyle = getComputedStyle(wepImg!);
-      const cssValues: any = {};
-      for (let i = 0; i < computedStyle.length; i++) {
-        const cssProp = computedStyle[i];
-        cssValues[cssProp] = computedStyle.getPropertyValue(cssProp);
-      }
-      log = log + `.weapon#${weapon.name} .weaponImage {\n`;
-      for (const prop in cssValues) {
-        if (props.includes(prop)) {
-          if (prop === 'top') {
-            cssValues[prop] = parseFloat(cssValues[prop]) - 10;
-          }
-          log = log + `  ${prop}: ${cssValues[prop]};\n`;
-        }
-      }
-      log = log + '}\n';
-    });
-    console.log(log);
   }
 
   public search() {
@@ -171,6 +148,128 @@ export class WeaponListPage implements OnInit {
   private sortWeapons() {
     this.weapons.sort((a: any, b: any) => {
       return a[this.sortType] > b[this.sortType] ? 1 : -1;
+    });
+  }
+
+  // Mockup:
+  // weaponStats: any = {
+  //   'ar': {
+  //     'damage': {
+  //       'min': 0,
+  //       'max': 0,
+  //     },
+  //     'weaponsPercentage': {
+  //       'ACE32': 40,
+  //       ...
+  //     }
+  //   },
+  //   ...
+  // }
+
+  private scaleWeaponStats() {
+    const minMax: any = {};
+
+    this.weapons.forEach((weapon: any) => {
+      weapon = {
+        ...weapon,
+        damage: parseFloat(weapon.damage),
+        speed: parseFloat(weapon.speed),
+        clip: parseFloat(weapon.clip),
+        tbs: parseFloat(weapon.tbs),
+      };
+
+      if (!minMax[weapon.type]) {
+        minMax[weapon.type] = {
+          damage: {
+            min: 10000,
+            max: -10000,
+          },
+          speed: {
+            min: 10000,
+            max: -10000,
+          },
+          clip: {
+            min: 10000,
+            max: -10000,
+          },
+          tbs: {
+            min: 10000,
+            max: -10000,
+          },
+        };
+      }
+
+      if (weapon.damage < minMax[weapon.type].damage.min) {
+        minMax[weapon.type].damage.min = weapon.damage;
+      }
+      if (weapon.damage > minMax[weapon.type].damage.max) {
+        minMax[weapon.type].damage.max = weapon.damage;
+      }
+      if (weapon.speed < minMax[weapon.type].speed.min) {
+        minMax[weapon.type].speed.min = weapon.speed;
+      }
+      if (weapon.speed > minMax[weapon.type].speed.max) {
+        minMax[weapon.type].speed.max = weapon.speed;
+      }
+      if (weapon.clip < minMax[weapon.type].clip.min) {
+        minMax[weapon.type].clip.min = weapon.clip;
+      }
+      if (weapon.clip > minMax[weapon.type].clip.max) {
+        minMax[weapon.type].clip.max = weapon.clip;
+      }
+      if (weapon.tbs < minMax[weapon.type].tbs.min) {
+        minMax[weapon.type].tbs.min = weapon.tbs;
+      }
+      if (weapon.tbs > minMax[weapon.type].tbs.max) {
+        minMax[weapon.type].tbs.max = weapon.tbs;
+      }
+    });
+
+    this.weapons.forEach((weapon: any) => {
+      weapon = {
+        ...weapon,
+        damage: parseFloat(weapon.damage),
+        speed: parseFloat(weapon.speed),
+        clip: parseFloat(weapon.clip),
+        tbs: parseFloat(weapon.tbs),
+      };
+
+      const percentages: any = {
+        _damage: weapon.damage,
+        _speed: weapon.speed,
+        _clip: weapon.clip,
+        _tbs: weapon.tbs,
+      };
+
+      percentages.damage = Math.round(
+        ((weapon.damage - minMax[weapon.type].damage.min) /
+          (minMax[weapon.type].damage.max - minMax[weapon.type].damage.min)) *
+          100
+      );
+
+      percentages.speed = Math.round(
+        ((weapon.speed - minMax[weapon.type].speed.min) /
+          (minMax[weapon.type].speed.max - minMax[weapon.type].speed.min)) *
+          100
+      );
+
+      percentages.clip = Math.round(
+        ((weapon.clip - minMax[weapon.type].clip.min) /
+          (minMax[weapon.type].clip.max - minMax[weapon.type].clip.min)) *
+          100
+      );
+
+      percentages.tbs = Math.round(
+        ((weapon.tbs - minMax[weapon.type].tbs.min) /
+          (minMax[weapon.type].tbs.max - minMax[weapon.type].tbs.min)) *
+          100
+      );
+
+      if (!this.weaponStats[weapon.type]) {
+        this.weaponStats[weapon.type] = {};
+      }
+
+      this.weaponStats[weapon.type][weapon.name] = percentages;
     });
   }
 

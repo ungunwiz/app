@@ -5,9 +5,9 @@
     </ion-buttons>
     <ion-searchbar mode="ios" [(ngModel)]="searchText" (ionInput)="search()" (ionCancel)="search()"></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button (click)="printWeaponIDCSSValues()">
+      <!-- <ion-button>
         <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -30,16 +30,18 @@
 
         <div class="barContainer">
           <div class="bar damage"></div>
-          <div [style]="'width: 25%;'" class="bar damage active"></div>
+          <div [style]="'width: ' + weaponStats[weapon.type][weapon.name]['damage'] + '%;'" class="bar damage active">
+          </div>
 
           <div class="bar speed"></div>
-          <div [style]="'width: 50%;'" class="bar speed active"></div>
+          <div [style]="'width: ' + weaponStats[weapon.type][weapon.name]['speed'] + '%;'" class="bar speed active">
+          </div>
 
           <div class="bar clip"></div>
-          <div [style]="'width: 75%;'" class="bar clip active"></div>
+          <div [style]="'width: ' + weaponStats[weapon.type][weapon.name]['clip'] + '%;'" class="bar clip active"></div>
 
           <div class="bar tbs"></div>
-          <div [style]="'width: 100%;'" class="bar tbs active"></div>
+          <div [style]="'width: ' + weaponStats[weapon.type][weapon.name]['tbs'] + '%;'" class="bar tbs active"></div>
         </div>
       </div>
 
