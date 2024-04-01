@@ -17,6 +17,7 @@ ion-content {
   border-radius: var(--borderRadius);
   transition: background-color 0.2s ease-out;
   box-shadow: 0 0 5px 0 var(--ion-color-light-shade);
+  user-select: none;
 
   & img {
     height: 100%;
@@ -49,7 +50,6 @@ ion-content {
     left: 10px;
     width: calc(100% - 120px - 10px);
     height: 26px;
-    background-color: var(--ion-color-light);
 
     & * {
       float: left;
@@ -69,7 +69,7 @@ ion-content {
       border-right: 1px solid rgba(var(--ion-color-dark-rgb), 0.5);
     }
     & span.weaponInfo {
-      color: var(--ion-color-step-text-800);
+      color: var(--ion-color-step-text-700);
       height: 100%;
       line-height: 26px;
       font-size: 0.75em;
@@ -84,6 +84,22 @@ ion-content {
 
   & img.weaponImage {
     position: absolute;
+  }
+}
+
+.weapon.selected {
+  background-color: rgba(var(--ion-color-tertiary-rgb), 0.1);
+  & span.weaponType {
+    color: rgba(var(--ion-color-tertiary-rgb), 0.7);
+  }
+
+  & .weaponInfoStrip {
+    & .infoPill {
+      background-color: rgba(var(--ion-color-tertiary-rgb), 0.1);
+    }
+    & span.weaponInfo {
+      color: rgba(var(--ion-color-tertiary-rgb), 0.7);
+    }
   }
 }
 

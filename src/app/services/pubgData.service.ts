@@ -70,7 +70,7 @@ export class PubgDataService {
             );
             localStorage.setItem('pubgData', JSON.stringify(this.pubgData));
             this.generateDistances();
-            resolve(true);
+            resolve(this.pubgData);
           })
           .catch((error) => {
             console.error(error);
@@ -84,7 +84,7 @@ export class PubgDataService {
         console.info(
           `Using saved data. Last updated: ${lastUpdate}. Next update at ${nextUpdate}.`
         );
-        resolve(true);
+        resolve(this.pubgData);
       }
     });
   }

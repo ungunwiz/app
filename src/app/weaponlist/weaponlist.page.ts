@@ -14,9 +14,16 @@ register();
 export class WeaponListPage implements OnInit {
   constructor(private pubgDataService: PubgDataService) {}
 
-  loading = true;
-  pubgData: any = {};
-  colors: any = [
+  public loading = true;
+  public pubgData: any = {};
+  public weapons: any = [];
+  public searchText: string = '';
+  public selectedWeapons: any = [];
+  // selectedWeapons: any = [];
+  // selectedWeaponCounter: number = 0;
+
+  private sortType: string = 'name';
+  private colors: any = [
     '#F44336',
     '#2196F3',
     '#8BC34A',
@@ -27,13 +34,18 @@ export class WeaponListPage implements OnInit {
     '#009688',
   ];
 
-  // selectedWeapons: any = [];
-  // selectedWeaponCounter: number = 0;
-
-  weapons: any = [];
-  filteredWeapons: any = [];
-  searchText: string = '';
-  sortType: string = 'name';
+  public toggleWeapon(weapon: any) {
+    if (this.isSelected(weapon)) {
+      this.selectedWeapons = this.selectedWeapons.filter((w: any) => {
+        return w.name !== weapon.name;
+      });
+    } else {
+      this.selectedWeapons.push(weapon);
+    }
+  }
+  public isSelected(weapon: any) {
+    return this.selectedWeapons.includes(weapon);
+  }
 
   /* -------------- Chart ------------- */
   // lineChartDataDamage: ChartConfiguration<'line'>['data'] = {
@@ -139,13 +151,13 @@ export class WeaponListPage implements OnInit {
   search() {
     const searchText = this.searchText.toLowerCase();
 
-    this.filteredWeapons = this.pubgData.weapons.filter((weapon: any) => {
+    this.weapons = this.pubgData.weapons.filter((weapon: any) => {
       return weapon.name.toLowerCase().includes(searchText);
     });
   }
 
   sortWeapons() {
-    this.filteredWeapons.sort((a: any, b: any) => {
+    this.weapons.sort((a: any, b: any) => {
       return a[this.sortType] > b[this.sortType] ? 1 : -1;
     });
   }

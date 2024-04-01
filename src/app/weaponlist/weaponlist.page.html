@@ -14,7 +14,8 @@
 
 <ion-content fullscreen id="weaponlist">
   <div *ngIf="!loading">
-    <div [id]="weapon.name" class="weapon" *ngFor="let weapon of filteredWeapons">
+    <div [id]="weapon.name" class="weapon" [class.selected]="isSelected(weapon)" (click)="toggleWeapon(weapon)"
+      *ngFor="let weapon of weapons">
 
       <span class="weaponType">{{weapon.type}}</span>
       <span class="weaponName">{{weapon.name}}</span>
