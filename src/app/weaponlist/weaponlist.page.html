@@ -17,15 +17,23 @@
     <div [id]="weapon.name" class="weapon" [class.selected]="isSelected(weapon)" (click)="toggleWeapon(weapon)"
       *ngFor="let weapon of weapons">
 
-      <span class="weaponType">{{weapon.type}}</span>
-      <span class="weaponName">{{weapon.name}}</span>
+      <span class="weaponType shadow">{{weapon.type}}</span>
+      <span class="weaponName shadow">{{weapon.name}}</span>
+
+      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
 
       <div class="statsContainer">
-        <div class="labelContainer">
-          <span class="label damage">Damage</span>
-          <span class="label speed">Velocity</span>
-          <span class="label clip">Clip Size</span>
-          <span class="label tbs">TBS</span>
+        <div class="spanContainer">
+          <span class="shadow damage">Damage:</span>
+          <span class="shadow speed">Velocity:</span>
+          <span class="shadow clip">Clip Size:</span>
+          <span class="shadow tbs">TBS:</span>
+        </div>
+        <div class="spanContainer">
+          <span class="shadow damage">{{weapon.damage}}</span>
+          <span class="shadow speed">{{weapon.speed}}</span>
+          <span class="shadow clip">{{weapon.clip}}</span>
+          <span class="shadow tbs">{{weapon.tbs}}</span>
         </div>
 
         <div class="barContainer">
@@ -44,8 +52,6 @@
           <div [style]="'width: ' + weaponStats[weapon.type][weapon.name]['tbs'] + '%;'" class="bar tbs active"></div>
         </div>
       </div>
-
-      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
     </div>
 
     <!-- <div class="container graph">

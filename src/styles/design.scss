@@ -145,6 +145,9 @@ ion-toggle {
 span.normal {
   font-weight: normal !important;
 }
+span.shadow {
+  text-shadow: rgba(0, 0, 0, 1) 0px 0 1px;
+}
 
 /* ---------------------------------- */
 /*         NOTIFICATION TOASTS        */

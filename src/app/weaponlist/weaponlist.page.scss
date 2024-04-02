@@ -1,3 +1,12 @@
+* {
+  --weaponHeight: 190px;
+  --stats-height: calc(var(--weaponHeight) * (1.5 / 3));
+  --stats-height: 80px;
+  --barHeight: calc((var(--stats-height) / 4) / 2);
+  --wepImgRightMargin: 16px;
+  --wepImgTopMargin: 50px;
+}
+
 ion-content {
   --padding-top: 10px;
   --padding-bottom: 15px;
@@ -6,11 +15,10 @@ ion-content {
 /* ---------------------------------- */
 /*            WEAPON SELECT           */
 /* ---------------------------------- */
-
 .weapon {
   position: relative;
   cursor: pointer;
-  height: 120px;
+  height: var(--weaponHeight);
   background-color: var(--ion-color-light);
   margin: 8px 15px;
   font-weight: bold;
@@ -20,59 +28,63 @@ ion-content {
   border: 2px solid var(--ion-color-light);
   user-select: none;
 
-  & img {
-    height: 100%;
-    aspect-ratio: 1/1;
-  }
-  & img.icon {
-    height: 80%;
-    margin: 3px 0px;
-    margin-right: 3px;
-  }
+  // & img {
+  //   height: 100%;
+  //   aspect-ratio: 1/1;
+  // }
+  // & img.icon {
+  //   height: 80%;
+  //   margin: 3px 0px;
+  //   margin-right: 3px;
+  // }
 
   & span.weaponType {
     position: absolute;
     color: var(--ion-color-step-text-400);
-    top: 7px;
-    left: 10px;
+    top: 10px;
+    left: 12px;
     font-size: 0.7em;
   }
   & span.weaponName {
     position: absolute;
     color: var(--ion-color-primary);
     font-weight: bold;
-    top: 22px;
-    left: 10px;
-    font-size: 1em;
+    top: 28px;
+    left: 12px;
+    font-size: 24px;
   }
   & img.weaponImage {
     position: absolute;
+    aspect-ratio: 1/1;
+    height: 100px;
+    // background-color: #ff000055;
   }
 
   & .statsContainer {
     position: absolute;
     left: 10px;
     bottom: 10px;
-    width: 50%;
-    height: 60px;
+    width: calc(100% - 20px);
+    height: var(--stats-height);
     background-color: rgba(var(--ion-color-tertiary-rgb), 0.075);
     border-radius: var(--borderRadius2);
     border: 1px solid rgba(var(--ion-color-tertiary-rgb), 0.2);
     box-sizing: content-box;
-    max-width: 300px;
+    padding: 10px 0;
+    backdrop-filter: blur(5px);
 
-    & .labelContainer {
-      position: absolute;
-      left: 6px;
-      width: calc(30% - 6px);
+    & .spanContainer {
+      position: relative;
+      float: left;
       height: 100%;
+      width: 80px;
 
       & span {
         display: block;
         height: 25%;
-        line-height: 14px;
         width: 100%;
-        font-size: 8px;
+        font-size: 16px;
+        line-height: 20px;
         text-align: left;
       }
 
@@ -89,43 +101,47 @@ ion-content {
         color: var(--ion-color-success);
       }
     }
+    & .spanContainer:first-of-type {
+      margin-left: 10px;
+    }
 
     & .barContainer {
-      position: absolute;
-      right: 6px;
+      position: relative;
+      float: left;
       height: 100%;
-      width: calc(70% - 6px);
+      width: calc(100% - 10px - 80px - 80px - 10px);
 
       & .bar {
-        height: 7px;
+        height: var(--barHeight);
         position: absolute;
         width: 100%;
         border-radius: var(--borderRadius);
+        box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.5);
       }
 
       & .bar.damage {
-        top: calc((0 * 15px) + 4px);
+        top: calc((0 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-danger-rgb), 0.2);
       }
       & .bar.active.damage {
         background: rgba(var(--ion-color-danger-rgb), 1);
       }
       & .bar.speed {
-        top: calc((1 * 15px) + 4px);
+        top: calc((1 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-warning-rgb), 0.2);
       }
       & .bar.active.speed {
         background: rgba(var(--ion-color-warning-rgb), 1);
       }
       & .bar.clip {
-        top: calc((2 * 15px) + 4px);
+        top: calc((2 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-primary-rgb), 0.2);
       }
       & .bar.active.clip {
         background: rgba(var(--ion-color-primary-rgb), 1);
       }
       & .bar.tbs {
-        top: calc((3 * 15px) + 4px);
+        top: calc((3 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-success-rgb), 0.2);
       }
       & .bar.active.tbs {
@@ -144,325 +160,320 @@ ion-content {
   }
 }
 
-.weaponImage {
-  --rightMargin: 8px;
-  --topMargin: 10px;
-}
-
 .weapon#ACE32 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(-3px + var(--rightMargin));
-  top: calc(-46px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(-3px + var(--wepImgRightMargin));
+  top: calc(-46px + var(--wepImgTopMargin));
 }
 
 .weapon#AKM .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(-1px + var(--rightMargin));
-  top: calc(-50px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(-1px + var(--wepImgRightMargin));
+  top: calc(-50px + var(--wepImgTopMargin));
 }
 
 .weapon#AUG .weaponImage {
-  transform: rotate(-38.8deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-38.8deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#AWM .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-50px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-50px + var(--wepImgTopMargin));
 }
 
 .weapon#Beryl\ M762 .weaponImage {
-  transform: rotate(-41deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-45px + var(--topMargin));
+  // transform: rotate(-41deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-45px + var(--wepImgTopMargin));
 }
 
 .weapon#Crossbow .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#DBS .weaponImage {
-  transform: rotate(-39.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-43px + var(--topMargin));
+  // transform: rotate(-39.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-43px + var(--wepImgTopMargin));
 }
 
 .weapon#DP-28 .weaponImage {
-  transform: rotate(-41deg);
-  right: calc(8px + var(--rightMargin));
-  top: calc(-44px + var(--topMargin));
+  // transform: rotate(-41deg);
+  right: calc(8px + var(--wepImgRightMargin));
+  top: calc(-44px + var(--wepImgTopMargin));
 }
 
 .weapon#Deagle .weaponImage {
-  transform: rotate(-33deg);
-  right: calc(-15px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-33deg);
+  right: calc(-15px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#Dragunov .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(3px + var(--rightMargin));
-  top: calc(-50px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(3px + var(--wepImgRightMargin));
+  top: calc(-50px + var(--wepImgTopMargin));
 }
 
 .weapon#Famas .weaponImage {
-  transform: rotate(-45deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-42px + var(--topMargin));
+  // transform: rotate(-45deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-42px + var(--wepImgTopMargin));
 }
 
 .weapon#G36C .weaponImage {
-  transform: rotate(-41deg);
-  right: calc(-4px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-41deg);
+  right: calc(-4px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#Groza .weaponImage {
-  transform: rotate(-45.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-37px + var(--topMargin));
+  // transform: rotate(-45.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-37px + var(--wepImgTopMargin));
 }
 
 .weapon#JS9 .weaponImage {
-  transform: rotate(-45deg);
-  right: calc(3px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-45deg);
+  right: calc(3px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#K2 .weaponImage {
-  transform: rotate(-42deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-49px + var(--topMargin));
+  // transform: rotate(-42deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-49px + var(--wepImgTopMargin));
 }
 
 .weapon#Kar98k .weaponImage {
-  transform: rotate(-39deg);
-  right: calc(-3px + var(--rightMargin));
-  top: calc(-48px + var(--topMargin));
+  // transform: rotate(-39deg);
+  right: calc(-3px + var(--wepImgRightMargin));
+  top: calc(-48px + var(--wepImgTopMargin));
 }
 
 .weapon#LynxAMR .weaponImage {
-  transform: rotate(-42deg);
-  right: calc(7px + var(--rightMargin));
-  top: calc(-47px + var(--topMargin));
+  // transform: rotate(-42deg);
+  right: calc(7px + var(--wepImgRightMargin));
+  top: calc(-47px + var(--wepImgTopMargin));
 }
 
 .weapon#M16A4 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(-2px + var(--rightMargin));
-  top: calc(-46px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(-2px + var(--wepImgRightMargin));
+  top: calc(-46px + var(--wepImgTopMargin));
 }
 
 .weapon#M24 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-50px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-50px + var(--wepImgTopMargin));
 }
 
 .weapon#M249 .weaponImage {
-  transform: rotate(-41deg);
-  right: calc(-1px + var(--rightMargin));
-  top: calc(-44px + var(--topMargin));
+  // transform: rotate(-41deg);
+  right: calc(-1px + var(--wepImgRightMargin));
+  top: calc(-44px + var(--wepImgTopMargin));
 }
 
 .weapon#M416 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-48px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-48px + var(--wepImgTopMargin));
 }
 
 .weapon#MG3 .weaponImage {
-  transform: rotate(-42deg);
-  right: calc(9px + var(--rightMargin));
-  top: calc(-48px + var(--topMargin));
+  // transform: rotate(-42deg);
+  right: calc(9px + var(--wepImgRightMargin));
+  top: calc(-48px + var(--wepImgTopMargin));
 }
 
 .weapon#MK12 .weaponImage {
-  transform: rotate(-42deg);
-  right: calc(5px + var(--rightMargin));
-  top: calc(-47px + var(--topMargin));
+  // transform: rotate(-42deg);
+  right: calc(5px + var(--wepImgRightMargin));
+  top: calc(-47px + var(--wepImgTopMargin));
 }
 
 .weapon#MK14 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(5px + var(--rightMargin));
-  top: calc(-49px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(5px + var(--wepImgRightMargin));
+  top: calc(-49px + var(--wepImgTopMargin));
 }
 
 .weapon#MP5K .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(-13px + var(--rightMargin));
-  top: calc(-31px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(-13px + var(--wepImgRightMargin));
+  top: calc(-31px + var(--wepImgTopMargin));
 }
 
 .weapon#MP9 .weaponImage {
-  transform: rotate(-37.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-37.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#Micro\ UZI .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(-14px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(-14px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#Mini-14 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(4px + var(--rightMargin));
-  top: calc(-47px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(4px + var(--wepImgRightMargin));
+  top: calc(-47px + var(--wepImgTopMargin));
 }
 
 .weapon#Mosin\ Nagant .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-49px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-49px + var(--wepImgTopMargin));
 }
 
 .weapon#Mutant\ MK47 .weaponImage {
-  transform: rotate(-41deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-41deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#O12 .weaponImage {
-  transform: rotate(-44deg);
-  right: calc(2px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-44deg);
+  right: calc(2px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#P18C .weaponImage {
-  transform: rotate(-33deg);
-  right: calc(-19px + var(--rightMargin));
-  top: calc(-35px + var(--topMargin));
+  // transform: rotate(-33deg);
+  right: calc(-19px + var(--wepImgRightMargin));
+  top: calc(-35px + var(--wepImgTopMargin));
 }
 
 .weapon#P1911 .weaponImage {
-  transform: rotate(-31deg);
-  right: calc(-20px + var(--rightMargin));
-  top: calc(-38px + var(--topMargin));
+  // transform: rotate(-31deg);
+  right: calc(-20px + var(--wepImgRightMargin));
+  top: calc(-38px + var(--wepImgTopMargin));
 }
 
 .weapon#P90 .weaponImage {
-  transform: rotate(-42.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-32px + var(--topMargin));
+  // transform: rotate(-42.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-32px + var(--wepImgTopMargin));
 }
 
 .weapon#P92 .weaponImage {
-  transform: rotate(-34deg);
-  right: calc(-21px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-34deg);
+  right: calc(-21px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#PP-19\ Bizon .weaponImage {
-  transform: rotate(-40deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-40deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#QBU .weaponImage {
-  transform: rotate(-41deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-45px + var(--topMargin));
+  // transform: rotate(-41deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-45px + var(--wepImgTopMargin));
 }
 
 .weapon#QBZ .weaponImage {
-  transform: rotate(-42deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-43px + var(--topMargin));
+  // transform: rotate(-42deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-43px + var(--wepImgTopMargin));
 }
 
 .weapon#R1895 .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(-18px + var(--rightMargin));
-  top: calc(-41px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(-18px + var(--wepImgRightMargin));
+  top: calc(-41px + var(--wepImgTopMargin));
 }
 
 .weapon#R45 .weaponImage {
-  transform: rotate(-32deg);
-  right: calc(-11px + var(--rightMargin));
-  top: calc(-39px + var(--topMargin));
+  // transform: rotate(-32deg);
+  right: calc(-11px + var(--wepImgRightMargin));
+  top: calc(-39px + var(--wepImgTopMargin));
 }
 
 .weapon#S12K .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-51px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-51px + var(--wepImgTopMargin));
 }
 
 .weapon#S1897 .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-49px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-49px + var(--wepImgTopMargin));
 }
 
 .weapon#S686 .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-49px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-49px + var(--wepImgTopMargin));
 }
 
 .weapon#SCAR-L .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-43px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-43px + var(--wepImgTopMargin));
 }
 
 .weapon#SKS .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-49px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-49px + var(--wepImgTopMargin));
 }
 
 .weapon#SLR .weaponImage {
-  transform: rotate(-42deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-52px + var(--topMargin));
+  // transform: rotate(-42deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-52px + var(--wepImgTopMargin));
 }
 
 .weapon#Sawed-Off .weaponImage {
-  transform: rotate(-38deg);
-  right: calc(6px + var(--rightMargin));
-  top: calc(-44px + var(--topMargin));
+  // transform: rotate(-38deg);
+  right: calc(6px + var(--wepImgRightMargin));
+  top: calc(-44px + var(--wepImgTopMargin));
 }
 
 .weapon#Skorpion .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(-13px + var(--rightMargin));
-  top: calc(-35px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(-13px + var(--wepImgRightMargin));
+  top: calc(-35px + var(--wepImgTopMargin));
 }
 
 .weapon#Tommy\ Gun .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-47px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-47px + var(--wepImgTopMargin));
 }
 
 .weapon#UMP45 .weaponImage {
-  transform: rotate(-38deg);
-  right: calc(-4px + var(--rightMargin));
-  top: calc(-44px + var(--topMargin));
+  // transform: rotate(-38deg);
+  right: calc(-4px + var(--wepImgRightMargin));
+  top: calc(-44px + var(--wepImgTopMargin));
 }
 
 .weapon#VSS .weaponImage {
-  transform: rotate(-40.5deg);
-  right: calc(0px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-40.5deg);
+  right: calc(0px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#Vector .weaponImage {
-  transform: rotate(-37deg);
-  right: calc(-2px + var(--rightMargin));
-  top: calc(-40px + var(--topMargin));
+  // transform: rotate(-37deg);
+  right: calc(-2px + var(--wepImgRightMargin));
+  top: calc(-40px + var(--wepImgTopMargin));
 }
 
 .weapon#Win94 .weaponImage {
-  transform: rotate(-38deg);
-  right: calc(5px + var(--rightMargin));
-  top: calc(-43px + var(--topMargin));
+  // transform: rotate(-38deg);
+  right: calc(5px + var(--wepImgRightMargin));
+  top: calc(-43px + var(--wepImgTopMargin));
 }
