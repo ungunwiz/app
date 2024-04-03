@@ -167,7 +167,28 @@ export class WeaponListPage implements OnInit {
   // }
 
   private scaleWeaponStats() {
-    const minMax: any = {};
+    const minMax: any = {
+      damage: {
+        min: 10000,
+        max: -10000,
+      },
+      speed: {
+        min: 10000,
+        max: -10000,
+      },
+      clip: {
+        min: 10000,
+        max: -10000,
+      },
+      tbs: {
+        min: 10000,
+        max: -10000,
+      },
+      range: {
+        min: 10000,
+        max: -10000,
+      },
+    };
 
     this.weapons.forEach((weapon: any) => {
       weapon = {
@@ -176,52 +197,32 @@ export class WeaponListPage implements OnInit {
         speed: parseFloat(weapon.speed),
         clip: parseFloat(weapon.clip),
         tbs: parseFloat(weapon.tbs),
+        range: parseFloat(weapon.range),
       };
 
-      if (!minMax[weapon.type]) {
-        minMax[weapon.type] = {
-          damage: {
-            min: 10000,
-            max: -10000,
-          },
-          speed: {
-            min: 10000,
-            max: -10000,
-          },
-          clip: {
-            min: 10000,
-            max: -10000,
-          },
-          tbs: {
-            min: 10000,
-            max: -10000,
-          },
-        };
+      if (weapon.damage < minMax.damage.min) {
+        minMax.damage.min = weapon.damage;
       }
-
-      if (weapon.damage < minMax[weapon.type].damage.min) {
-        minMax[weapon.type].damage.min = weapon.damage;
+      if (weapon.damage > minMax.damage.max) {
+        minMax.damage.max = weapon.damage;
       }
-      if (weapon.damage > minMax[weapon.type].damage.max) {
-        minMax[weapon.type].damage.max = weapon.damage;
+      if (weapon.speed < minMax.speed.min) {
+        minMax.speed.min = weapon.speed;
       }
-      if (weapon.speed < minMax[weapon.type].speed.min) {
-        minMax[weapon.type].speed.min = weapon.speed;
+      if (weapon.speed > minMax.speed.max) {
+        minMax.speed.max = weapon.speed;
       }
-      if (weapon.speed > minMax[weapon.type].speed.max) {
-        minMax[weapon.type].speed.max = weapon.speed;
+      if (weapon.clip < minMax.clip.min) {
+        minMax.clip.min = weapon.clip;
       }
-      if (weapon.clip < minMax[weapon.type].clip.min) {
-        minMax[weapon.type].clip.min = weapon.clip;
+      if (weapon.clip > minMax.clip.max) {
+        minMax.clip.max = weapon.clip;
       }
-      if (weapon.clip > minMax[weapon.type].clip.max) {
-        minMax[weapon.type].clip.max = weapon.clip;
+      if (weapon.tbs < minMax.tbs.min) {
+        minMax.tbs.min = weapon.tbs;
       }
-      if (weapon.tbs < minMax[weapon.type].tbs.min) {
-        minMax[weapon.type].tbs.min = weapon.tbs;
-      }
-      if (weapon.tbs > minMax[weapon.type].tbs.max) {
-        minMax[weapon.type].tbs.max = weapon.tbs;
+      if (weapon.tbs > minMax.tbs.max) {
+        minMax.tbs.max = weapon.tbs;
       }
     });
 
@@ -232,6 +233,7 @@ export class WeaponListPage implements OnInit {
         speed: parseFloat(weapon.speed),
         clip: parseFloat(weapon.clip),
         tbs: parseFloat(weapon.tbs),
+        range: parseFloat(weapon.range),
       };
 
       const percentages: any = {
@@ -241,35 +243,43 @@ export class WeaponListPage implements OnInit {
         _tbs: weapon.tbs,
       };
 
-      percentages.damage = Math.round(
-        ((weapon.damage - minMax[weapon.type].damage.min) /
-          (minMax[weapon.type].damage.max - minMax[weapon.type].damage.min)) *
-          100
+      percentages.damage = this.pubgDataService.map(
+        weapon.damage,
+        minMax.damage.min,
+        minMax.damage.max,
+        0,
+        100
+      );
+      percentages.speed = this.pubgDataService.map(
+        weapon.speed,
+        minMax.speed.min,
+        minMax.speed.max,
+        0,
+        100
+      );
+      percentages.clip = this.pubgDataService.map(
+        weapon.clip,
+        minMax.clip.min,
+        minMax.clip.max,
+        0,
+        100
+      );
+      percentages.tbs = this.pubgDataService.map(
+        weapon.tbs,
+        minMax.tbs.min,
+        minMax.tbs.max,
+        0,
+        100
+      );
+      percentages.range = this.pubgDataService.map(
+        weapon.range,
+        minMax.range.min,
+        minMax.range.max,
+        0,
+        100
       );
 
-      percentages.speed = Math.round(
-        ((weapon.speed - minMax[weapon.type].speed.min) /
-          (minMax[weapon.type].speed.max - minMax[weapon.type].speed.min)) *
-          100
-      );
-
-      percentages.clip = Math.round(
-        ((weapon.clip - minMax[weapon.type].clip.min) /
-          (minMax[weapon.type].clip.max - minMax[weapon.type].clip.min)) *
-          100
-      );
-
-      percentages.tbs = Math.round(
-        ((weapon.tbs - minMax[weapon.type].tbs.min) /
-          (minMax[weapon.type].tbs.max - minMax[weapon.type].tbs.min)) *
-          100
-      );
-
-      if (!this.weaponStats[weapon.type]) {
-        this.weaponStats[weapon.type] = {};
-      }
-
-      this.weaponStats[weapon.type][weapon.name] = percentages;
+      this.weaponStats[weapon.name] = percentages;
     });
   }
 

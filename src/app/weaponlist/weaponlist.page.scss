@@ -1,6 +1,5 @@
 * {
-  --weaponHeight: 190px;
-  --stats-height: calc(var(--weaponHeight) * (1.5 / 3));
+  --weaponHeight: 180px;
   --stats-height: 80px;
   --barHeight: calc((var(--stats-height) / 4) / 2);
   --wepImgRightMargin: 16px;
@@ -40,7 +39,7 @@ ion-content {
 
   & span.weaponType {
     position: absolute;
-    color: var(--ion-color-step-text-400);
+    color: var(--ion-color-step-text-500);
     top: 10px;
     left: 12px;
     font-size: 0.7em;
@@ -71,7 +70,7 @@ ion-content {
     border: 1px solid rgba(var(--ion-color-tertiary-rgb), 0.2);
     box-sizing: content-box;
     padding: 10px 0;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(15px);
 
     & .spanContainer {
       position: relative;
@@ -89,17 +88,20 @@ ion-content {
       }
 
       & span.damage {
-        color: var(--ion-color-danger);
+        color: var(--ion-color-danger-shade);
       }
       & span.speed {
-        color: var(--ion-color-warning);
+        color: var(--ion-color-warning-shade);
       }
       & span.clip {
-        color: var(--ion-color-primary);
+        color: var(--ion-color-primary-shade);
       }
       & span.tbs {
-        color: var(--ion-color-success);
+        color: var(--ion-color-success-shade);
       }
+      // & span.range {
+      //   color: var(--ion-color-tertiary-shade);
+      // }
     }
     & .spanContainer:first-of-type {
       margin-left: 10px;
@@ -124,29 +126,36 @@ ion-content {
         background: rgba(var(--ion-color-danger-rgb), 0.2);
       }
       & .bar.active.damage {
-        background: rgba(var(--ion-color-danger-rgb), 1);
+        background: var(--ion-color-danger-shade);
       }
       & .bar.speed {
         top: calc((1 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-warning-rgb), 0.2);
       }
       & .bar.active.speed {
-        background: rgba(var(--ion-color-warning-rgb), 1);
+        background: var(--ion-color-warning-shade);
       }
       & .bar.clip {
         top: calc((2 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-primary-rgb), 0.2);
       }
       & .bar.active.clip {
-        background: rgba(var(--ion-color-primary-rgb), 1);
+        background: var(--ion-color-primary-shade);
       }
       & .bar.tbs {
         top: calc((3 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
         background: rgba(var(--ion-color-success-rgb), 0.2);
       }
       & .bar.active.tbs {
-        background: rgba(var(--ion-color-success-rgb), 1);
+        background: var(--ion-color-success-shade);
       }
+      // & .bar.range {
+      //   top: calc((4 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
+      //   background: rgba(var(--ion-color-tertiary-rgb), 0.2);
+      // }
+      // & .bar.active.range {
+      //   background: var(--ion-color-tertiary-shade);
+      // }
     }
   }
 }

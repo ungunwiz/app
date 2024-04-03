@@ -221,7 +221,7 @@ export class PubgDataService {
   /*          HELPER FUNCTIONS          */
   /* ---------------------------------- */
 
-  private map(
+  public map(
     value: number,
     start1: number,
     stop1: number,
@@ -236,7 +236,7 @@ export class PubgDataService {
     return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
   }
 
-  generateDistances(start: number = 1, end: number = 1000) {
+  private generateDistances(start: number = 1, end: number = 1000) {
     for (let i = start; i <= end; i++) {
       this.distances.push(i);
     }
