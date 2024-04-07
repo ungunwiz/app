@@ -4,18 +4,31 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title *ngIf="weapons.length == 0">Graph</ion-title>
-    <ion-title *ngIf="weapons.length > 0">
+    <ion-title *ngIf="weapons.length > 0">Graph ({{weapons.length}})</ion-title>
+    <!-- <ion-title *ngIf="weapons.length > 0">
       Graph (<span *ngFor="let weapon of weaponsStringList; let last = last;"
         [ngStyle]="{'color': weapon.color}">{{weapon.name}}{{last ? '' : ', '}}</span>)
-    </ion-title>
+    </ion-title> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
+
+  <ion-fab *ngIf="weapons.length == 0" slot="fixed" horizontal="end" vertical="bottom" routerLink="/weaponlist">
+    <ion-fab-button color="tertiary">
+      <ion-icon name="stats-chart"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab *ngIf="weapons.length > 0" slot="fixed" horizontal="end" vertical="bottom" (click)="clearWeapons()">
+    <ion-fab-button color="danger">
+      <ion-icon name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <div class="container graph">
     <!-- <swiper-container style="height: 100%;"> -->
     <!-- <swiper-slide> -->
-    <span class="title">Damage Falloff over Distance</span>
+    <!-- <span class="title">Damage Falloff over Distance</span> -->
     <canvas class="mainGraph" baseChart [type]="'line'" [data]="lineChartDataDamage" [options]="lineChartOptionsDMG"
       [legend]="lineChartLegend">
     </canvas>
@@ -29,7 +42,7 @@
     <!-- </swiper-container> -->
   </div>
   <div class="container graph">
-    <span class="title">Velocity Falloff over Distance</span>
+    <!-- <span class="title">Velocity Falloff over Distance</span> -->
     <canvas class="mainGraph" baseChart [type]="'line'" [data]="lineChartDataVelocity" [options]="lineChartOptionsVel"
       [legend]="lineChartLegend">
     </canvas>

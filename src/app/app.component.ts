@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
       addDivider: false,
       disabled: false,
       hidden: false,
-      debug: true,
+      debug: false,
     },
     {
       title: 'Raw Data',

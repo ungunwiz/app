@@ -143,6 +143,12 @@ export class GraphPage implements OnInit {
     });
   }
 
+  public clearWeapons() {
+    this.weapons = [];
+    this.weaponsStringList = [];
+    this.updateGraph();
+  }
+
   private addGraph(weapon: any) {
     const color = this.colors[this.selectedWeaponCounter % this.colors.length];
     this.weaponsStringList.push({
