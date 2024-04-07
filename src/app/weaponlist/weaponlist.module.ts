@@ -6,9 +6,6 @@ import { NgModule } from '@angular/core';
 import { WeaponListPage } from './weaponlist.page';
 import { WeaponListPageRoutingModule } from './weaponlist-routing.module';
 
-import { NgChartsModule } from 'ng2-charts';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
 @NgModule({
   declarations: [WeaponListPage],
   imports: [
@@ -16,8 +13,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     FormsModule,
     IonicModule,
     WeaponListPageRoutingModule,
-    NgChartsModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class WeaponListPageModule {}

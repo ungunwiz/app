@@ -3,9 +3,54 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Graph</ion-title>
+    <ion-title *ngIf="weapons.length == 0">Graph</ion-title>
+    <ion-title *ngIf="weapons.length > 0">
+      Graph (<span *ngFor="let weapon of weaponsStringList; let last = last;"
+        [ngStyle]="{'color': weapon.color}">{{weapon.name}}{{last ? '' : ', '}}</span>)
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
+  <div class="container graph">
+    <!-- <swiper-container style="height: 100%;"> -->
+    <!-- <swiper-slide> -->
+    <span class="title">Damage Falloff over Distance</span>
+    <canvas class="mainGraph" baseChart [type]="'line'" [data]="lineChartDataDamage" [options]="lineChartOptionsDMG"
+      [legend]="lineChartLegend">
+    </canvas>
+    <!-- </swiper-slide> -->
+    <!-- <swiper-slide>
+        <span class="title">Velocity Falloff over Distance</span>
+        <canvas class="mainGraph" baseChart [type]="'line'" [data]="lineChartDataVelocity"
+          [options]="lineChartOptionsVel" [legend]="lineChartLegend">
+        </canvas>
+      </swiper-slide> -->
+    <!-- </swiper-container> -->
+  </div>
+  <div class="container graph">
+    <span class="title">Velocity Falloff over Distance</span>
+    <canvas class="mainGraph" baseChart [type]="'line'" [data]="lineChartDataVelocity" [options]="lineChartOptionsVel"
+      [legend]="lineChartLegend">
+    </canvas>
+  </div>
+
+  <!-- <div id="tableContainer">
+    <table>
+      <thead>
+        <tr>
+          <th>Distance</th>
+          <th *ngFor="let weapon of pubgData.weapons">{{weapon.name}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let distance of distances">
+          <td class="distanceCell">{{distance}}</td>
+          <td class="damageCell" *ngFor="let weapon of pubgData.weapons">
+            {{calcDamage(weapon, {distance}) | number:'1.1-1'}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
 </ion-content>
