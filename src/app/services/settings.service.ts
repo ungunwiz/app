@@ -68,14 +68,14 @@ export class SettingsService {
     const isDark = this.isDarkMode();
     await StatusBar.setStyle({
       style: isDark ? Style.Dark : Style.Light,
-    }).catch((e) => {
-      console.error(e);
+    }).catch((error) => {
+      console.error(error);
     });
     if (this.platform.is('android')) {
       const style = getComputedStyle(document.body);
       const bgColor = style.getPropertyValue('--ion-color-light-tint').trim();
-      await StatusBar.setBackgroundColor({ color: bgColor }).catch((e) => {
-        console.error(e);
+      await StatusBar.setBackgroundColor({ color: bgColor }).catch((error) => {
+        console.error(error);
       });
     }
   }

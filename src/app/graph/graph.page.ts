@@ -4,7 +4,7 @@ import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { register } from 'swiper/element/bundle';
 import { ActivatedRoute } from '@angular/router';
 
-import { PubgDataService } from 'src/app/services/pubgData.service';
+import { PubgDataService } from '@service/pubgData.service';
 
 register();
 

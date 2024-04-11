@@ -3,8 +3,8 @@ import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
-import { PubgDataService } from 'src/app/services/pubgData.service';
-import { SettingsService } from 'src/app/services/settings.service';
+import { PubgDataService } from '@service//pubgData.service';
+import { SettingsService } from '@service/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   constructor(
     private pubgDataService: PubgDataService,
     private settingsService: SettingsService,
+
     private http: HttpClient
   ) {}
 
@@ -128,7 +129,7 @@ export class AppComponent implements OnInit {
             };
             localStorage.setItem('appInfo', JSON.stringify(appInfo));
           },
-          error: (error) => console.error('Error loading version info:', error),
+          error: (error) => console.error(error),
         });
       });
   }

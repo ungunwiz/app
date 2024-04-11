@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '@service/settings.service';
 import { NotificationService } from '@service/notification.service';
 import { WordingService } from '@service/wording.service';
+import { AppUpdateService } from '@service/appUpdate.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-settings',
@@ -12,7 +14,8 @@ export class SettingsPage implements OnInit {
   constructor(
     private settingsService: SettingsService,
     private notificationService: NotificationService,
-    private wordingService: WordingService
+    private wordingService: WordingService,
+    private appUpdateService: AppUpdateService
   ) {}
 
   public settings: any;
@@ -20,6 +23,11 @@ export class SettingsPage implements OnInit {
   public appVersion: any;
   public appBuild: any;
   public devMode = localStorage.getItem('devMode') === 'true' || false;
+  public isApp = environment.platform === 'app' || !environment.production;
+  public updateSearching = false;
+  public updateInfo: any = {
+    updateAvailable: false,
+  };
 
   private buildTaps = 0;
   private buildTimeout: any;
@@ -30,6 +38,29 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
     this.settings = this.settingsService.settings;
     this.getAppDetails();
+    this.checkForUpdate();
+  }
+
+  private async getAppDetails() {
+    const appInfo = JSON.parse(localStorage.getItem('appInfo') || '{}');
+    this.appName = appInfo.name;
+    this.appVersion = appInfo.version;
+    this.appBuild = appInfo.build;
+  }
+
+  public checkForUpdate() {
+    if (this.isApp) {
+      this.updateSearching = true;
+      this.appUpdateService.checkForUpdate().then((updateInfo: any) => {
+        console.debug(updateInfo);
+        this.updateInfo = updateInfo;
+        this.updateSearching = false;
+      });
+    }
+  }
+
+  public downloadUpdate() {
+    console.debug('downloadUpdate');
   }
 
   public resetSettings() {
@@ -40,13 +71,6 @@ export class SettingsPage implements OnInit {
   public saveSettings() {
     this.settingsService.saveSettings();
     this.settingsService.apply();
-  }
-
-  private async getAppDetails() {
-    const appInfo = JSON.parse(localStorage.getItem('appInfo') || '{}');
-    this.appName = appInfo.name;
-    this.appVersion = appInfo.version;
-    this.appBuild = appInfo.build;
   }
 
   public enableDevMode() {

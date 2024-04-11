@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PubgDataService } from 'src/app/services/pubgData.service';
+import { PubgDataService } from '@service/pubgData.service';
 
 @Component({
   selector: 'app-weaponlist',

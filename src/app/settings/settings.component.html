@@ -10,7 +10,7 @@
 <ion-content fullscreen>
   <ion-list class="contentList">
     <ion-list-header>
-      <ion-label text-wrap>User Interface</ion-label>
+      <ion-label text-wrap> User Interface </ion-label>
     </ion-list-header>
     <ion-item lines="none">
       <ion-label>Follow System Theme</ion-label>
@@ -25,6 +25,38 @@
     <ion-item lines="none" *ngIf="devMode">
       <ion-label>Disable Debug Mode</ion-label>
       <ion-icon name="remove-circle-outline" (click)="disableDebugMode()"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="contentList" *ngIf="isApp">
+    <ion-list-header>
+      <ion-label text-wrap>
+        App Update
+        <ion-text color="success" *ngIf="updateInfo.updateAvailable">
+          - Update available!
+        </ion-text>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item lines="none">
+      <ion-label *ngIf="updateSearching">
+        Searching..
+      </ion-label>
+      <ion-label *ngIf="!updateSearching && updateInfo.updateAvailable">
+        Latest release: <ion-text color="tertiary">{{updateInfo.version}}</ion-text>
+      </ion-label>
+      <ion-label *ngIf="!updateSearching && !updateInfo.updateAvailable">
+        Up to Date.
+      </ion-label>
+      <ion-spinner color="tertiary" slot="end" *ngIf="updateSearching"></ion-spinner>
+      <ion-button class="iconButton" slot="end" *ngIf="!updateSearching && !updateInfo.updateAvailable"
+        (click)="checkForUpdate()">
+        <ion-icon slot="icon-only" name="reload"></ion-icon>
+      </ion-button>
+      <ion-button class="textButton" slot="end" *ngIf="!updateSearching && updateInfo.updateAvailable"
+        (click)="downloadUpdate()">
+        Download & Install
+      </ion-button>
     </ion-item>
   </ion-list>
 

@@ -8,8 +8,6 @@ ion-list {
 }
 
 ion-list-header {
-  font-size: 22px;
-  font-weight: bold;
   min-height: 20px;
   text-align: center;
   margin: 20px 0;
@@ -22,6 +20,8 @@ ion-list-header {
   }
 
   & ion-label.header {
+    font-size: 22px;
+    font-weight: bold;
     text-align: left;
     margin-top: auto;
     margin-bottom: auto;

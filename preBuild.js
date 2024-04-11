@@ -13,7 +13,7 @@ function getVersionAndBuildNumberFromGradle() {
   };
 }
 
-function setPermissions(path) {
+function setVersionForWeb() {
   try {
     const { version, buildNumber } = getVersionAndBuildNumberFromGradle();
     const assetsPath = "./src/assets/version.json";
@@ -24,7 +24,9 @@ function setPermissions(path) {
   } catch (error) {
     console.error("Error creating and pushing git tag:", error);
   }
+}
 
+function setPermissions(path) {
   exec(`chmod -R 755 ${path}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error setting permissions: ${error}`);
@@ -34,6 +36,8 @@ function setPermissions(path) {
     console.log(`Permissions set for ${path}`);
   });
 }
+
+setVersionForWeb();
 
 if (platform() !== "win32") {
   const path = "src/assets/gameAssets";
