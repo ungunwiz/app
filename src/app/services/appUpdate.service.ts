@@ -32,7 +32,7 @@ export class AppUpdateService {
             updateAvailable: false,
           };
 
-          if (updateInfo.version !== `${currentVersion}`) {
+          if (updateInfo.version !== `v${currentVersion}`) {
             updateInfo.updateAvailable = true;
             const apkAsset = response.assets.find(
               (asset: any) => asset.name === 'ungunwiz.apk'
