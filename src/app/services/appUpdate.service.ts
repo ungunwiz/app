@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Capacitor } from '@capacitor/core';
+import { CapacitorHttp } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { InstallPermission } from 'install-permission';
+import {
+  FileOpener,
+  FileOpenerOptions,
+} from '@capacitor-community/file-opener';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppUpdateService {
   private apiUrl = 'https://api.github.com/repos/ungunwiz/app/releases/latest';
+  private content_type = 'application/vnd.android.package-archive';
 
   constructor(private http: HttpClient) {}
 
@@ -45,5 +51,59 @@ export class AppUpdateService {
           reject(error);
         });
     });
+  }
+
+  async downloadUpdate(url: string) {
+    try {
+      const response: any = await CapacitorHttp.get({
+        url,
+        headers: {
+          'Content-Type': this.content_type,
+        },
+        responseType: 'blob',
+      });
+
+      Filesystem.checkPermissions()
+        .then(async (result: any) => {
+          if (result.publicStorage === 'granted') {
+            const writeResult = await Filesystem.writeFile({
+              path: `apks/ungunwiz.apk`,
+              data: response.data,
+              directory: Directory.Data,
+              recursive: true,
+            });
+            await InstallPermission.checkPermission()
+              .then((result: { granted: boolean }) => {
+                if (result.granted) {
+                  this.installUpdate(writeResult.uri);
+                } else {
+                  InstallPermission.requestPermission();
+                }
+              })
+              .catch((error: any) => {
+                console.error(error);
+              });
+          }
+        })
+        .catch((error: any) => {
+          console.error(`error:`, error);
+        });
+    } catch (error) {
+      console.error('Error fetching or processing blob:', error);
+      throw error;
+    }
+  }
+
+  async installUpdate(uri: string) {
+    console.debug('installUpdate');
+    try {
+      const fileOpenerOptions: FileOpenerOptions = {
+        filePath: uri,
+        contentType: this.content_type,
+      };
+      await FileOpener.open(fileOpenerOptions);
+    } catch (e) {
+      console.log('Error opening file', e);
+    }
   }
 }

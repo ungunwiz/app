@@ -4,6 +4,7 @@ import { NotificationService } from '@service/notification.service';
 import { WordingService } from '@service/wording.service';
 import { AppUpdateService } from '@service/appUpdate.service';
 import { environment } from 'src/environments/environment';
+import { InstallPermission } from 'install-permission';
 
 @Component({
   selector: 'app-settings',
@@ -23,7 +24,7 @@ export class SettingsPage implements OnInit {
   public appVersion: any;
   public appBuild: any;
   public devMode = localStorage.getItem('devMode') === 'true' || false;
-  public isApp = environment.platform === 'app' || !environment.production;
+  public isApp = environment.platform === 'app';
   public updateSearching = false;
   public updateInfo: any = {
     updateAvailable: false,
@@ -38,7 +39,9 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
     this.settings = this.settingsService.settings;
     this.getAppDetails();
-    this.checkForUpdate();
+    if (this.isApp) {
+      this.checkForUpdate();
+    }
   }
 
   private async getAppDetails() {
@@ -59,8 +62,8 @@ export class SettingsPage implements OnInit {
     }
   }
 
-  public downloadUpdate() {
-    console.debug('downloadUpdate');
+  public async downloadUpdate() {
+    this.appUpdateService.downloadUpdate(this.updateInfo.apkUrl);
   }
 
   public resetSettings() {
@@ -79,11 +82,11 @@ export class SettingsPage implements OnInit {
 
     if (this.buildTaps == 10) {
       if (this.devMode) {
-        this.notificationService.createCustom('Debug mode already enabled');
+        this.notificationService.createCustom('Debug mode already enabled.');
       } else {
         this.devMode = true;
         localStorage.setItem('devMode', 'true');
-        this.notificationService.createCustom('Debug mode enabled', {
+        this.notificationService.createCustom('Debug mode enabled.', {
           message: this.devModeMessage,
         });
       }
@@ -97,7 +100,7 @@ export class SettingsPage implements OnInit {
   public disableDebugMode() {
     this.devMode = false;
     localStorage.setItem('devMode', 'false');
-    this.notificationService.createCustom('Debug mode disabled', {
+    this.notificationService.createCustom('Debug mode disabled.', {
       message: this.devModeMessage,
     });
   }
