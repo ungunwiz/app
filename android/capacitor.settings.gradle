@@ -20,5 +20,5 @@ project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
 
-include ':install-permission'
-project(':install-permission').projectDir = new File('../../install-permission/android')
+include ':zlyfer-cap-plugin-install-permission'
+project(':zlyfer-cap-plugin-install-permission').projectDir = new File('../node_modules/@zlyfer/cap-plugin-install-permission/android')

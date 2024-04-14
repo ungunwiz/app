@@ -4,7 +4,6 @@ import { NotificationService } from '@service/notification.service';
 import { WordingService } from '@service/wording.service';
 import { AppUpdateService } from '@service/appUpdate.service';
 import { environment } from 'src/environments/environment';
-import { InstallPermission } from 'install-permission';
 
 @Component({
   selector: 'app-settings',

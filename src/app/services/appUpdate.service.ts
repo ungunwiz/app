@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CapacitorHttp } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { InstallPermission } from 'install-permission';
+import { InstallPermission } from '@zlyfer/cap-plugin-install-permission';
 import {
   FileOpener,
   FileOpenerOptions,
