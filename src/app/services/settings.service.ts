@@ -16,6 +16,9 @@ export class SettingsService {
       autoTheme: true,
       darkMode: true,
     },
+    misc: {
+      devMode: false,
+    },
   };
 
   private init() {

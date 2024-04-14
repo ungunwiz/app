@@ -91,7 +91,8 @@ export class AppComponent implements OnInit {
     },
   ];
   public environment = environment;
-  public devMode = localStorage.getItem('devMode') === 'true' || false;
+  public settings = this.settingsService.settings;
+  public devMode = this.settings.misc.devMode;
 
   ngOnInit() {
     this.onSystemDarkModechange();

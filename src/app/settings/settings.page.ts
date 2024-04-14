@@ -22,7 +22,8 @@ export class SettingsPage implements OnInit {
   public appName: any;
   public appVersion: any;
   public appBuild: any;
-  public devMode = localStorage.getItem('devMode') === 'true' || false;
+  public allowDevMode =
+    localStorage.getItem('allowDevMode') === 'true' || false;
   public isApp = environment.platform === 'app';
   public updateSearching = false;
   public updateInfo: any = {
@@ -80,11 +81,11 @@ export class SettingsPage implements OnInit {
     clearTimeout(this.buildTimeout);
 
     if (this.buildTaps == 10) {
-      if (this.devMode) {
+      if (this.allowDevMode) {
         this.notificationService.createCustom('Debug mode already enabled.');
       } else {
-        this.devMode = true;
-        localStorage.setItem('devMode', 'true');
+        this.allowDevMode = true;
+        localStorage.setItem('allowDevMode', 'true');
         this.notificationService.createCustom('Debug mode enabled.', {
           message: this.devModeMessage,
         });
@@ -94,13 +95,5 @@ export class SettingsPage implements OnInit {
         this.buildTaps = 0;
       }, 2000);
     }
-  }
-
-  public disableDebugMode() {
-    this.devMode = false;
-    localStorage.setItem('devMode', 'false');
-    this.notificationService.createCustom('Debug mode disabled.', {
-      message: this.devModeMessage,
-    });
   }
 }

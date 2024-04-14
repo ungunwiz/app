@@ -13,18 +13,19 @@
       <ion-label text-wrap> User Interface </ion-label>
     </ion-list-header>
     <ion-item lines="none">
-      <ion-label>Follow System Theme</ion-label>
+      <ion-label>Follow system theme</ion-label>
       <ion-toggle slot="end" [(ngModel)]="settings.ui.autoTheme" (ionChange)="saveSettings()">
       </ion-toggle>
     </ion-item>
     <ion-item lines="none" [disabled]="settings.ui.autoTheme">
-      <ion-label>Dark Mode</ion-label>
+      <ion-label>Dark mode</ion-label>
       <ion-toggle slot="end" [(ngModel)]="settings.ui.darkMode" (ionChange)="saveSettings()">
       </ion-toggle>
     </ion-item>
-    <ion-item lines="none" *ngIf="devMode">
-      <ion-label>Disable Debug Mode</ion-label>
-      <ion-icon name="remove-circle-outline" (click)="disableDebugMode()"></ion-icon>
+    <ion-item lines="none" *ngIf="allowDevMode">
+      <ion-label>Disable developer mode</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.misc.devMode" (ionChange)="saveSettings()">
+      </ion-toggle>
     </ion-item>
   </ion-list>
 
@@ -61,10 +62,10 @@
     </ion-item>
   </ion-list>
 
-  <div class="version" (click)="enableDevMode()">
-    <ion-label class="version">
+  <div class="versionBox" (click)="enableDevMode()">
+    <span class="versionLabel">
       <span class="appName">{{appName}}</span> v{{appVersion}}
-      {{devMode ? '| build ' + appBuild : null }}
-    </ion-label>
+      {{settings.misc.devMode ? '| build ' + appBuild : null }}
+    </span>
   </div>
 </ion-content>
