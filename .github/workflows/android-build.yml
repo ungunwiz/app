@@ -25,13 +25,13 @@ jobs:
           mkdir -p ./src/assets/gameAssets
           cp -r external-assets/gameAssets/* ./src/assets/gameAssets/
 
-      - name: Pull Capacitor Plugin Install Permission
+      - name: Pull Capacitor Plugin zlfer/cap-plugin-install-permission
         uses: actions/checkout@v4
         with:
           repository: "zlyfer/cap-plugin-install-permission"
           path: "cap-plugin-install-permission"
 
-      - name: Build and Link Capacitor Plugin
+      - name: Build zlfer/cap-plugin-install-permission
         run: |
           cd cap-plugin-install-permission
           npm install

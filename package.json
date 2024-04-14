@@ -44,7 +44,7 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
-    "cap-plugin-install-permission": "file:../cap-plugin-install-permission",
+    "install-permission": "file:../cap-plugin-install-permission",
     "chart.js": "^3.6.0",
     "ionicons": "^7.0.0",
     "ng2-charts": "^5.0.3",
