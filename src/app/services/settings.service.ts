@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Platform } from '@ionic/angular';
+import { forceUpdate } from 'ionicons/dist/types/stencil-public-runtime';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,9 @@ export class SettingsService {
       autoTheme: true,
       darkMode: true,
     },
-    misc: {
-      devMode: false,
+    developer: {
+      developerMode: false,
+      forceUpdate: false,
     },
   };
 

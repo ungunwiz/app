@@ -12,7 +12,7 @@ ion-item {
 
 /* ----------- App Version ---------- */
 
-div.versionBox {
+.versionBox {
   position: absolute;
   width: calc(100% - 80px) !important;
   margin: 0 40px;
@@ -22,19 +22,22 @@ div.versionBox {
   border-radius: 20px;
   transition: all 1s ease-out;
   user-select: none;
+
+  & .versionLabel {
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--ion-color-medium) !important;
+    & .appName {
+      color: var(--ion-color-primary);
+      font-weight: bold;
+    }
+  }
 }
-div.versionLabel:active {
+.versionBox:active {
   background: rgba(var(--ion-color-dark-rgb), 0.1);
 }
-span.versionLabel {
-  font-size: 1em;
-  font-weight: bold;
-  color: var(--ion-color-medium) !important;
-}
-span.appName {
-  color: var(--ion-color-primary);
-  font-weight: bold;
-}
+
+/* ---------- Update Check ---------- */
 
 ion-spinner {
   margin-right: 10px;

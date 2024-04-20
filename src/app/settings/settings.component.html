@@ -10,7 +10,7 @@
 <ion-content fullscreen>
   <ion-list class="contentList">
     <ion-list-header>
-      <ion-label text-wrap> User Interface </ion-label>
+      <ion-label> User Interface </ion-label>
     </ion-list-header>
     <ion-item lines="none">
       <ion-label>Follow system theme</ion-label>
@@ -22,50 +22,63 @@
       <ion-toggle slot="end" [(ngModel)]="settings.ui.darkMode" (ionChange)="saveSettings()">
       </ion-toggle>
     </ion-item>
-    <ion-item lines="none" *ngIf="allowDevMode">
-      <ion-label>Disable developer mode</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="settings.misc.devMode" (ionChange)="saveSettings()">
-      </ion-toggle>
-    </ion-item>
   </ion-list>
 
-  <ion-list class="contentList" *ngIf="isApp">
+  <ion-list class="contentList" *ngIf="isApp || true">
     <ion-list-header>
-      <ion-label text-wrap>
+      <ion-label>
         App Update
-        <ion-text color="success" *ngIf="updateInfo.updateAvailable">
+        <ion-text color="success" *ngIf="!updateInfo.updateAvailable && updateSearched && !updateSearching">
+          - Up to Date
+        </ion-text>
+        <ion-text color="tertiary" *ngIf="updateInfo.updateAvailable && updateSearched && !updateSearching">
           - Update available!
         </ion-text>
       </ion-label>
     </ion-list-header>
-
     <ion-item lines="none">
       <ion-label *ngIf="updateSearching">
-        Searching..
+        Checking for update..
+      </ion-label>
+      <ion-label *ngIf="!updateSearching && !updateInfo.updateAvailable">
+        Check for update
       </ion-label>
       <ion-label *ngIf="!updateSearching && updateInfo.updateAvailable">
         Latest release: <ion-text color="tertiary">{{updateInfo.version}}</ion-text>
       </ion-label>
-      <ion-label *ngIf="!updateSearching && !updateInfo.updateAvailable">
-        Up to Date.
-      </ion-label>
       <ion-spinner color="tertiary" slot="end" *ngIf="updateSearching"></ion-spinner>
-      <ion-button class="iconButton" slot="end" *ngIf="!updateSearching && !updateInfo.updateAvailable"
-        (click)="checkForUpdate()">
-        <ion-icon slot="icon-only" name="reload"></ion-icon>
-      </ion-button>
       <ion-button class="textButton" slot="end" *ngIf="!updateSearching && updateInfo.updateAvailable"
         (click)="downloadUpdate()">
         Download
       </ion-button>
+      <ion-button class="iconButton" slot="end" *ngIf="!updateSearching" (click)="checkForUpdate()">
+        <ion-icon slot="icon-only" name="reload"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
 
+  <ion-list class="contentList" *ngIf="allowDevMode">
+    <ion-list-header>
+      <ion-label color="warning">
+        Developer Options
+      </ion-label>
+    </ion-list-header>
+    <ion-item lines="none">
+      <ion-label color="warning">Enable developer mode</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.developer.developerMode" (ionChange)="saveSettings()">
+      </ion-toggle>
+    </ion-item>
+    <ion-item lines="none" *ngIf="settings.developer.developerMode">
+      <ion-label color="warning">Force app update</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.developer.forceUpdate" (ionChange)="saveSettings()">
+      </ion-toggle>
     </ion-item>
   </ion-list>
 
   <div class="versionBox" (click)="enableDevMode()">
     <span class="versionLabel">
       <span class="appName">{{appName}}</span> v{{appVersion}}
-      {{settings.misc.devMode ? '| build ' + appBuild : null }}
+      {{settings.developer.developerMode ? '| build ' + appBuild : null }}
     </span>
   </div>
 </ion-content>

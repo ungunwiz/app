@@ -92,13 +92,13 @@ export class AppComponent implements OnInit {
   ];
   public environment = environment;
   public settings = this.settingsService.settings;
-  public devMode = this.settings.misc.devMode;
+  public developerMode = this.settings.developer.developerMode;
 
   ngOnInit() {
     this.onSystemDarkModechange();
     this.setAppDetails();
     this.pubgDataService.initData().then((pubgData: any) => {
-      if (this.devMode) {
+      if (this.developerMode) {
         console.debug(`pubgData:`, pubgData);
       }
     });

@@ -26,22 +26,20 @@ export class SettingsPage implements OnInit {
     localStorage.getItem('allowDevMode') === 'true' || false;
   public isApp = environment.platform === 'app';
   public updateSearching = false;
+  public updateSearched = false;
   public updateInfo: any = {
     updateAvailable: false,
   };
 
   private buildTaps = 0;
   private buildTimeout: any;
-  private devModeMessage = `Please ${this.wordingService.getWord(
+  private developerModeMessage = `Please ${this.wordingService.getWord(
     'restart'
   )} the ${this.wordingService.getWord('app')} to apply the changes.`;
 
   ngOnInit() {
     this.settings = this.settingsService.settings;
     this.getAppDetails();
-    if (this.isApp) {
-      this.checkForUpdate();
-    }
   }
 
   private async getAppDetails() {
@@ -52,14 +50,13 @@ export class SettingsPage implements OnInit {
   }
 
   public checkForUpdate() {
-    if (this.isApp) {
-      this.updateSearching = true;
-      this.appUpdateService.checkForUpdate().then((updateInfo: any) => {
-        console.debug(updateInfo);
-        this.updateInfo = updateInfo;
-        this.updateSearching = false;
-      });
-    }
+    this.updateSearching = true;
+    this.appUpdateService.checkForUpdate().then((updateInfo: any) => {
+      console.debug(updateInfo);
+      this.updateInfo = updateInfo;
+      this.updateSearching = false;
+      this.updateSearched = true;
+    });
   }
 
   public async downloadUpdate() {
@@ -87,7 +84,7 @@ export class SettingsPage implements OnInit {
         this.allowDevMode = true;
         localStorage.setItem('allowDevMode', 'true');
         this.notificationService.createCustom('Debug mode enabled.', {
-          message: this.devModeMessage,
+          message: this.developerModeMessage,
         });
       }
     } else {
