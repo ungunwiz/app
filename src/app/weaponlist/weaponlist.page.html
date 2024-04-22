@@ -28,7 +28,10 @@
       <span class="weaponType">{{weapon.type}}</span>
       <span class="weaponName">{{weapon.name}}</span>
 
-      <img class="sprite weaponImage" [src]="getWeaponIcon(weapon, false)" />
+      <img *ngIf="weapon.meta" class="sprite weaponImage" [ngStyle]="{
+          'top': ((mapT(maxImageHeight) - mapT(weapon.meta.height))/ 2 + 2).toFixed() + 'px',
+          'height':  (mapT(weapon.meta.height)) + 'px',
+          }" [src]="getWeaponIcon(weapon, false)" />
 
       <div class="statsContainer">
         <div class="spanContainer">

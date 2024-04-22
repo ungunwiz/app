@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PubgDataService } from '@service/pubgData.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-weaponlist',
@@ -10,7 +11,8 @@ import { PubgDataService } from '@service/pubgData.service';
 export class WeaponListPage implements OnInit {
   constructor(
     private pubgDataService: PubgDataService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   private sortType: string = 'name';
@@ -21,15 +23,48 @@ export class WeaponListPage implements OnInit {
   public searchText: string = '';
   public selectedWeapons: any = [];
   public weaponStats: any = {};
+  public minImageHeight: number = 10000;
+  public maxImageHeight: number = 0;
 
   async ngOnInit() {
     this.pubgData = await this.pubgDataService.get();
 
+    // TODO: Use Promise.all and this.loading to remove *ngIf="weapon.meta":
+    this.prepareWeapons();
     this.search();
-    this.sortWeapons();
     this.scaleWeaponStats();
+    this.getWeaponMetaData();
 
     this.loading = false;
+  }
+
+  getWeaponMetaData() {
+    this.weapons.forEach((weapon: any) => {
+      const weaponName = weapon.name.replace(/\s/g, '_');
+      this.http.get(`/assets/gameAssets/weapons/${weaponName}.json`).subscribe({
+        next: (data: any) => {
+          weapon.meta = {
+            height: data.height,
+            width: data.width,
+          };
+          if (data.height > this.maxImageHeight) {
+            this.maxImageHeight = data.height;
+          }
+          if (data.height < this.minImageHeight) {
+            this.minImageHeight = data.height;
+          }
+        },
+        error: (error) => console.error(weaponName, error),
+      });
+    });
+  }
+
+  mapT(value: number) {
+    return this.map(value, this.minImageHeight, this.maxImageHeight, 50, 60);
+  }
+
+  map(value: number, min1: number, max1: number, min2: number, max2: number) {
+    return ((value - min1) * (max2 - min2)) / (max1 - min1) + min2;
   }
 
   public search() {
@@ -40,7 +75,7 @@ export class WeaponListPage implements OnInit {
     });
   }
 
-  private sortWeapons() {
+  private prepareWeapons() {
     this.weapons.sort((a: any, b: any) => {
       return a[this.sortType] > b[this.sortType] ? 1 : -1;
     });

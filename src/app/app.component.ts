@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
   constructor(
     private pubgDataService: PubgDataService,
     private settingsService: SettingsService,
-
     private http: HttpClient
   ) {}
 
