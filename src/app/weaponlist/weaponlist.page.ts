@@ -76,8 +76,21 @@ export class WeaponListPage implements OnInit {
   }
 
   private prepareWeapons() {
-    this.weapons.sort((a: any, b: any) => {
-      return a[this.sortType] > b[this.sortType] ? 1 : -1;
+    // this.weapons.sort((a: any, b: any) => {
+    //   return a[this.sortType] > b[this.sortType] ? 1 : -1;
+    // });
+    // sort by type and name:
+    this.weapons = this.pubgData.weapons.sort((a: any, b: any) => {
+      if (a.type > b.type) {
+        return 1;
+      } else if (a.type < b.type) {
+        return -1;
+      } else {
+        return a.name > b.name ? 1 : -1;
+      }
+    });
+    this.weapons.forEach((weapon: any) => {
+      weapon.selected = false;
     });
   }
 
@@ -95,7 +108,7 @@ export class WeaponListPage implements OnInit {
         min: 10000,
         max: -10000,
       },
-      tbs: {
+      rof: {
         min: 10000,
         max: -10000,
       },
@@ -111,7 +124,7 @@ export class WeaponListPage implements OnInit {
         damage: parseFloat(weapon.damage),
         speed: parseFloat(weapon.speed),
         clip: parseFloat(weapon.clip),
-        tbs: parseFloat(weapon.tbs),
+        rof: parseFloat(weapon.rof),
         range: parseFloat(weapon.range),
       };
 
@@ -133,11 +146,11 @@ export class WeaponListPage implements OnInit {
       if (weapon.clip > minMax.clip.max) {
         minMax.clip.max = weapon.clip;
       }
-      if (weapon.tbs < minMax.tbs.min) {
-        minMax.tbs.min = weapon.tbs;
+      if (weapon.rof < minMax.rof.min) {
+        minMax.rof.min = weapon.rof;
       }
-      if (weapon.tbs > minMax.tbs.max) {
-        minMax.tbs.max = weapon.tbs;
+      if (weapon.rof > minMax.rof.max) {
+        minMax.rof.max = weapon.rof;
       }
     });
 
@@ -147,7 +160,7 @@ export class WeaponListPage implements OnInit {
         damage: parseFloat(weapon.damage),
         speed: parseFloat(weapon.speed),
         clip: parseFloat(weapon.clip),
-        tbs: parseFloat(weapon.tbs),
+        rof: parseFloat(weapon.rof),
         range: parseFloat(weapon.range),
       };
 
@@ -155,7 +168,7 @@ export class WeaponListPage implements OnInit {
         _damage: weapon.damage,
         _speed: weapon.speed,
         _clip: weapon.clip,
-        _tbs: weapon.tbs,
+        _tbs: weapon.rof,
       };
 
       percentages.damage = this.pubgDataService.map(
@@ -179,10 +192,10 @@ export class WeaponListPage implements OnInit {
         0,
         100
       );
-      percentages.tbs = this.pubgDataService.map(
-        weapon.tbs,
-        minMax.tbs.min,
-        minMax.tbs.max,
+      percentages.rof = this.pubgDataService.map(
+        weapon.rof,
+        minMax.rof.min,
+        minMax.rof.max,
         0,
         100
       );
@@ -215,6 +228,8 @@ export class WeaponListPage implements OnInit {
   }
 
   public toggleWeapon(weapon: any) {
+    weapon.selected = !weapon.selected;
+
     if (this.isSelected(weapon)) {
       this.selectedWeapons = this.selectedWeapons.filter((w: any) => {
         return w.name !== weapon.name;

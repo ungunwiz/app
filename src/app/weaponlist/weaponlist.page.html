@@ -22,60 +22,66 @@
 
   <div *ngIf="!loading">
 
-    <div [id]="weapon.name" class="weapon" [class.selected]="isSelected(weapon)" (click)="toggleWeapon(weapon)"
-      *ngFor="let weapon of weapons">
+    <div *ngFor="let weapon of weapons; let i = index">
+      <span class="weaponCategory" *ngIf="i === 0 || weapons[i - 1].type !== weapon.type">
+        - {{weapon.type}}s -
+      </span>
 
-      <span class="weaponType">{{weapon.type}}</span>
-      <span class="weaponName">{{weapon.name}}</span>
+      <div [id]="weapon.name" class="weapon" [class.selected]="weapon.selected" [class.selected]="isSelected(weapon)"
+        (click)="toggleWeapon(weapon)">
 
-      <img *ngIf="weapon.meta" class="sprite weaponImage" [ngStyle]="{
+        <span class="weaponType">{{weapon.type}}</span>
+        <span class="weaponName">{{weapon.name}}</span>
+
+        <img *ngIf="weapon.meta" class="sprite weaponImage" [ngStyle]="{
           'top': ((mapT(maxImageHeight) - mapT(weapon.meta.height))/ 2 + 2).toFixed() + 'px',
           'height':  (mapT(weapon.meta.height)) + 'px',
           }" [src]="getWeaponIcon(weapon, false)" />
 
-      <div class="statsContainer">
-        <div class="spanContainer">
-          <span class="shadow damage">Damage:</span>
-          <span class="shadow speed">Velocity:</span>
-          <span class="shadow clip">Clip Size:</span>
-          <span class="shadow tbs">TBS:</span>
-          <!-- <span class="shadow range">Range:</span> -->
-        </div>
-
-        <div class="spanContainer">
-          <span class="shadow damage">
-            {{weapon.damage}}
-          </span>
-          <span class="shadow speed">
-            {{weapon.speed}}
-          </span>
-          <span class="shadow clip">
-            {{weapon.clip}}
-          </span>
-          <span class="shadow tbs">
-            {{weapon.tbs | number:'1.3'}}
-          </span>
-          <!-- <span class="shadow range">
-            {{weapon.range | number:'1.3'}}
-          </span> -->
-        </div>
-
-        <div class="barContainer">
-          <div class="bar damage"></div>
-          <div [style]="'width: ' + weaponStats[weapon.name].damage + '%;'" class="bar damage active">
+        <div class="statsContainer">
+          <div class="spanContainer">
+            <span class="shadow damage">Damage:</span>
+            <span class="shadow speed">Velocity:</span>
+            <span class="shadow clip">Clip Size:</span>
+            <span class="shadow rof">Firerate:</span>
+            <span class="shadow range">Range:</span>
           </div>
-          <div class="bar speed"></div>
-          <div [style]="'width: ' + weaponStats[weapon.name].speed + '%;'" class="bar speed active">
+
+          <div class="spanContainer">
+            <span class="shadow damage">
+              {{weapon.damage}}
+            </span>
+            <span class="shadow speed">
+              {{weapon.speed}}
+            </span>
+            <span class="shadow clip">
+              {{weapon.clip}}
+            </span>
+            <span class="shadow rof">
+              {{ weapon.rof | number:'1.3'}}
+            </span>
+            <span class="shadow range">
+              {{weapon.range | number:'1.3'}}
+            </span>
           </div>
-          <div class="bar clip"></div>
-          <div [style]="'width: ' + weaponStats[weapon.name].clip + '%;'" class="bar clip active"></div>
-          <div class="bar tbs"></div>
-          <div [style]="'width: ' + weaponStats[weapon.name].tbs + '%;'" class="bar tbs active"></div>
-          <!-- <div class="bar range"></div>
-          <div [style]="'width: ' + weaponStats[weapon.name].range + '%;'" class="bar range active"></div> -->
+
+          <div class="barContainer">
+            <div class="bar damage"></div>
+            <div [style]="'width: ' + weaponStats[weapon.name].damage + '%;'" class="bar damage active">
+            </div>
+            <div class="bar speed"></div>
+            <div [style]="'width: ' + weaponStats[weapon.name].speed + '%;'" class="bar speed active">
+            </div>
+            <div class="bar clip"></div>
+            <div [style]="'width: ' + weaponStats[weapon.name].clip + '%;'" class="bar clip active"></div>
+            <div class="bar rof"></div>
+            <div [style]="'width: ' + weaponStats[weapon.name].rof + '%;'" class="bar rof active"></div>
+            <div class="bar range"></div>
+            <div [style]="'width: ' + weaponStats[weapon.name].range + '%;'" class="bar range active"></div>
+          </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </ion-content>
