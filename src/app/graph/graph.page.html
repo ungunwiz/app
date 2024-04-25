@@ -13,18 +13,6 @@
 </ion-header>
 
 <ion-content fullscreen>
-
-  <ion-fab *ngIf="weapons.length == 0" slot="fixed" horizontal="end" vertical="bottom" routerLink="/weaponlist">
-    <ion-fab-button color="tertiary">
-      <ion-icon name="stats-chart"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  <ion-fab *ngIf="weapons.length > 0" slot="fixed" horizontal="end" vertical="bottom" (click)="clearWeapons()">
-    <ion-fab-button color="danger">
-      <ion-icon name="close"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
   <div class="container graph">
     <!-- <swiper-container style="height: 100%;"> -->
     <!-- <swiper-slide> -->

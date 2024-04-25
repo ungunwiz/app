@@ -13,15 +13,21 @@
 </ion-header>
 
 <ion-content fullscreen id="weaponlist">
-  <ion-fab *ngIf="selectedWeapons.length > 0" slot="fixed" horizontal="end" vertical="bottom"
-    (click)="navigateWithWeapons()">
-    <ion-fab-button color="tertiary">
-      <ion-icon name="analytics-sharp"></ion-icon>
+  <ion-fab *ngIf="selectedWeapons.length > 0" slot="fixed" horizontal="end" vertical="bottom">
+    <ion-fab-button color="primary">
+      <ion-icon name="add"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="danger" (click)="selectedWeapons = []">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="tertiary" (click)="navigateWithWeapons()">
+        <ion-icon name="analytics-sharp"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 
   <div *ngIf="!loading">
-
     <div *ngFor="let weapon of weapons; let i = index">
       <span class="weaponCategory" *ngIf="i === 0 || weapons[i - 1].type !== weapon.type">
         - {{weapon.type}}s -
@@ -81,7 +87,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </ion-content>
