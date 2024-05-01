@@ -63,13 +63,18 @@ export class PubgDataService {
               damageAreas: data[3],
             };
 
+            /* ---------------- - --------------- */
+            this.generateDistances();
+            this.generateDamageFallOffs();
+            /* ---------------- - --------------- */
+
             this.lastUpdated = Math.floor(Date.now() / 1000);
             localStorage.setItem(
               'pubgDataLastUpdated',
               JSON.stringify(this.lastUpdated)
             );
             localStorage.setItem('pubgData', JSON.stringify(this.pubgData));
-            this.generateDistances();
+
             resolve(this.pubgData);
           })
           .catch((error) => {
@@ -139,7 +144,6 @@ export class PubgDataService {
   /* ---------------------------------- */
 
   distances: any = [];
-  calculatedDamageMultiplier: any = [];
   calculatedDamageFalloffs: any = {};
 
   private generateDamageFallOffs() {
@@ -147,11 +151,6 @@ export class PubgDataService {
       this.calculatedDamageFalloffs[weapon.name] = [];
       this.distances.forEach((distance: any) => {
         const { start, end } = this.generateDamageFallOff(weapon, distance);
-        this.calculatedDamageMultiplier.push({
-          weapon: weapon.name,
-          start: { distance: start.distance, multiplier: start.multiplier },
-          end: { distance: end.distance, multiplier: end.multiplier },
-        });
         var multiplier: any = this.map(
           distance,
           start.distance,
@@ -192,7 +191,7 @@ export class PubgDataService {
       if (distance > damageFalloff.distance) {
         start = damageFalloff;
       }
-      if (distance <= damageFalloff.distance && !endSelected) {
+      if (distance < damageFalloff.distance && !endSelected) {
         end = damageFalloff;
         endSelected = true;
       }
@@ -236,8 +235,8 @@ export class PubgDataService {
     return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
   }
 
-  private generateDistances(start: number = 1, end: number = 1000) {
-    for (let i = start; i <= end; i++) {
+  private generateDistances(start: number = 0, end: number = 1000) {
+    for (let i = start; i <= end; i += 100) {
       this.distances.push(i);
     }
   }

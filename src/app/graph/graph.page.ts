@@ -1,12 +1,9 @@
 import { GraphService } from '@service/graph.service';
-import { Component, OnInit } from '@angular/core';
-import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
-import { register } from 'swiper/element/bundle';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 
 import { PubgDataService } from '@service/pubgData.service';
-
-register();
 
 @Component({
   selector: 'app-graph',
@@ -20,143 +17,192 @@ export class GraphPage implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  private colors: any = [
-    '#F44336',
-    '#2196F3',
-    '#8BC34A',
-    '#FFEB3B',
-    '#FF9800',
-    '#673AB7',
-    '#E91E63',
-    '#009688',
-  ];
-  private pubgData: any = {};
-  private selectedWeaponCounter: number = 0;
+  @ViewChild('damageChart') damageChart!: ElementRef;
+  @ViewChild('velocityChart') velocityChart!: ElementRef;
 
   public weapons: any = [];
-  public weaponsStringList: any = [];
-  // TODO: Fix tooltip color of weapon not matching line color:
-  private lineChartOptionsDefault: any = {
+
+  private pubgData: any = {};
+  private fixedOptions = {
+    stacked: false,
+    grid: {
+      display: true,
+      color: this.getStyleColor('--ion-color-step-text-800'),
+      tickBorderDash: [1, 5],
+    },
+    border: {
+      dash: [1, 5],
+    },
+    type: 'linear',
+    title: {
+      display: true,
+      color: this.getStyleColor('--ion-color-step-text-800'),
+      font: {
+        size: 18,
+      },
+    },
+    ticks: {
+      color: this.getStyleColor('--ion-color-step-text-800'),
+    },
+  };
+  private optionsDefault: ChartOptions = {
     responsive: true,
     interaction: {
       mode: 'index',
       intersect: false,
     },
     maintainAspectRatio: false,
+    events: ['mousemove'],
     plugins: {
+      colors: {
+        enabled: false,
+      },
       legend: {
-        display: true,
+        display: false,
         position: 'top',
         labels: {
           color: this.getStyleColor('--ion-color-step-text-800'),
           font: {
-            size: 16,
+            size: 14,
           },
         },
       },
     },
     scales: {
+      // @ts-ignore
       x: {
-        stacked: false,
-        grid: {
-          display: true,
-          color: this.getStyleColor('--ion-color-step-text-800'),
-          borderDash: [1, 5],
-          tickBorderDash: [1, 5],
-          lineWidth: 1,
-        },
-        type: 'linear',
-        min: 0,
-        max: 1000,
-        title: {
-          display: true,
-          color: this.getStyleColor('--ion-color-step-text-800'),
-          font: {
-            size: 20,
-          },
-        },
-        ticks: {
-          color: this.getStyleColor('--ion-color-step-text-800'),
-          stepSize: 100,
-        },
+        ...this.fixedOptions,
       },
+      // @ts-ignore
       y: {
-        stacked: false,
-        grid: {
-          display: true,
-          color: this.getStyleColor('--ion-color-step-text-800'),
-          borderDash: [1, 5],
-          tickBorderDash: [1, 5],
-          lineWidth: 1,
-        },
-        type: 'linear',
-        min: 0,
-        title: {
-          display: true,
-          color: this.getStyleColor('--ion-color-step-text-800'),
-          font: {
-            size: 20,
-          },
-        },
-        ticks: {
-          color: this.getStyleColor('--ion-color-step-text-800'),
-        },
+        ...this.fixedOptions,
       },
     },
   };
-
-  public lineChartDataDamage: ChartConfiguration<'line'>['data'] = {
+  private dataDamage: ChartConfiguration<'line'>['data'] = {
     datasets: [],
   };
-  public lineChartDataVelocity: ChartConfiguration<'line'>['data'] = {
+  private dataVelocity: ChartConfiguration<'line'>['data'] = {
     datasets: [],
   };
-  public lineChartOptionsDMG: any = JSON.parse(
-    JSON.stringify(this.lineChartOptionsDefault)
-  );
-  public lineChartOptionsVel: any = JSON.parse(
-    JSON.stringify(this.lineChartOptionsDefault)
-  );
-  public lineChartLegend = true;
 
   async ngOnInit() {
     this.pubgData = await this.pubgDataService.get();
-
-    this.lineChartOptionsDMG.scales.x.title.text = 'Distance (m)';
-    this.lineChartOptionsDMG.scales.y.title.text = 'Damage';
-    this.lineChartOptionsDMG.scales.y.ticks.stepSize = 25;
-    this.lineChartOptionsVel.scales.x.title.text = 'Distance (m)';
-    this.lineChartOptionsVel.scales.y.title.text = 'Velocity (m/s)';
-    this.lineChartOptionsVel.scales.y.ticks.stepSize = 250;
 
     this.route.queryParamMap.subscribe((params) => {
       const weaponsParam = params.get('weapons');
       if (weaponsParam) {
         const weaponNames = JSON.parse(weaponsParam);
-        const weapons = this.pubgData.weapons.filter((weapon: any) => {
+        this.weapons = this.pubgData.weapons.filter((weapon: any) => {
           return weaponNames.includes(weapon.name);
         });
-
-        this.weapons = weapons;
-        this.updateGraph();
       }
+      this.updateGraph();
     });
   }
 
-  // public clearWeapons() {
-  //   this.weapons = [];
-  //   this.weaponsStringList = [];
-  //   this.updateGraph();
-  // }
+  ngAfterViewInit() {
+    /* ---------------------------------- */
+    /*               DAMAGE               */
+    /* ---------------------------------- */
+    let optionsDMG: any;
+    optionsDMG = JSON.parse(JSON.stringify(this.optionsDefault));
+    optionsDMG.scales.y.title.text = 'Damage';
+    // this.OptionsDMG.scales.x.title.text = 'Distance (m)';
+    const yDmgStepSize = 5;
+    optionsDMG.scales.y.ticks.stepSize = yDmgStepSize;
 
-  private addGraph(weapon: any) {
-    const color = this.colors[this.selectedWeaponCounter % this.colors.length];
-    this.weaponsStringList.push({
-      name: weapon.name,
-      color: color,
+    const damageChart = new Chart(this.damageChart.nativeElement, {
+      type: 'line',
+      data: this.dataDamage,
+      options: {
+        ...this.optionsDefault,
+        ...optionsDMG,
+        onHover: syncHover.bind(this, 'damage'),
+      },
     });
 
-    /* ------------- Damage ------------- */
+    /* ---------------------------------- */
+    /*              VELOCITY              */
+    /* ---------------------------------- */
+    let optionsVel: any;
+    optionsVel = JSON.parse(JSON.stringify(this.optionsDefault));
+    optionsVel.scales.y.title.text = 'Velocity (m/s)';
+    optionsVel.scales.x.title.text = 'Distance (m)';
+    const yVelStepSize = 100;
+    optionsVel.scales.y.ticks.stepSize = yVelStepSize;
+
+    const velocityChart = new Chart(this.velocityChart.nativeElement, {
+      type: 'line',
+      data: this.dataVelocity,
+      options: {
+        ...this.optionsDefault,
+        ...optionsVel,
+        onHover: syncHover.bind(this, 'velocity'),
+      },
+    });
+
+    /* -------------- Hover ------------- */
+
+    function syncHover(
+      chartType: string,
+      event: MouseEvent,
+      activeElements: any[]
+    ) {
+      if (chartType === 'damage') {
+        if (activeElements.length > 0) {
+          const index = activeElements[0].index;
+          const datasetMeta = velocityChart.getDatasetMeta(0);
+          if (
+            datasetMeta &&
+            datasetMeta.data &&
+            datasetMeta.data.length > index
+          ) {
+            // @ts-ignore
+            velocityChart.tooltip.setActiveElements([
+              { datasetIndex: 0, index },
+            ]);
+            // @ts-ignore
+            velocityChart.tooltip.update(true);
+            velocityChart.draw();
+          }
+        } else {
+          // @ts-ignore
+          velocityChart.tooltip._active = [];
+          // @ts-ignore
+          velocityChart.tooltip.update(true);
+          velocityChart.draw();
+        }
+      } else if (chartType === 'velocity') {
+        if (activeElements.length > 0) {
+          const index = activeElements[0].index;
+          const datasetMeta = damageChart.getDatasetMeta(0);
+          if (
+            datasetMeta &&
+            datasetMeta.data &&
+            datasetMeta.data.length > index
+          ) {
+            // @ts-ignore
+            damageChart.tooltip.setActiveElements([{ datasetIndex: 0, index }]);
+            // @ts-ignore
+            damageChart.tooltip.update(true);
+            damageChart.draw();
+          }
+        } else {
+          // @ts-ignore
+          damageChart.tooltip._active = [];
+          // @ts-ignore
+          velocityChart.tooltip.update(true);
+          damageChart.draw();
+        }
+      }
+    }
+  }
+
+  private addGraph(weapon: any) {
+    /* ---------------------------------- */
+    /*               DAMAGE               */
+    /* ---------------------------------- */
     let dataDMG: any = [];
     const weaponDamageFalloff = this.pubgData.damageFalloffs.filter(
       (entry: any) => {
@@ -184,23 +230,19 @@ export class GraphPage implements OnInit {
       });
     }
 
-    this.lineChartDataDamage.datasets.push({
+    this.dataDamage.datasets.push({
       data: dataDMG,
       label: weapon.name,
       fill: false,
       tension: 0,
-      borderColor: color,
       backgroundColor: `#ffffff00`,
       borderWidth: 3,
       pointRadius: 0,
-      // borderDash: [
-      //   3,
-      //   this.lineChartData.datasets.length >= this.colors.length ? 1 : 0,
-      // ],
     });
 
-    //   /* ------------ Velocity ------------ */
-
+    /* ---------------------------------- */
+    /*              VELOCITY              */
+    /* ---------------------------------- */
     var dataVel: any = [];
     const weaponVelocityFalloff = this.pubgData.velocityFalloffs.filter(
       (entry: any) => {
@@ -229,12 +271,11 @@ export class GraphPage implements OnInit {
       });
     }
 
-    this.lineChartDataVelocity.datasets.push({
+    this.dataVelocity.datasets.push({
       data: dataVel,
       label: weapon.name,
       fill: false,
       tension: 0,
-      borderColor: color,
       backgroundColor: `#ffffff00`,
       borderWidth: 3,
       pointRadius: 0,
@@ -242,19 +283,12 @@ export class GraphPage implements OnInit {
     });
 
     /* ---------------- - --------------- */
-
-    this.selectedWeaponCounter++;
   }
 
   private updateGraph() {
-    this.selectedWeaponCounter = 0;
-    this.lineChartDataDamage.datasets = [];
-    this.lineChartDataVelocity.datasets = [];
     this.weapons.forEach((weapon: any) => {
       this.addGraph(weapon);
     });
-    this.lineChartDataDamage = { ...this.lineChartDataDamage };
-    this.lineChartDataVelocity = { ...this.lineChartDataVelocity };
   }
 
   private getStyleColor(variable: string) {

@@ -1,5 +1,12 @@
 .container {
   width: 100%;
-  height: calc(50% - 10px);
-  // aspect-ratio: 2.5 / 1;
+  height: calc(50% - 20px);
+}
+
+span.title {
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  width: 100%;
+  color: var(--ion-color-tertiary);
 }
