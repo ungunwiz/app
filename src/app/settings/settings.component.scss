@@ -20,7 +20,7 @@ ion-item {
   margin: 0 auto;
   bottom: 100px;
   text-align: center !important;
-  padding: 15px;
+  padding: 15px 0;
   border-radius: 20px;
   transition: all 0.2s ease-out;
   user-select: none;
@@ -33,7 +33,7 @@ ion-item {
     font-weight: bold;
     color: var(--ion-color-medium) !important;
     & .appName {
-      color: var(--ion-color-primary);
+      color: rgba(var(--ion-color-primary-rgb), 0.85);
       font-weight: bold;
     }
   }

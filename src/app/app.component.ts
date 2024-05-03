@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       url: 'graph',
       icon: 'analytics-sharp',
       location: 'tabbar',
-      addDivider: false,
+      addDivider: true,
       disabled: false,
       hidden: false,
       debug: false,

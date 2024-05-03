@@ -18,7 +18,7 @@ export class SettingsPage implements OnInit {
     private appUpdateService: AppUpdateService
   ) {}
 
-  public settings: any;
+  public settings = this.settingsService.settings;
   public appName: any;
   public appVersion: any;
   public appBuild: any;
@@ -33,16 +33,12 @@ export class SettingsPage implements OnInit {
 
   private buildTaps = 0;
   private buildTimeout: any;
-  private developerModeMessage = `Please ${this.wordingService.getWord(
-    'restart'
-  )} the ${this.wordingService.getWord('app')} to apply the changes.`;
 
   ngOnInit() {
-    this.settings = this.settingsService.settings;
     this.getAppDetails();
   }
 
-  private async getAppDetails() {
+  private getAppDetails() {
     const appInfo = JSON.parse(localStorage.getItem('appInfo') || '{}');
     this.appName = appInfo.name;
     this.appVersion = appInfo.version;
@@ -73,18 +69,31 @@ export class SettingsPage implements OnInit {
     this.settingsService.apply();
   }
 
+  public showDevModeMessage() {
+    const title = `Developer mode ${
+      this.settings.developer.developerMode ? 'enabled' : 'disabled'
+    }.`;
+    const message = `Please ${this.wordingService.getWord(
+      'restart'
+    )} the ${this.wordingService.getWord('app')} to apply the changes.`;
+
+    this.notificationService.createCustom(title, {
+      message,
+    });
+  }
+
   public enableDevMode() {
     this.buildTaps++;
     clearTimeout(this.buildTimeout);
 
     if (this.buildTaps == 10) {
       if (this.allowDevMode) {
-        this.notificationService.createCustom('Debug mode already enabled.');
+        this.notificationService.createCustom('Debug mode already unlocked.');
       } else {
         this.allowDevMode = true;
         localStorage.setItem('allowDevMode', 'true');
-        this.notificationService.createCustom('Debug mode enabled.', {
-          message: this.developerModeMessage,
+        this.notificationService.createCustom('Debug mode unlocked.', {
+          message: "You can now enable the developer's options.",
         });
       }
     } else {

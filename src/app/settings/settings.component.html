@@ -70,7 +70,8 @@
     </ion-list-header>
     <ion-item lines="none">
       <ion-label color="warning">Enable developer mode</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="settings.developer.developerMode" (ionChange)="saveSettings()">
+      <ion-toggle slot="end" [(ngModel)]="settings.developer.developerMode"
+        (ionChange)="saveSettings(); showDevModeMessage()">
       </ion-toggle>
     </ion-item>
     <ion-item lines="none" *ngIf="settings.developer.developerMode && isApp">

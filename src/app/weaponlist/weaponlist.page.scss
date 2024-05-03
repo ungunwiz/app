@@ -53,7 +53,7 @@ span.weaponCategory {
   }
   & span.weaponName {
     position: absolute;
-    color: var(--ion-color-step-700);
+    color: rgba(var(--ion-color-primary-rgb), 0.75);
     font-weight: bold;
     top: 28px;
     left: 12px;

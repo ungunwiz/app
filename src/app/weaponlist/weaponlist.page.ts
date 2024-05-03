@@ -81,21 +81,28 @@ export class WeaponListPage implements OnInit {
   }
 
   private prepareWeapons() {
-    // this.weapons.sort((a: any, b: any) => {
-    //   return a[this.sortType] > b[this.sortType] ? 1 : -1;
-    // });
-    // sort by type and name:
+    const typeOrder = [
+      'Handgun',
+      'Shotgun',
+      'SMG',
+      'AR',
+      'LMG',
+      'DMR',
+      'SR',
+      'Misc',
+    ];
+    this.pubgData.weapons.forEach((weapon: any) => {
+      weapon.typeOrder = typeOrder.indexOf(weapon.type);
+    });
     this.weapons = this.pubgData.weapons.sort((a: any, b: any) => {
-      if (a.type > b.type) {
+      a.selected = false;
+      if (a.typeOrder > b.typeOrder) {
         return 1;
-      } else if (a.type < b.type) {
+      } else if (a.typeOrder < b.typeOrder) {
         return -1;
       } else {
         return a.name > b.name ? 1 : -1;
       }
-    });
-    this.weapons.forEach((weapon: any) => {
-      weapon.selected = false;
     });
   }
 
