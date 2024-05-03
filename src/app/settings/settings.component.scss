@@ -13,15 +13,20 @@ ion-item {
 /* ----------- App Version ---------- */
 
 .versionBox {
+  width: 300px;
   position: absolute;
-  width: calc(100% - 80px) !important;
-  margin: 0 40px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   bottom: 100px;
   text-align: center !important;
-  padding: 15px 0;
+  padding: 15px;
   border-radius: 20px;
-  transition: all 1s ease-out;
+  transition: all 0.2s ease-out;
   user-select: none;
+  border: 2px solid transparent;
+  background: rgba(var(--ion-color-dark-rgb), 0.05);
+  border: 2px solid rgba(var(--ion-color-dark-rgb), 0.1);
 
   & .versionLabel {
     font-size: 1em;
@@ -34,7 +39,8 @@ ion-item {
   }
 }
 .versionBox:active {
-  background: rgba(var(--ion-color-dark-rgb), 0.1);
+  background: rgba(var(--ion-color-dark-rgb), 0.15);
+  border: 2px solid rgba(var(--ion-color-dark-rgb), 0.25);
 }
 
 /* ---------- Update Check ---------- */

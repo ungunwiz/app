@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PubgDataService } from '@service/pubgData.service';
 import { HttpClient } from '@angular/common/http';
+import { NotificationService } from '@service/notification.service';
+import { SettingsService } from '@service/settings.service';
 
 @Component({
   selector: 'app-weaponlist',
@@ -12,16 +14,17 @@ export class WeaponListPage implements OnInit {
   constructor(
     private pubgDataService: PubgDataService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    public settingsService: SettingsService
   ) {}
 
-  private sortType: string = 'name';
+  public settings = this.settingsService.settings;
 
   public loading = true;
   public pubgData: any = {};
   public weapons: any = [];
   public searchText: string = '';
-  public selectedWeapons: any = [];
   public weaponStats: any = {};
   public minImageHeight: number = 10000;
   public maxImageHeight: number = 0;
@@ -38,7 +41,7 @@ export class WeaponListPage implements OnInit {
     this.loading = false;
   }
 
-  getWeaponMetaData() {
+  private getWeaponMetaData() {
     this.weapons.forEach((weapon: any) => {
       const weaponName = weapon.name.replace(/\s/g, '_');
       this.http.get(`/assets/gameAssets/weapons/${weaponName}.json`).subscribe({
@@ -59,11 +62,13 @@ export class WeaponListPage implements OnInit {
     });
   }
 
-  mapT(value: number) {
-    return this.map(value, this.minImageHeight, this.maxImageHeight, 50, 60);
-  }
-
-  map(value: number, min1: number, max1: number, min2: number, max2: number) {
+  private map(
+    value: number,
+    min1: number,
+    max1: number,
+    min2: number,
+    max2: number
+  ) {
     return ((value - min1) * (max2 - min2)) / (max1 - min1) + min2;
   }
 
@@ -215,39 +220,30 @@ export class WeaponListPage implements OnInit {
   /*              FUNCTIONS             */
   /* ---------------------------------- */
 
-  navigateWithWeapons() {
-    const weapons = this.selectedWeapons.map((weapon: any) => {
-      return weapon.name;
-    });
-    const queryParams: any = {
-      queryParams: { weapons: JSON.stringify(weapons) },
-      queryParamsHandling: 'merge',
-    };
-
-    this.router.navigate(['/graph'], queryParams);
+  public mapT(value: number) {
+    return this.map(value, this.minImageHeight, this.maxImageHeight, 50, 60);
   }
 
+  public countSelected() {
+    return this.weapons.filter((weapon: any) => weapon.selected).length;
+  }
+  public allSelected() {
+    return this.countSelected() === this.weapons.length;
+  }
+  public toggleAllWeapons() {
+    const allSelected = this.allSelected();
+    this.weapons.forEach((weapon: any) => {
+      weapon.selected = !allSelected;
+    });
+  }
   public toggleWeapon(weapon: any) {
     weapon.selected = !weapon.selected;
-
-    if (this.isSelected(weapon)) {
-      this.selectedWeapons = this.selectedWeapons.filter((w: any) => {
-        return w.name !== weapon.name;
-      });
-    } else if (this.selectedWeapons.length < 8) {
-      this.selectedWeapons.push(weapon);
-    }
-  }
-
-  public isSelected(weapon: any) {
-    return this.selectedWeapons.includes(weapon);
   }
 
   public getWeaponIcon(weapon: any, simple: boolean = false) {
     const wepDir = simple ? 'weaponsSimple' : 'weapons';
     return `assets/gameAssets/${wepDir}/${weapon.name.replace(/\s/g, '_')}.png`;
   }
-
   public getWeaponAmmoIcon(weapon: any) {
     let ammo = weapon.ammo;
     const ammoFix: any = {
@@ -261,5 +257,44 @@ export class WeaponListPage implements OnInit {
       ammo = ammoFix[ammo];
     }
     return `assets/gameAssets/ammo/${ammo}.png`;
+  }
+  public getWeaponTypeName(type: string) {
+    const dictionary: any = {
+      AR: 'Assault Rifles',
+      DMR: 'Designated Marksman Rifles',
+      LMG: 'Light Machine Guns',
+      SMG: 'Submachine Guns',
+      Shotgun: 'Shotguns',
+      SR: 'Sniper Rifles',
+      Handgun: 'Handguns',
+    };
+
+    return dictionary[type] || type;
+  }
+
+  public navigateWithWeapons() {
+    const selectedWeapons = this.weapons.filter((weapon: any) => {
+      return weapon.selected;
+    });
+
+    if (
+      selectedWeapons.length > 8 &&
+      !this.settings.developer.ignoreDetailsLimit
+    ) {
+      this.notificationService.createCustom('Too many weapons selected!', {
+        type: 2,
+        message: 'Please only select up to 8 weapons.',
+      });
+      return;
+    }
+    const weapons = selectedWeapons.map((weapon: any) => {
+      return weapon.name;
+    });
+    const queryParams: any = {
+      queryParams: { weapons: JSON.stringify(weapons) },
+      queryParamsHandling: 'merge',
+    };
+
+    this.router.navigate(['/graph'], queryParams);
   }
 }

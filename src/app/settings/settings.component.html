@@ -22,6 +22,11 @@
       <ion-toggle slot="end" [(ngModel)]="settings.ui.darkMode" (ionChange)="saveSettings()">
       </ion-toggle>
     </ion-item>
+    <ion-item lines="none">
+      <ion-label>Weapon image glow</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.ui.weaponImgGlow" (ionChange)="saveSettings()">
+      </ion-toggle>
+    </ion-item>
   </ion-list>
 
   <ion-list class="contentList" *ngIf="isApp">
@@ -68,9 +73,14 @@
       <ion-toggle slot="end" [(ngModel)]="settings.developer.developerMode" (ionChange)="saveSettings()">
       </ion-toggle>
     </ion-item>
-    <ion-item lines="none" *ngIf="settings.developer.developerMode">
+    <ion-item lines="none" *ngIf="settings.developer.developerMode && isApp">
       <ion-label color="warning">Force app update</ion-label>
       <ion-toggle slot="end" [(ngModel)]="settings.developer.forceUpdate" (ionChange)="saveSettings()">
+      </ion-toggle>
+    </ion-item>
+    <ion-item lines="none" *ngIf="settings.developer.developerMode">
+      <ion-label color="warning">Compare more than 8 Weapons</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="settings.developer.ignoreDetailsLimit" (ionChange)="saveSettings()">
       </ion-toggle>
     </ion-item>
   </ion-list>

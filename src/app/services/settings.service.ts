@@ -16,10 +16,12 @@ export class SettingsService {
     ui: {
       autoTheme: true,
       darkMode: true,
+      weaponImgGlow: false,
     },
     developer: {
       developerMode: false,
       forceUpdate: false,
+      ignoreDetailsLimit: false,
     },
   };
 
