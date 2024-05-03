@@ -8,10 +8,10 @@ import { SettingsService } from '@service/settings.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl:
-    environment.platform === 'web'
-      ? 'app.component.html'
-      : 'app.component.app.html',
+  templateUrl: 'app.component.html',
+  // environment.platform === 'web'
+  //   ? 'app.component.html'
+  //   : 'app.component.app.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {

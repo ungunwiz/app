@@ -85,6 +85,7 @@ export class GraphPage implements OnInit {
   };
 
   async ngOnInit() {
+    console.log('1');
     this.pubgData = await this.pubgDataService.get();
 
     this.route.queryParamMap.subscribe((params) => {
@@ -101,6 +102,7 @@ export class GraphPage implements OnInit {
   }
 
   ngAfterViewInit() {
+    console.log('2');
     /* ---------------------------------- */
     /*               DAMAGE               */
     /* ---------------------------------- */
@@ -204,6 +206,7 @@ export class GraphPage implements OnInit {
     /* ---------------------------------- */
     /*               DAMAGE               */
     /* ---------------------------------- */
+
     let dataDMG: any = [];
     const weaponDamageFalloff = this.pubgData.damageFalloffs.filter(
       (entry: any) => {
@@ -244,6 +247,7 @@ export class GraphPage implements OnInit {
     /* ---------------------------------- */
     /*              VELOCITY              */
     /* ---------------------------------- */
+
     var dataVel: any = [];
     const weaponVelocityFalloff = this.pubgData.velocityFalloffs.filter(
       (entry: any) => {
