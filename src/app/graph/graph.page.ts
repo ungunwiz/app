@@ -20,8 +20,6 @@ export class GraphPage implements OnInit {
   @ViewChild('damageChart') damageChart!: ElementRef;
   @ViewChild('velocityChart') velocityChart!: ElementRef;
 
-  public weapons: any = [];
-
   private pubgData: any = {};
   private fixedOptions = {
     stacked: false,
@@ -93,11 +91,12 @@ export class GraphPage implements OnInit {
       const weaponsParam = params.get('weapons');
       if (weaponsParam) {
         const weaponNames = JSON.parse(weaponsParam);
-        this.weapons = this.pubgData.weapons.filter((weapon: any) => {
-          return weaponNames.includes(weapon.name);
+        this.pubgData.weapons.forEach((weapon: any) => {
+          if (weaponNames.includes(weapon.name)) {
+            this.addGraph(weapon);
+          }
         });
       }
-      this.updateGraph();
     });
   }
 
@@ -105,6 +104,7 @@ export class GraphPage implements OnInit {
     /* ---------------------------------- */
     /*               DAMAGE               */
     /* ---------------------------------- */
+
     let optionsDMG: any;
     optionsDMG = JSON.parse(JSON.stringify(this.optionsDefault));
     optionsDMG.scales.y.title.text = 'Damage';
@@ -125,6 +125,7 @@ export class GraphPage implements OnInit {
     /* ---------------------------------- */
     /*              VELOCITY              */
     /* ---------------------------------- */
+
     let optionsVel: any;
     optionsVel = JSON.parse(JSON.stringify(this.optionsDefault));
     optionsVel.scales.y.title.text = 'Velocity (m/s)';
@@ -251,9 +252,10 @@ export class GraphPage implements OnInit {
     );
 
     if (weaponVelocityFalloff.length === 0) {
+      const speed = Math.ceil(Math.abs(weapon.speed));
       dataVel.push({
         x: 0,
-        y: 0,
+        y: speed,
       });
     } else {
       weaponVelocityFalloff.forEach((velocityFalloff: any) => {
@@ -280,14 +282,6 @@ export class GraphPage implements OnInit {
       borderWidth: 3,
       pointRadius: 0,
       // borderDash: [1, 5],
-    });
-
-    /* ---------------- - --------------- */
-  }
-
-  private updateGraph() {
-    this.weapons.forEach((weapon: any) => {
-      this.addGraph(weapon);
     });
   }
 
