@@ -256,15 +256,15 @@ export class GraphPage implements OnInit {
     );
 
     if (weaponVelocityFalloff.length === 0) {
-      const speed = Math.ceil(Math.abs(weapon.speed));
       dataVel.push({
         x: 0,
-        y: speed,
+        y: weapon.speed,
       });
     } else {
       weaponVelocityFalloff.forEach((velocityFalloff: any) => {
+        const distance = Math.ceil(Math.abs(velocityFalloff.distance));
         dataVel.push({
-          x: velocityFalloff.distance,
+          x: distance,
           y: velocityFalloff.velocity,
         });
       });
