@@ -17,8 +17,9 @@
   <div *ngIf="!loading">
     <div *ngFor="let weapon of weapons; let i = index">
       <span class="weaponCategory" *ngIf="i === 0 || weapons[i - 1].type !== weapon.type" [ngStyle]="{
-        'background-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0.45)',
-        'border-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0.25)'
+        'background-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0.75)',
+        'border-color': 'rgba(var(--type-' + weapon.type + '-rgb), 1)',
+        'color': 'var(--type-' + weapon.type + '-text)'
       }">
         <!-- {{weapon.type}}s -->
         {{getWeaponTypeName(weapon.type)}}
@@ -45,8 +46,8 @@
           }" [src]="getWeaponIcon(weapon, false)" />
 
         <div class="statsContainer" [ngStyle]="{
-          'background-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0.05)',
-          'border-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0.1)'
+          'background-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0)',
+          'border-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0)'
         }">
           <div class="spanContainer">
             <span class="shadow damage">Damage:</span>
