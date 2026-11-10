@@ -4,6 +4,7 @@ import { PubgDataService } from '@service/pubgData.service';
 import { HttpClient } from '@angular/common/http';
 import { NotificationService } from '@service/notification.service';
 import { SettingsService } from '@service/settings.service';
+import { CombatService } from '@service/combat.service';
 
 @Component({
   selector: 'app-weaponlist',
@@ -16,6 +17,7 @@ export class WeaponListPage implements OnInit {
     private router: Router,
     private http: HttpClient,
     private notificationService: NotificationService,
+    private combatService: CombatService,
     public settingsService: SettingsService
   ) {}
 
@@ -28,6 +30,18 @@ export class WeaponListPage implements OnInit {
   public weaponStats: any = {};
   public minImageHeight: number = 10000;
   public maxImageHeight: number = 0;
+  public selectedType = 'All';
+  public readonly weaponTypes = [
+    'All',
+    'Handgun',
+    'Shotgun',
+    'SMG',
+    'AR',
+    'LMG',
+    'DMR',
+    'SR',
+    'Misc',
+  ];
 
   async ngOnInit() {
     this.pubgData = await this.pubgDataService.get();
@@ -76,8 +90,16 @@ export class WeaponListPage implements OnInit {
     const searchText = this.searchText.toLowerCase();
 
     this.weapons = this.pubgData.weapons.filter((weapon: any) => {
-      return weapon.name.toLowerCase().includes(searchText);
+      const matchesName = weapon.name.toLowerCase().includes(searchText);
+      const matchesType =
+        this.selectedType === 'All' || weapon.type === this.selectedType;
+      return matchesName && matchesType;
     });
+  }
+
+  public selectType(type: string) {
+    this.selectedType = type;
+    this.search();
   }
 
   private prepareWeapons() {
@@ -93,6 +115,31 @@ export class WeaponListPage implements OnInit {
     ];
     this.pubgData.weapons.forEach((weapon: any) => {
       weapon.typeOrder = typeOrder.indexOf(weapon.type);
+      weapon.rpm = Math.round(Number(weapon.rof) * 60);
+      weapon.fullDamageRange = this.combatService.fullDamageRange(
+        weapon,
+        this.pubgData.damageFalloffs
+      );
+      weapon.stkClose = this.combatService.calculate(
+        weapon,
+        {
+          distance: 0,
+          zone: 'torso',
+          vest: 2,
+          helmet: 0,
+        },
+        this.pubgData
+      ).stk;
+      weapon.stkRange = this.combatService.calculate(
+        weapon,
+        {
+          distance: 100,
+          zone: 'torso',
+          vest: 2,
+          helmet: 0,
+        },
+        this.pubgData
+      ).stk;
     });
     this.weapons = this.pubgData.weapons.sort((a: any, b: any) => {
       a.selected = false;
@@ -130,15 +177,12 @@ export class WeaponListPage implements OnInit {
       },
     };
 
-    this.weapons.forEach((weapon: any) => {
-      weapon = {
-        ...weapon,
-        damage: parseFloat(weapon.damage),
-        speed: parseFloat(weapon.speed),
-        clip: parseFloat(weapon.clip),
-        rof: parseFloat(weapon.rof),
-        range: parseFloat(weapon.range),
-      };
+    this.pubgData.weapons.forEach((weapon: any) => {
+      weapon.damage = parseFloat(weapon.damage);
+      weapon.speed = parseFloat(weapon.speed);
+      weapon.clip = parseFloat(weapon.clip);
+      weapon.rof = parseFloat(weapon.rof);
+      weapon.fullDamageRange = parseFloat(weapon.fullDamageRange);
 
       if (weapon.damage < minMax.damage.min) {
         minMax.damage.min = weapon.damage;
@@ -164,18 +208,15 @@ export class WeaponListPage implements OnInit {
       if (weapon.rof > minMax.rof.max) {
         minMax.rof.max = weapon.rof;
       }
+      if (weapon.fullDamageRange < minMax.range.min) {
+        minMax.range.min = weapon.fullDamageRange;
+      }
+      if (weapon.fullDamageRange > minMax.range.max) {
+        minMax.range.max = weapon.fullDamageRange;
+      }
     });
 
-    this.weapons.forEach((weapon: any) => {
-      weapon = {
-        ...weapon,
-        damage: parseFloat(weapon.damage),
-        speed: parseFloat(weapon.speed),
-        clip: parseFloat(weapon.clip),
-        rof: parseFloat(weapon.rof),
-        range: parseFloat(weapon.range),
-      };
-
+    this.pubgData.weapons.forEach((weapon: any) => {
       const percentages: any = {
         _damage: weapon.damage,
         _speed: weapon.speed,
@@ -212,7 +253,7 @@ export class WeaponListPage implements OnInit {
         100
       );
       percentages.range = this.pubgDataService.map(
-        weapon.range,
+        weapon.fullDamageRange,
         minMax.range.min,
         minMax.range.max,
         0,
@@ -232,10 +273,14 @@ export class WeaponListPage implements OnInit {
   }
 
   public countSelected() {
-    return this.weapons.filter((weapon: any) => weapon.selected).length;
+    return this.pubgData.weapons.filter((weapon: any) => weapon.selected)
+      .length;
   }
   public allSelected() {
-    return this.countSelected() === this.weapons.length;
+    return (
+      this.weapons.length > 0 &&
+      this.weapons.every((weapon: any) => weapon.selected)
+    );
   }
   public toggleAllWeapons() {
     const allSelected = this.allSelected();
@@ -279,8 +324,20 @@ export class WeaponListPage implements OnInit {
     return dictionary[type] || type;
   }
 
+  public getTypeLabel(type: string) {
+    if (type === 'All') {
+      return 'All';
+    }
+    const shortNames: Record<string, string> = {
+      Handgun: 'Pistols',
+      Shotgun: 'Shotguns',
+      Misc: 'Other',
+    };
+    return shortNames[type] || type;
+  }
+
   public navigateWithWeapons() {
-    const selectedWeapons = this.weapons.filter((weapon: any) => {
+    const selectedWeapons = this.pubgData.weapons.filter((weapon: any) => {
       return weapon.selected;
     });
 

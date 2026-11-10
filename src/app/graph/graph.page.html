@@ -3,36 +3,210 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Graph</ion-title>
+    <ion-title>Compare</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
-  <div class="container graph">
-    <span class="title">Damage over Distance</span>
-    <canvas #damageChart class="mainGraph"></canvas>
-  </div>
-  <div class="container graph">
-    <span class="title">Velocity over Distance</span>
-    <canvas #velocityChart class="mainGraph"></canvas>
-  </div>
+<ion-content fullscreen class="compare-content">
+  <main class="compare-shell" *ngIf="!loading">
+    <section class="empty-state" *ngIf="selectedWeapons.length === 0">
+      <span class="eyebrow">YOUR FIRING RANGE IS EMPTY</span>
+      <h1>Pick a few guns.<br />We’ll do the math.</h1>
+      <p>
+        Select up to eight weapons, then compare damage, armor and time to kill
+        at every range.
+      </p>
+      <ion-button routerLink="/weaponlist" color="tertiary">
+        Choose weapons
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </section>
 
-  <!-- <div id="tableContainer">
-    <table>
-      <thead>
-        <tr>
-          <th>Distance</th>
-          <th *ngFor="let weapon of pubgData.weapons">{{weapon.name}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let distance of distances">
-          <td class="distanceCell">{{distance}}</td>
-          <td class="damageCell" *ngFor="let weapon of pubgData.weapons">
-            {{calcDamage(weapon, {distance}) | number:'1.1-1'}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
+    <ng-container *ngIf="selectedWeapons.length > 0">
+      <section class="compare-intro">
+        <div>
+          <span class="eyebrow">LIVE COMBAT MODEL</span>
+          <h1>Compare Lab</h1>
+          <p>Intact armor · 100 HP · cyclic best-case TTK</p>
+        </div>
+        <div class="selected-weapons" aria-label="Selected weapons">
+          <button
+            type="button"
+            class="weapon-chip"
+            *ngFor="let weapon of selectedWeapons; let i = index"
+            [style.--weapon-color]="colors[i % colors.length]"
+            (click)="removeWeapon(weapon)"
+            [attr.aria-label]="'Remove ' + weapon.name"
+          >
+            <span></span>{{ weapon.name }}<ion-icon name="close"></ion-icon>
+          </button>
+        </div>
+      </section>
+
+      <section class="scenario-panel" aria-label="Comparison scenario">
+        <div class="range-control">
+          <div class="control-heading">
+            <div>
+              <span class="control-label">Engagement distance</span>
+              <strong>{{ distance }} m</strong>
+            </div>
+            <button type="button" class="range-toggle" (click)="toggleRange()">
+              Range: {{ maxRange }} m
+            </button>
+          </div>
+          <input
+            type="range"
+            min="0"
+            [max]="maxRange"
+            step="5"
+            [value]="distance"
+            (input)="setDistance($any($event.target).value)"
+            aria-label="Engagement distance"
+          />
+          <div class="range-ticks">
+            <span>0</span><span>{{ maxRange / 2 }}</span><span>{{ maxRange }} m</span>
+          </div>
+        </div>
+
+        <div class="scenario-grid">
+          <div class="control-group">
+            <span class="control-label">Hit zone</span>
+            <div class="segmented">
+              <button
+                type="button"
+                *ngFor="let item of zones"
+                [class.active]="zone === item.value"
+                (click)="setZone(item.value)"
+              >
+                {{ item.label }}
+              </button>
+            </div>
+          </div>
+
+          <div class="armor-controls">
+            <div class="control-group">
+              <span class="control-label">Vest</span>
+              <div class="segmented compact">
+                <button
+                  type="button"
+                  *ngFor="let level of armorLevels"
+                  [class.active]="vest === level"
+                  (click)="setArmor('vest', level)"
+                >
+                  {{ armorLabel(level) }}
+                </button>
+              </div>
+            </div>
+            <div class="control-group">
+              <span class="control-label">Helmet</span>
+              <div class="segmented compact">
+                <button
+                  type="button"
+                  *ngFor="let level of armorLevels"
+                  [class.active]="helmet === level"
+                  (click)="setArmor('helmet', level)"
+                >
+                  {{ armorLabel(level) }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="source-note">
+          Armor reduction uses the community-standard intact-armor table:
+          30% / 40% / 55%.
+        </p>
+      </section>
+
+      <section class="chart-panel">
+        <div class="chart-heading">
+          <div>
+            <span class="eyebrow">RANGE CURVE</span>
+            <h2>{{ metricLabels[metric] }} over distance</h2>
+          </div>
+          <div class="metric-switcher" aria-label="Chart metric">
+            <button
+              type="button"
+              *ngFor="let item of combatMetrics"
+              [class.active]="metric === item"
+              (click)="setMetric(item)"
+            >
+              {{ metricLabels[item] }}
+            </button>
+            <span class="metric-divider"></span>
+            <button
+              type="button"
+              [class.active]="metric === 'velocity'"
+              (click)="setMetric('velocity')"
+            >
+              Velocity
+            </button>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas #compareChart></canvas>
+        </div>
+      </section>
+
+      <section class="snapshot-section">
+        <div class="snapshot-heading">
+          <div>
+            <span class="eyebrow">AT {{ distance }} METERS</span>
+            <h2>Combat snapshot</h2>
+          </div>
+          <p>{{ zone | titlecase }} hit · {{ armorLabel(vest) }} vest · {{ armorLabel(helmet) }} helmet</p>
+        </div>
+
+        <div class="snapshot-table desktop-table">
+          <div class="snapshot-row table-header">
+            <span>Weapon</span><span>Damage</span><span>STK</span>
+            <span>TTK</span><span>Travel</span><span>Mag</span>
+          </div>
+          <div
+            class="snapshot-row"
+            *ngFor="let snapshot of snapshots; trackBy: trackWeapon"
+          >
+            <div class="weapon-cell">
+              <span class="line-dot" [style.background]="snapshot.color"></span>
+              <strong>{{ snapshot.weapon.name }}</strong>
+              <small>{{ snapshot.weapon.ammo }}</small>
+            </div>
+            <span [class.best]="isBest(snapshot, 'damage')">
+              {{ snapshot.result.damage | number:'1.1-1' }}
+            </span>
+            <span [class.best]="isBest(snapshot, 'stk')">{{ snapshot.result.stk }}</span>
+            <span [class.best]="isBest(snapshot, 'ttk')">
+              {{ snapshot.result.ttk | number:'1.3-3' }} s
+            </span>
+            <span [class.best]="isBest(snapshot, 'timeToTarget')">
+              {{ snapshot.result.timeToTarget | number:'1.3-3' }} s
+            </span>
+            <span>{{ snapshot.weapon.clip }}</span>
+          </div>
+        </div>
+
+        <div class="mobile-snapshots">
+          <article
+            class="snapshot-card"
+            *ngFor="let snapshot of snapshots; trackBy: trackWeapon"
+            [style.--weapon-color]="snapshot.color"
+          >
+            <div class="snapshot-card-title">
+              <div>
+                <span class="line-dot"></span>
+                <strong>{{ snapshot.weapon.name }}</strong>
+              </div>
+              <small>{{ snapshot.weapon.ammo }}</small>
+            </div>
+            <dl>
+              <div><dt>Damage</dt><dd>{{ snapshot.result.damage | number:'1.1-1' }}</dd></div>
+              <div><dt>Shots</dt><dd>{{ snapshot.result.stk }}</dd></div>
+              <div><dt>TTK</dt><dd>{{ snapshot.result.ttk | number:'1.3-3' }}s</dd></div>
+              <div><dt>Travel</dt><dd>{{ snapshot.result.timeToTarget | number:'1.3-3' }}s</dd></div>
+            </dl>
+          </article>
+        </div>
+      </section>
+    </ng-container>
+  </main>
 </ion-content>

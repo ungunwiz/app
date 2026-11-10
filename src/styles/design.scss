@@ -3,15 +3,21 @@
 /* ---------------------------------- */
 
 :root {
-  --shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  --borderRadius: 15px;
+  --shadow: 0 14px 38px rgba(48, 26, 68, 0.1);
+  --borderRadius: 16px;
   --borderRadius2: 10px;
   --borderRadius3: 5px;
+  --compare-surface: #fcfbfe;
+  --compare-inset: #f1eef5;
+  --compare-border: rgba(75, 48, 96, 0.1);
+  --compare-grid: rgba(75, 48, 96, 0.12);
+  --compare-shadow: 0 12px 32px rgba(49, 28, 66, 0.06);
 }
 
 * {
   font-family: "Poppins", sans-serif !important;
   font-weight: 500;
+  box-sizing: border-box;
 }
 
 /* ------------------------ */
@@ -57,12 +63,18 @@ ion-header {
     // backdrop-filter: blur(10px);
     // --background: rgba(var(--ion-color-light-rgb), 0.5);
     /* ------------- No Blur ------------ */
-    --background: var(--ion-color-light-tint);
+    --background: color-mix(
+      in srgb,
+      var(--ion-color-light-tint) 92%,
+      transparent
+    );
+    --min-height: 58px;
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--compare-border);
 
     & ion-title {
       font-weight: bold;
       text-align: center;
-      margin-left: -50px;
       color: var(--ion-color-step-950);
     }
   }
@@ -74,6 +86,14 @@ ion-header {
 
 ion-content {
   --background: var(--ion-color-light-tint);
+}
+
+body.dark {
+  --compare-surface: #211e25;
+  --compare-inset: #19171c;
+  --compare-border: rgba(222, 199, 241, 0.09);
+  --compare-grid: rgba(222, 199, 241, 0.12);
+  --compare-shadow: 0 16px 40px rgba(5, 2, 8, 0.22);
 }
 
 /* ---------------------------------- */

@@ -29,11 +29,7 @@
     </ion-item>
   </ion-list>
 
-  <!-- DEBUG: slider for download prgress -->
-  <ion-range min="0" max="100" step="1" [(ngModel)]="downloadProgress" color="tertiary"></ion-range>
-
-  <!-- DEBUG: Remove: || true -->
-  <ion-list class="contentList" *ngIf="isApp || true">
+  <ion-list class="contentList" *ngIf="isApp">
     <ion-list-header>
       <ion-label>
         App Update
@@ -57,18 +53,18 @@
       </ion-label>
       <ion-spinner color="tertiary" slot="end" *ngIf="updateSearching"></ion-spinner>
       <ion-button class="textButton" slot="end"
-        *ngIf="!updateSearching && updateInfo.updateAvailable && fileUri == '' && downloadProgress == 0"
+        *ngIf="!updateSearching && updateInfo.updateAvailable && fileUri === '' && downloadProgress === 0"
         (click)="downloadUpdate()">
         Download
       </ion-button>
-      <div id="progressBarContainer" *ngIf="fileUri == '' && downloadProgress != 0 && downloadProgress < 100">
+      <div id="progressBarContainer" *ngIf="fileUri === '' && downloadProgress !== 0 && downloadProgress < 100">
         <div id="progressBar" [ngStyle]="{
           'width': downloadProgress + '%',
         }">
         </div>
         {{downloadProgress | number:'1.1-1'}}%
       </div>
-      <ion-button class="textButton" id="installButton" slot="end" *ngIf="fileUri != '' && downloadProgress == 100"
+      <ion-button class="textButton" id="installButton" slot="end" *ngIf="fileUri !== '' && downloadProgress === 100"
         (click)="installUpdate()">
         Install
       </ion-button>

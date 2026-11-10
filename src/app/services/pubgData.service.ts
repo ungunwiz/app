@@ -15,19 +15,13 @@ export class PubgDataService {
   private updateInterval = 3600;
 
   public pubgData: any;
+  private initPromise?: Promise<any>;
 
   public get() {
-    return new Promise((resolve, reject) => {
-      if (this.pubgData) {
-        resolve(this.pubgData);
-      } else {
-        setInterval(() => {
-          this.get().then((data: any) => {
-            resolve(data);
-          });
-        }, 100);
-      }
-    });
+    if (this.pubgData) {
+      return Promise.resolve(this.pubgData);
+    }
+    return this.initData();
   }
 
   /* ---------------------------------- */
@@ -35,7 +29,11 @@ export class PubgDataService {
   /* ---------------------------------- */
 
   public initData() {
-    return new Promise((resolve, reject) => {
+    if (this.initPromise) {
+      return this.initPromise;
+    }
+
+    this.initPromise = new Promise((resolve, reject) => {
       const savedData = localStorage.getItem('pubgData');
       const lastUpdated = JSON.parse(
         localStorage.getItem('pubgDataLastUpdated') || '0'
@@ -82,6 +80,8 @@ export class PubgDataService {
             reject();
           });
       } else {
+        this.generateDistances();
+        this.generateDamageFallOffs();
         const lastUpdate = new Date(lastUpdated * 1000).toLocaleTimeString();
         const nextUpdate = new Date(
           (lastUpdated + this.updateInterval) * 1000
@@ -92,6 +92,8 @@ export class PubgDataService {
         resolve(this.pubgData);
       }
     });
+
+    return this.initPromise;
   }
 
   private getWeapons() {
@@ -147,6 +149,7 @@ export class PubgDataService {
   calculatedDamageFalloffs: any = {};
 
   private generateDamageFallOffs() {
+    this.calculatedDamageFalloffs = {};
     this.pubgData.weapons.forEach((weapon: any) => {
       this.calculatedDamageFalloffs[weapon.name] = [];
       this.distances.forEach((distance: any) => {
@@ -236,6 +239,7 @@ export class PubgDataService {
   }
 
   private generateDistances(start: number = 0, end: number = 1000) {
+    this.distances = [];
     for (let i = start; i <= end; i += 100) {
       this.distances.push(i);
     }

@@ -1,192 +1,468 @@
-* {
-  --weaponHeight: 180px;
-  --stats-height: 80px;
-  --barHeight: calc((var(--stats-height) / 4.8) / 2);
-  --wepImgRightMargin: 20px;
-  --wepImgTopMargin: 50px;
+:host {
+  --surface: var(--compare-surface, var(--ion-color-light));
+  --line: var(--compare-border, rgba(var(--ion-color-dark-rgb), 0.09));
+  --muted: var(--ion-color-step-text-600);
 }
 
 ion-content {
-  --padding-top: -10px;
-  --padding-bottom: 70px;
+  --padding-bottom: 100px;
 }
 
-/* ---------------------------------- */
-/*            WEAPON SELECT           */
-/* ---------------------------------- */
+.weapon-shell {
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 48px) 0;
+  width: min(100% - 32px, 1120px);
+}
 
-span.weaponCategory {
-  --width: 300px;
-  display: block;
-  font-weight: bold;
-  margin: 20px 0;
-  text-align: center;
-  width: var(--width);
-  margin-left: calc(50% - (var(--width) / 2));
-  padding: 5px;
-  font-size: 1em;
-  box-shadow: 0 0 10px 1px rgba(var(--ion-color-dark-rgb), 0.25);
-  color: var(--ion-color-step-900);
-  border: 2px solid;
-  border-radius: var(--borderRadius);
+.list-intro {
+  align-items: flex-end;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 26px;
+
+  .eyebrow {
+    color: var(--ion-color-tertiary);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+  }
+
+  h1 {
+    color: var(--ion-color-dark);
+    font-size: clamp(1.8rem, 3.8vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin: 5px 0 0;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 310px;
+    text-align: right;
+  }
+}
+
+.type-filters {
+  background: color-mix(in srgb, var(--ion-color-light-tint) 92%, transparent);
+  display: flex;
+  gap: 6px;
+  margin: 0 -2px 28px;
+  overflow-x: auto;
+  padding: 6px 2px 10px;
+  position: sticky;
+  scrollbar-width: none;
+  top: 0;
+  z-index: 4;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  button {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 auto;
+    font-size: 0.7rem;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 14px;
+
+    span {
+      background: var(--type-Misc);
+      border-radius: 50%;
+      height: 7px;
+      width: 7px;
+    }
+
+    &.active {
+      border-color: rgba(var(--ion-color-tertiary-rgb), 0.36);
+      box-shadow: 0 3px 13px rgba(var(--ion-color-tertiary-rgb), 0.1);
+      color: var(--ion-color-dark);
+      font-weight: 700;
+    }
+
+    &[data-type='Handgun'] span { background: var(--type-Handgun); }
+    &[data-type='Shotgun'] span { background: var(--type-Shotgun); }
+    &[data-type='SMG'] span { background: var(--type-SMG); }
+    &[data-type='AR'] span { background: var(--type-AR); }
+    &[data-type='LMG'] span { background: var(--type-LMG); }
+    &[data-type='DMR'] span { background: var(--type-DMR); }
+    &[data-type='SR'] span { background: var(--type-SR); }
+  }
+}
+
+.weapon-list {
+  display: grid;
+  gap: 10px;
+}
+
+.category-label {
+  align-items: center;
+  color: var(--ion-color-dark);
+  display: flex;
+  font-size: 0.73rem;
+  font-weight: 700;
+  gap: 8px;
+  letter-spacing: 0.04em;
+  margin: 22px 5px 2px;
+  text-transform: uppercase;
+
+  > span {
+    border-radius: 99px;
+    height: 4px;
+    width: 26px;
+  }
+
+  small {
+    color: var(--muted);
+    font-size: 0.58rem;
+    font-weight: 500;
+    margin-left: auto;
+  }
 }
 
 .weapon {
-  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  box-shadow: var(--compare-shadow);
   cursor: pointer;
-  height: 75px;
-  background-color: var(--ion-color-light);
-  margin: 8px 15px;
-  font-weight: bold;
-  border-radius: var(--borderRadius);
-  box-shadow: 0 0 10px 0 rgba(var(--ion-color-tertiary-rgb), 0.05);
-  border: 2px solid;
-  border-color: var(--ion-color-light);
+  min-height: 86px;
+  overflow: hidden;
+  position: relative;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
   user-select: none;
-  transition: background-color 0.2s ease, height 0.2s ease;
 
-  & span.weaponType {
-    position: absolute;
-    top: 10px;
-    left: 12px;
-    font-size: 0.7em;
-  }
-  & span.weaponName {
-    position: absolute;
-    color: rgba(var(--ion-color-primary-rgb), 0.75);
-    font-weight: bold;
-    top: 28px;
-    left: 12px;
-    font-size: 1.5em;
-
-    & * {
-      font-weight: bold;
-    }
-  }
-  & img.weaponImage {
-    position: absolute;
+  &:hover {
+    border-color: rgba(var(--weapon-rgb), 0.28);
+    transform: translateY(-1px);
   }
 
-  & .statsContainer {
-    opacity: 0;
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    height: 0;
-    width: calc(100% - 20px);
-    border-radius: var(--borderRadius2);
-    box-sizing: content-box;
-    padding: 10px 0;
-    backdrop-filter: blur(15px);
-    transition: height 0.1s ease, opacity 0.1s ease;
-    border: 2px solid;
+  &:focus-visible {
+    outline: 2px solid var(--ion-color-tertiary);
+    outline-offset: 2px;
+  }
 
-    & .spanContainer {
-      position: relative;
-      float: left;
-      height: 100%;
-      // width: 80px;
-      width: 25%;
+  &.selected {
+    background: linear-gradient(
+      115deg,
+      rgba(var(--weapon-rgb), 0.1),
+      var(--surface) 52%
+    );
+    border-color: rgba(var(--weapon-rgb), 0.38);
 
-      & span {
-        display: block;
-        height: 20%;
-        width: 100%;
-        font-size: 14px;
-        line-height: 20px;
-        text-align: left;
-      }
-
-      & span.damage {
-        color: var(--ion-color-danger-shade);
-      }
-      & span.speed {
-        color: var(--ion-color-warning-shade);
-      }
-      & span.clip {
-        color: var(--ion-color-primary-shade);
-      }
-      & span.rof {
-        color: var(--ion-color-success-shade);
-      }
-      & span.range {
-        color: var(--ion-color-tertiary-shade);
-      }
-    }
-    & .spanContainer:first-of-type {
-      margin-left: 10px;
+    .select-indicator {
+      background: var(--weapon-accent);
+      border-color: var(--weapon-accent);
+      color: white;
     }
 
-    & .barContainer {
-      position: relative;
-      float: right;
-      margin-right: 10px;
-      height: 100%;
-      // width: calc(100% - 10px - 80px - 80px - 10px);
-      width: calc(50% - 20px);
-
-      & .bar {
-        height: var(--barHeight);
-        position: absolute;
-        width: 100%;
-        border-radius: var(--borderRadius);
-        box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.5);
-      }
-
-      & .bar.damage {
-        top: calc((0 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
-        background: rgba(var(--ion-color-danger-rgb), 0.2);
-      }
-      & .bar.active.damage {
-        background: var(--ion-color-danger-shade);
-      }
-      & .bar.speed {
-        top: calc((1 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
-        background: rgba(var(--ion-color-warning-rgb), 0.2);
-      }
-      & .bar.active.speed {
-        background: var(--ion-color-warning-shade);
-      }
-      & .bar.clip {
-        top: calc((2 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
-        background: rgba(var(--ion-color-primary-rgb), 0.2);
-      }
-      & .bar.active.clip {
-        background: var(--ion-color-primary-shade);
-      }
-      & .bar.rof {
-        top: calc((3 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
-        background: rgba(var(--ion-color-success-rgb), 0.2);
-      }
-      & .bar.active.rof {
-        background: var(--ion-color-success-shade);
-      }
-      & .bar.range {
-        top: calc((4 * (var(--barHeight) * 2)) + var(--barHeight) / 2);
-        background: rgba(var(--ion-color-tertiary-rgb), 0.2);
-      }
-      & .bar.active.range {
-        background: var(--ion-color-tertiary-shade);
-      }
+    .weapon-details {
+      grid-template-rows: 1fr;
+      opacity: 1;
     }
   }
 }
 
-.weapon.selected {
-  height: var(--weaponHeight);
+.weapon-summary {
+  align-items: center;
+  display: flex;
+  min-height: 86px;
+  padding: 12px 58px 12px 16px;
+  position: relative;
+}
 
-  background-color: rgba(var(--ion-color-primary-rgb), 0.1);
-  border: 2px solid;
-  border-color: rgba(var(--ion-color-primary-rgb), 0.25);
+.weapon-copy {
+  min-width: 145px;
+  position: relative;
+  z-index: 2;
 
-  & span.weaponType {
-    color: rgba(var(--ion-color-primary-rgb), 0.7);
+  .ammo {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
   }
 
-  & .statsContainer {
-    opacity: 1;
-    height: var(--stats-height);
-    transition: height 0.1s ease 0.05s, opacity 0.2s ease 0.05s;
+  h2 {
+    color: var(--ion-color-primary);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 1px 0;
+  }
+
+  .weapon-type {
+    color: var(--muted);
+    font-size: 0.58rem;
+  }
+}
+
+.weaponImage {
+  margin-left: auto;
+  max-width: min(46%, 390px);
+  object-fit: contain;
+  position: relative;
+  right: auto;
+  top: auto;
+  z-index: 1;
+}
+
+.select-indicator {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--muted);
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.weapon-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 220ms ease, opacity 180ms ease;
+
+  > * {
+    overflow: hidden;
+  }
+}
+
+.key-stats {
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 0 16px;
+  padding: 16px 0 12px;
+
+  div {
+    border-left: 1px solid var(--line);
+    padding: 0 14px;
+
+    &:first-child {
+      border: 0;
+      padding-left: 0;
+    }
+  }
+
+  span {
+    color: var(--muted);
+    display: block;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+  }
+
+  strong {
+    color: var(--ion-color-dark);
+    display: block;
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    margin-top: 3px;
+
+    small {
+      color: var(--muted);
+      font-size: 0.58rem;
+    }
+  }
+}
+
+.stat-bars {
+  display: grid;
+  gap: 6px;
+  padding: 0 16px 15px;
+}
+
+.stat-bar {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 58px 1fr;
+
+  span {
+    color: var(--muted);
+    font-size: 0.56rem;
+  }
+
+  i {
+    background: var(--compare-inset);
+    border-radius: 99px;
+    height: 4px;
+    overflow: hidden;
+  }
+
+  b {
+    background: var(--weapon-accent);
+    border-radius: inherit;
+    display: block;
+    height: 100%;
+  }
+}
+
+.armor-teaser {
+  align-items: center;
+  background: rgba(var(--weapon-rgb), 0.075);
+  color: var(--ion-color-dark);
+  display: flex;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 16px;
+
+  > span {
+    color: var(--weapon-accent);
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-right: auto;
+  }
+
+  strong {
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+
+    small {
+      color: var(--muted);
+      font-size: 0.55rem;
+    }
+  }
+
+  i {
+    background: var(--line);
+    height: 17px;
+    width: 1px;
+  }
+}
+
+.selection-dock {
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  box-shadow: 0 12px 38px rgba(24, 10, 36, 0.2);
+  display: flex;
+  gap: 4px;
+  left: calc(50% + 140px);
+  padding: 5px;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 8;
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    min-height: 42px;
+    padding: 0 18px;
+  }
+
+  .select-all {
+    background: transparent;
+    color: var(--muted);
+  }
+
+  .compare-action {
+    align-items: center;
+    background: var(--ion-color-tertiary);
+    color: white;
+    display: flex;
+    font-weight: 700;
+    gap: 9px;
+  }
+}
+
+.list-empty {
+  color: var(--muted);
+  padding: 80px 20px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 30px;
+  }
+
+  h2 {
+    color: var(--ion-color-dark);
+    margin-bottom: 0;
+  }
+
+  p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .selection-dock {
+    left: 50%;
+  }
+}
+
+@media (max-width: 680px) {
+  .weapon-shell {
+    padding-top: 18px;
+    width: min(100% - 20px, 1120px);
+  }
+
+  .list-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+
+    p {
+      text-align: left;
+    }
+  }
+
+  .type-filters {
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .weaponImage {
+    max-width: 48%;
+  }
+
+  .key-stats {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 14px;
+
+    div:nth-child(4) {
+      border: 0;
+      padding-left: 0;
+    }
+  }
+
+  .armor-teaser {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+
+    > span {
+      flex-basis: 100%;
+    }
   }
 }
 
@@ -509,9 +785,7 @@ span.weaponCategory {
 }
 
 .weaponImage {
-  top: 0;
-  right: 10px;
-  // transform: none ;
-  // border: 1px solid;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
+  position: relative;
+  right: auto;
+  top: auto;
 }

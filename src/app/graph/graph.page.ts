@@ -1,297 +1,386 @@
-import { GraphService } from '@service/graph.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
-import { ActivatedRoute } from '@angular/router';
-
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Chart, ChartConfiguration, Plugin } from 'chart.js';
+import {
+  ArmorLevel,
+  CombatResult,
+  CombatScenario,
+  CombatService,
+  HitZone,
+} from '@service/combat.service';
 import { PubgDataService } from '@service/pubgData.service';
+
+type CompareMetric = 'damage' | 'stk' | 'ttk' | 'velocity';
+
+interface WeaponSnapshot {
+  weapon: any;
+  result: CombatResult;
+  color: string;
+}
 
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.page.html',
   styleUrls: ['./graph.page.scss'],
 })
-export class GraphPage implements OnInit {
+export class GraphPage implements OnInit, OnDestroy {
   constructor(
-    private graphService: GraphService,
     private pubgDataService: PubgDataService,
-    private route: ActivatedRoute
-  ) {}
+    private combatService: CombatService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
-  @ViewChild('damageChart') damageChart!: ElementRef;
-  @ViewChild('velocityChart') velocityChart!: ElementRef;
+  @ViewChild('compareChart')
+  public set compareChart(element: ElementRef<HTMLCanvasElement> | undefined) {
+    this.chartElement = element;
+    if (element) {
+      setTimeout(() => this.refreshChart());
+    }
+  }
 
-  private pubgData: any = {};
-  private fixedOptions = {
-    stacked: false,
-    grid: {
-      display: true,
-      color: this.getStyleColor('--ion-color-step-text-800'),
-      tickBorderDash: [1, 5],
-    },
-    border: {
-      dash: [1, 5],
-    },
-    type: 'linear',
-    title: {
-      display: true,
-      color: this.getStyleColor('--ion-color-step-text-800'),
-      font: {
-        size: 18,
-      },
-    },
-    ticks: {
-      color: this.getStyleColor('--ion-color-step-text-800'),
-    },
+  public pubgData: any = {};
+  public selectedWeapons: any[] = [];
+  public snapshots: WeaponSnapshot[] = [];
+  public loading = true;
+  public maxRange = 500;
+  public metric: CompareMetric = 'damage';
+  public readonly armorLevels: ArmorLevel[] = [0, 1, 2, 3];
+  public readonly zones: Array<{ value: HitZone; label: string }> = [
+    { value: 'head', label: 'Head' },
+    { value: 'neck', label: 'Neck' },
+    { value: 'chest', label: 'Chest' },
+    { value: 'torso', label: 'Torso' },
+    { value: 'stomach', label: 'Stomach' },
+    { value: 'limbs', label: 'Limbs' },
+  ];
+  public readonly metricLabels: Record<CompareMetric, string> = {
+    damage: 'Damage',
+    stk: 'Shots to kill',
+    ttk: 'Time to kill',
+    velocity: 'Velocity',
   };
-  private optionsDefault: ChartOptions = {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    maintainAspectRatio: false,
-    events: ['mousemove'],
-    plugins: {
-      colors: {
-        enabled: false,
-      },
-      legend: {
-        display: false,
-        position: 'top',
-        labels: {
-          color: this.getStyleColor('--ion-color-step-text-800'),
-          font: {
-            size: 14,
-          },
-        },
-      },
-    },
-    scales: {
-      // @ts-ignore
-      x: {
-        ...this.fixedOptions,
-      },
-      // @ts-ignore
-      y: {
-        ...this.fixedOptions,
-      },
-    },
-  };
-  private dataDamage: ChartConfiguration<'line'>['data'] = {
-    datasets: [],
-  };
-  private dataVelocity: ChartConfiguration<'line'>['data'] = {
-    datasets: [],
+  public readonly combatMetrics: CompareMetric[] = ['damage', 'stk', 'ttk'];
+
+  private chart?: Chart<'line'>;
+  private chartElement?: ElementRef<HTMLCanvasElement>;
+  public readonly colors = [
+    '#b566ff',
+    '#3d9cff',
+    '#ffb020',
+    '#ff5d75',
+    '#42d987',
+    '#f06be5',
+    '#33c8c2',
+    '#d9d45b',
+  ];
+  private scenario: CombatScenario = {
+    distance: 100,
+    zone: 'torso',
+    vest: 2,
+    helmet: 2,
   };
 
   async ngOnInit() {
-    console.log('1');
     this.pubgData = await this.pubgDataService.get();
+    this.restoreScenario();
 
-    this.route.queryParamMap.subscribe((params) => {
-      const weaponsParam = params.get('weapons');
-      if (weaponsParam) {
-        const weaponNames = JSON.parse(weaponsParam);
-        this.pubgData.weapons.forEach((weapon: any) => {
-          if (weaponNames.includes(weapon.name)) {
-            this.addGraph(weapon);
-          }
-        });
-      }
-    });
+    const weaponsParam = this.route.snapshot.queryParamMap.get('weapons');
+    const names = this.parseWeaponNames(weaponsParam);
+    this.selectedWeapons = this.pubgData.weapons.filter((weapon: any) =>
+      names.includes(weapon.name)
+    );
+    this.loading = false;
+    this.refresh();
   }
 
-  ngAfterViewInit() {
-    console.log('2');
-    /* ---------------------------------- */
-    /*               DAMAGE               */
-    /* ---------------------------------- */
+  ngOnDestroy() {
+    this.chart?.destroy();
+  }
 
-    let optionsDMG: any;
-    optionsDMG = JSON.parse(JSON.stringify(this.optionsDefault));
-    optionsDMG.scales.y.title.text = 'Damage';
-    // this.OptionsDMG.scales.x.title.text = 'Distance (m)';
-    const yDmgStepSize = 5;
-    optionsDMG.scales.y.ticks.stepSize = yDmgStepSize;
+  public get distance(): number {
+    return this.scenario.distance;
+  }
 
-    const damageChart = new Chart(this.damageChart.nativeElement, {
-      type: 'line',
-      data: this.dataDamage,
-      options: {
-        ...this.optionsDefault,
-        ...optionsDMG,
-        onHover: syncHover.bind(this, 'damage'),
+  public get zone(): HitZone {
+    return this.scenario.zone;
+  }
+
+  public get vest(): ArmorLevel {
+    return this.scenario.vest;
+  }
+
+  public get helmet(): ArmorLevel {
+    return this.scenario.helmet;
+  }
+
+  public setDistance(value: number | string) {
+    this.scenario.distance = Number(value);
+    this.refresh();
+  }
+
+  public setZone(zone: HitZone) {
+    this.scenario.zone = zone;
+    this.refresh();
+  }
+
+  public setArmor(type: 'vest' | 'helmet', level: ArmorLevel) {
+    this.scenario[type] = level;
+    this.refresh();
+  }
+
+  public setMetric(metric: CompareMetric) {
+    this.metric = metric;
+    this.refreshChart();
+  }
+
+  public toggleRange() {
+    this.maxRange = this.maxRange === 500 ? 1000 : 500;
+    if (this.distance > this.maxRange) {
+      this.scenario.distance = this.maxRange;
+    }
+    this.refresh();
+  }
+
+  public removeWeapon(weapon: any) {
+    this.selectedWeapons = this.selectedWeapons.filter(
+      (entry) => entry.name !== weapon.name
+    );
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        weapons: JSON.stringify(
+          this.selectedWeapons.map((entry) => entry.name)
+        ),
       },
+      replaceUrl: true,
     });
+    this.refresh();
+  }
 
-    /* ---------------------------------- */
-    /*              VELOCITY              */
-    /* ---------------------------------- */
+  public armorLabel(level: ArmorLevel): string {
+    return level === 0 ? 'None' : `Lv ${level}`;
+  }
 
-    let optionsVel: any;
-    optionsVel = JSON.parse(JSON.stringify(this.optionsDefault));
-    optionsVel.scales.y.title.text = 'Velocity (m/s)';
-    optionsVel.scales.x.title.text = 'Distance (m)';
-    const yVelStepSize = 100;
-    optionsVel.scales.y.ticks.stepSize = yVelStepSize;
+  public isBest(snapshot: WeaponSnapshot, key: keyof CombatResult): boolean {
+    if (this.snapshots.length < 2) {
+      return false;
+    }
+    const values = this.snapshots.map((entry) => entry.result[key] as number);
+    const lowerWins = key === 'stk' || key === 'ttk' || key === 'timeToTarget';
+    const best = lowerWins ? Math.min(...values) : Math.max(...values);
+    return (snapshot.result[key] as number) === best;
+  }
 
-    const velocityChart = new Chart(this.velocityChart.nativeElement, {
-      type: 'line',
-      data: this.dataVelocity,
-      options: {
-        ...this.optionsDefault,
-        ...optionsVel,
-        onHover: syncHover.bind(this, 'velocity'),
-      },
-    });
+  public trackWeapon(_index: number, snapshot: WeaponSnapshot): string {
+    return snapshot.weapon.name;
+  }
 
-    /* -------------- Hover ------------- */
+  private refresh() {
+    this.snapshots = this.selectedWeapons.map((weapon, index) => ({
+      weapon,
+      result: this.combatService.calculate(weapon, this.scenario, this.pubgData),
+      color: this.colors[index % this.colors.length],
+    }));
+    sessionStorage.setItem(
+      'compareScenario',
+      JSON.stringify({
+        scenario: this.scenario,
+        maxRange: this.maxRange,
+        metric: this.metric,
+      })
+    );
+    this.refreshChart();
+  }
 
-    function syncHover(
-      chartType: string,
-      event: MouseEvent,
-      activeElements: any[]
+  private refreshChart() {
+    if (
+      !this.chartElement ||
+      !this.selectedWeapons.length
     ) {
-      if (chartType === 'damage') {
-        if (activeElements.length > 0) {
-          const index = activeElements[0].index;
-          const datasetMeta = velocityChart.getDatasetMeta(0);
-          if (
-            datasetMeta &&
-            datasetMeta.data &&
-            datasetMeta.data.length > index
-          ) {
-            // @ts-ignore
-            velocityChart.tooltip.setActiveElements([
-              { datasetIndex: 0, index },
-            ]);
-            // @ts-ignore
-            velocityChart.tooltip.update(true);
-            velocityChart.draw();
-          }
-        } else {
-          // @ts-ignore
-          velocityChart.tooltip._active = [];
-          // @ts-ignore
-          velocityChart.tooltip.update(true);
-          velocityChart.draw();
-        }
-      } else if (chartType === 'velocity') {
-        if (activeElements.length > 0) {
-          const index = activeElements[0].index;
-          const datasetMeta = damageChart.getDatasetMeta(0);
-          if (
-            datasetMeta &&
-            datasetMeta.data &&
-            datasetMeta.data.length > index
-          ) {
-            // @ts-ignore
-            damageChart.tooltip.setActiveElements([{ datasetIndex: 0, index }]);
-            // @ts-ignore
-            damageChart.tooltip.update(true);
-            damageChart.draw();
-          }
-        } else {
-          // @ts-ignore
-          damageChart.tooltip._active = [];
-          // @ts-ignore
-          velocityChart.tooltip.update(true);
-          damageChart.draw();
-        }
+      return;
+    }
+
+    const styles = getComputedStyle(document.body);
+    const textColor =
+      styles.getPropertyValue('--ion-color-step-text-800').trim() || '#777';
+    const gridColor =
+      styles.getPropertyValue('--compare-grid').trim() ||
+      'rgba(128, 128, 128, .18)';
+    const datasets = this.selectedWeapons.map((weapon, index) => ({
+      label: weapon.name,
+      data: this.buildSeries(weapon),
+      borderColor: this.colors[index % this.colors.length],
+      backgroundColor: this.colors[index % this.colors.length],
+      borderWidth: 3,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      tension: 0.22,
+    }));
+
+    const config: ChartConfiguration<'line'> = {
+      type: 'line',
+      data: { datasets },
+      plugins: [this.distanceMarkerPlugin()],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 260 },
+        interaction: { mode: 'index', intersect: false },
+        events: [
+          'mousemove',
+          'mouseout',
+          'click',
+          'touchstart',
+          'touchmove',
+        ],
+        parsing: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              color: textColor,
+              usePointStyle: true,
+              pointStyle: 'line',
+              padding: 18,
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) =>
+                `${context.dataset.label}: ${this.formatMetric(
+                  Number(context.parsed.y)
+                )}`,
+            },
+          },
+        },
+        scales: {
+          x: {
+            type: 'linear',
+            min: 0,
+            max: this.maxRange,
+            grid: { color: gridColor },
+            ticks: { color: textColor },
+            title: {
+              display: true,
+              text: 'Distance (m)',
+              color: textColor,
+            },
+          },
+          y: {
+            beginAtZero: this.metric !== 'velocity',
+            grid: { color: gridColor },
+            ticks: { color: textColor },
+            title: {
+              display: true,
+              text: this.axisLabel(),
+              color: textColor,
+            },
+          },
+        },
+      },
+    };
+
+    this.chart?.destroy();
+    this.chart = new Chart(this.chartElement.nativeElement, config);
+  }
+
+  private buildSeries(weapon: any): Array<{ x: number; y: number }> {
+    const step = this.maxRange === 1000 ? 20 : 10;
+    const points: Array<{ x: number; y: number }> = [];
+    for (let distance = 0; distance <= this.maxRange; distance += step) {
+      const result = this.combatService.calculate(
+        weapon,
+        { ...this.scenario, distance },
+        this.pubgData
+      );
+      points.push({ x: distance, y: result[this.metric] });
+    }
+    return points;
+  }
+
+  private distanceMarkerPlugin(): Plugin<'line'> {
+    return {
+      id: 'compareDistanceMarker',
+      afterDatasetsDraw: (chart) => {
+        const x = chart.scales['x'].getPixelForValue(this.distance);
+        const { top, bottom } = chart.chartArea;
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.strokeStyle = this.colors[0];
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(x, top);
+        ctx.lineTo(x, bottom);
+        ctx.stroke();
+        ctx.restore();
+      },
+    };
+  }
+
+  private formatMetric(value: number): string {
+    if (this.metric === 'stk') {
+      return `${Math.round(value)} shots`;
+    }
+    if (this.metric === 'ttk') {
+      return `${value.toFixed(3)} s`;
+    }
+    if (this.metric === 'velocity') {
+      return `${Math.round(value)} m/s`;
+    }
+    return `${value.toFixed(1)} dmg`;
+  }
+
+  private axisLabel(): string {
+    const labels: Record<CompareMetric, string> = {
+      damage: 'Damage per hit',
+      stk: 'Shots to kill',
+      ttk: 'Time to kill (s)',
+      velocity: 'Velocity (m/s)',
+    };
+    return labels[this.metric];
+  }
+
+  private restoreScenario() {
+    try {
+      const saved = JSON.parse(
+        sessionStorage.getItem('compareScenario') || '{}'
+      );
+      if (saved.scenario) {
+        this.scenario = { ...this.scenario, ...saved.scenario };
       }
+      if (saved.maxRange === 500 || saved.maxRange === 1000) {
+        this.maxRange = saved.maxRange;
+      }
+      if (['damage', 'stk', 'ttk', 'velocity'].includes(saved.metric)) {
+        this.metric = saved.metric;
+      }
+    } catch {
+      sessionStorage.removeItem('compareScenario');
     }
   }
 
-  private addGraph(weapon: any) {
-    /* ---------------------------------- */
-    /*               DAMAGE               */
-    /* ---------------------------------- */
-
-    let dataDMG: any = [];
-    const weaponDamageFalloff = this.pubgData.damageFalloffs.filter(
-      (entry: any) => {
-        return entry.weapon_name === weapon.name;
-      }
-    );
-
-    if (weaponDamageFalloff.length === 0) {
-      dataDMG.push({
-        x: 0,
-        y: weapon.damage,
-      });
-    } else {
-      weaponDamageFalloff.forEach((damageFalloff: any) => {
-        dataDMG.push({
-          x: damageFalloff.distance,
-          y: damageFalloff.multiplier * weapon.damage,
-        });
-      });
+  private parseWeaponNames(value: string | null): string[] {
+    if (!value) {
+      return [];
     }
-    if (dataDMG[dataDMG.length - 1].x < 1000) {
-      dataDMG.push({
-        x: 1000,
-        y: dataDMG[dataDMG.length - 1].y,
-      });
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed)
+        ? parsed.filter(
+          (name: unknown): name is string => typeof name === 'string'
+        )
+        : [];
+    } catch {
+      return [];
     }
-
-    this.dataDamage.datasets.push({
-      data: dataDMG,
-      label: weapon.name,
-      fill: false,
-      tension: 0,
-      backgroundColor: `#ffffff00`,
-      borderWidth: 3,
-      pointRadius: 0,
-    });
-
-    /* ---------------------------------- */
-    /*              VELOCITY              */
-    /* ---------------------------------- */
-
-    var dataVel: any = [];
-    const weaponVelocityFalloff = this.pubgData.velocityFalloffs.filter(
-      (entry: any) => {
-        return entry.weapon_name === weapon.name;
-      }
-    );
-
-    if (weaponVelocityFalloff.length === 0) {
-      dataVel.push({
-        x: 0,
-        y: weapon.speed,
-      });
-    } else {
-      weaponVelocityFalloff.forEach((velocityFalloff: any) => {
-        const distance = Math.ceil(Math.abs(velocityFalloff.distance));
-        dataVel.push({
-          x: distance,
-          y: velocityFalloff.velocity,
-        });
-      });
-    }
-
-    if (dataVel[dataVel.length - 1].x < 1000) {
-      dataVel.push({
-        x: 1000,
-        y: dataVel[dataVel.length - 1].y,
-      });
-    }
-
-    this.dataVelocity.datasets.push({
-      data: dataVel,
-      label: weapon.name,
-      fill: false,
-      tension: 0,
-      backgroundColor: `#ffffff00`,
-      borderWidth: 3,
-      pointRadius: 0,
-      // borderDash: [1, 5],
-    });
-  }
-
-  private getStyleColor(variable: string) {
-    const body = document.getElementsByTagName('body')[0];
-    const color = getComputedStyle(body).getPropertyValue(variable);
-    return color;
   }
 }

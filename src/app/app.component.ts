@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       debug: false,
     },
     {
-      title: 'Graph',
+      title: 'Compare',
       type: 'route',
       url: 'graph',
       icon: 'analytics-sharp',

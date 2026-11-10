@@ -5,22 +5,25 @@
 ion-list {
   width: 100%;
   height: 100%;
+  padding: 8px 10px;
 }
 
 ion-list-header {
   min-height: 20px;
   text-align: center;
-  margin: 20px 0;
+  margin: 14px 0 26px;
   background: transparent;
+  padding: 0 8px;
 
   & img {
-    max-width: 64px;
-    max-height: 64px;
-    margin-right: 20px;
+    max-width: 48px;
+    max-height: 48px;
+    margin-right: 14px;
   }
 
   & ion-label.header {
-    font-size: 22px;
+    color: var(--ion-color-tertiary);
+    font-size: 19px;
     font-weight: bold;
     text-align: left;
     margin-top: auto;
@@ -29,11 +32,13 @@ ion-list-header {
 }
 
 ion-item {
-  border-radius: var(--borderRadius3);
-  margin: 1px 5px;
+  --min-height: 46px;
+  border-radius: 11px;
+  margin: 3px 0;
 
   & ion-icon {
     color: rgba(var(--ion-color-dark-rgb), 0.8);
+    font-size: 19px;
   }
 
   &.disabled,
@@ -45,7 +50,7 @@ ion-item {
   &.selected ion-icon {
     color: white;
     --color-hover: white;
-    --background: rgba(var(--ion-color-tertiary-rgb), 0.8);
+    --background: var(--ion-color-tertiary);
   }
 }
 
@@ -54,10 +59,15 @@ ion-label {
 }
 
 .divider {
-  width: 80%;
+  width: calc(100% - 24px);
   height: 1px;
-  background: var(--ion-color-tertiary);
-  margin: 10px 0 10px 10%;
+  background: var(--compare-border);
+  margin: 14px 12px;
+}
+
+ion-menu {
+  --width: 260px;
+  border-right: 1px solid var(--compare-border);
 }
 
 /* ---------------------------------- */

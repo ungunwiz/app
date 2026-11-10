@@ -3,108 +3,141 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-searchbar mode="ios" [(ngModel)]="searchText" (ionInput)="search()" (ionCancel)="search()"></ion-searchbar>
-    <ion-buttons slot="end">
-      <!-- <ion-button>
-        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
-      </ion-button> -->
-    </ion-buttons>
+    <ion-searchbar
+      mode="ios"
+      [(ngModel)]="searchText"
+      (ionInput)="search()"
+      (ionCancel)="search()"
+      placeholder="Search weapons"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen id="weaponlist">
-
-  <div *ngIf="!loading">
-    <div *ngFor="let weapon of weapons; let i = index">
-      <span class="weaponCategory" *ngIf="i === 0 || weapons[i - 1].type !== weapon.type" [ngStyle]="{
-        'background-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0.75)',
-        'border-color': 'rgba(var(--type-' + weapon.type + '-rgb), 1)',
-        'color': 'var(--type-' + weapon.type + '-text)'
-      }">
-        <!-- {{weapon.type}}s -->
-        {{getWeaponTypeName(weapon.type)}}
-      </span>
-
-      <div [id]="weapon.name" class="weapon" [class.selected]="weapon.selected" (click)="toggleWeapon(weapon)"
-        [ngStyle]="{
-          'background-color': weapon.selected ? 'rgba(var(--type-' + weapon.type + '-rgb), 0.05)' : 'var(--ion-color-light)',
-          'border-color': weapon.selected ? 'rgba(var(--type-' + weapon.type + '-rgb), 0.1)' : 'var(--ion-color-light)'
-        }">
-
-        <!-- <span class="weaponType" [style]="'color: var(--type-' + weapon.type + ');'">{{weapon.type}}</span> -->
-        <span class="weaponType" [ngStyle]="
-          {'color': 'var(--ammo-' + weapon.ammo + ')'}
-          ">
-          {{weapon.ammo}}
-        </span>
-        <span class="weaponName">{{weapon.name}}</span>
-
-        <img *ngIf="weapon.meta" class="sprite weaponImage" [ngStyle]="{
-          'top': ((mapT(maxImageHeight) - mapT(weapon.meta.height))/ 2 + 2).toFixed() + 'px',
-          'height':  (mapT(weapon.meta.height)) + 'px',
-          'filter': settings.ui.weaponImgGlow ? 'drop-shadow(0 0 5px rgba(var(--type-' + weapon.type + '-rgb), 0.85))' : 'none'
-          }" [src]="getWeaponIcon(weapon, false)" />
-
-        <div class="statsContainer" [ngStyle]="{
-          'background-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0)',
-          'border-color': 'rgba(var(--type-' + weapon.type + '-rgb), 0)'
-        }">
-          <div class="spanContainer">
-            <span class="shadow damage">Damage:</span>
-            <span class="shadow speed">Velocity:</span>
-            <span class="shadow clip">Clip Size:</span>
-            <span class="shadow rof">Firerate:</span>
-            <span class="shadow range">Range:</span>
-          </div>
-
-          <div class="spanContainer">
-            <span class="shadow damage">
-              {{weapon.damage}}
-            </span>
-            <span class="shadow speed">
-              {{weapon.speed}}
-            </span>
-            <span class="shadow clip">
-              {{weapon.clip}}
-            </span>
-            <span class="shadow rof">
-              {{ weapon.rof | number:'1.3'}}
-            </span>
-            <span class="shadow range">
-              {{weapon.range | number:'1.3'}}
-            </span>
-          </div>
-
-          <div class="barContainer">
-            <div class="bar damage"></div>
-            <div [ngStyle]="{'width': weaponStats[weapon.name].damage + '%'}" class="bar damage active">
-            </div>
-            <div class="bar speed"></div>
-            <div [ngStyle]="{'width': weaponStats[weapon.name].speed + '%'}" class="bar speed active">
-            </div>
-            <div class="bar clip"></div>
-            <div [ngStyle]="{'width': weaponStats[weapon.name].clip + '%'}" class="bar clip active"></div>
-            <div class="bar rof"></div>
-            <div [ngStyle]="{'width': weaponStats[weapon.name].rof + '%'}" class="bar rof active"></div>
-            <div class="bar range"></div>
-            <div [ngStyle]="{'width': weaponStats[weapon.name].range + '%'}" class="bar range active"></div>
-          </div>
-        </div>
+  <main class="weapon-shell" *ngIf="!loading">
+    <section class="list-intro">
+      <div>
+        <span class="eyebrow">PUBG ARMORY</span>
+        <h1>Choose your loadout</h1>
       </div>
-    </div>
+      <p>Tap a weapon for details. Select up to eight to enter Compare Lab.</p>
+    </section>
+
+    <nav class="type-filters" aria-label="Weapon types">
+      <button
+        type="button"
+        *ngFor="let type of weaponTypes"
+        [class.active]="selectedType === type"
+        [attr.data-type]="type"
+        (click)="selectType(type)"
+      >
+        <span *ngIf="type !== 'All'"></span>{{ getTypeLabel(type) }}
+      </button>
+    </nav>
+
+    <section class="weapon-list" *ngIf="weapons.length > 0">
+      <ng-container *ngFor="let weapon of weapons; let i = index">
+        <div
+          class="category-label"
+          *ngIf="selectedType === 'All' && (i === 0 || weapons[i - 1].type !== weapon.type)"
+        >
+          <span [style.background]="'var(--type-' + weapon.type + ')'"></span>
+          {{ getWeaponTypeName(weapon.type) }}
+          <small>{{ weapon.type }}</small>
+        </div>
+
+        <article
+          [id]="weapon.name"
+          class="weapon"
+          [class.selected]="weapon.selected"
+          (click)="toggleWeapon(weapon)"
+          [attr.aria-label]="weapon.name + (weapon.selected ? ', selected' : '')"
+          tabindex="0"
+          (keyup.enter)="toggleWeapon(weapon)"
+        [ngStyle]="{
+          '--weapon-rgb': 'var(--type-' + weapon.type + '-rgb)',
+          '--weapon-accent': 'var(--type-' + weapon.type + ')'
+        }">
+          <div class="weapon-summary">
+            <div class="weapon-copy">
+              <span
+                class="ammo"
+                [style.color]="'var(--ammo-' + weapon.ammo + ')'"
+              >{{ weapon.ammo }}</span>
+              <h2>{{ weapon.name }}</h2>
+              <span class="weapon-type">{{ getWeaponTypeName(weapon.type) }}</span>
+            </div>
+
+            <img
+              *ngIf="weapon.meta"
+              class="sprite weaponImage"
+              [style.height]="mapT(weapon.meta.height) + 'px'"
+              [style.filter]="settings.ui.weaponImgGlow ? 'drop-shadow(0 0 7px rgba(' + 'var(--type-' + weapon.type + '-rgb)' + ', .7))' : 'none'"
+              [src]="getWeaponIcon(weapon, false)"
+              [alt]="weapon.name"
+            />
+
+            <div class="select-indicator">
+              <ion-icon [name]="weapon.selected ? 'checkmark' : 'add'"></ion-icon>
+            </div>
+          </div>
+
+          <div class="weapon-details">
+            <div class="details-inner">
+              <div class="key-stats">
+                <div><span>Damage</span><strong>{{ weapon.damage }}</strong></div>
+                <div><span>Velocity</span><strong>{{ weapon.speed }} <small>m/s</small></strong></div>
+                <div><span>Magazine</span><strong>{{ weapon.clip }}</strong></div>
+                <div><span>Fire rate</span><strong>{{ weapon.rpm }} <small>RPM</small></strong></div>
+                <div><span>Full damage</span><strong>{{ weapon.fullDamageRange }} <small>m</small></strong></div>
+              </div>
+
+              <div class="stat-bars">
+                <div class="stat-bar">
+                  <span>Damage</span><i><b [style.width.%]="weaponStats[weapon.name].damage"></b></i>
+                </div>
+                <div class="stat-bar">
+                  <span>Velocity</span><i><b [style.width.%]="weaponStats[weapon.name].speed"></b></i>
+                </div>
+                <div class="stat-bar">
+                  <span>Fire rate</span><i><b [style.width.%]="weaponStats[weapon.name].rof"></b></i>
+                </div>
+                <div class="stat-bar">
+                  <span>Range</span><i><b [style.width.%]="weaponStats[weapon.name].range"></b></i>
+                </div>
+              </div>
+
+              <div class="armor-teaser">
+                <span>LV 2 VEST · TORSO</span>
+                <strong>{{ weapon.stkClose }} shots <small>at 0 m</small></strong>
+                <i></i>
+                <strong>{{ weapon.stkRange }} shots <small>at 100 m</small></strong>
+              </div>
+            </div>
+          </div>
+        </article>
+      </ng-container>
+    </section>
+
+    <section class="list-empty" *ngIf="weapons.length === 0">
+      <ion-icon name="search-outline"></ion-icon>
+      <h2>No weapons found</h2>
+      <p>Try another name or category.</p>
+    </section>
+  </main>
+
+  <div class="selection-dock" *ngIf="!loading">
+    <button type="button" class="select-all" (click)="toggleAllWeapons()">
+      {{ allSelected() ? 'Clear visible' : 'Select visible' }}
+    </button>
+    <button
+      type="button"
+      class="compare-action"
+      *ngIf="countSelected() > 0"
+      (click)="navigateWithWeapons()"
+    >
+      Compare {{ countSelected() }}
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
   </div>
-
-  <!-- ------------ FABs ------------- -->
-
-  <ion-fab slot="fixed" horizontal="start" vertical="bottom">
-    <ion-fab-button class="text" color="primary" (click)="toggleAllWeapons()">
-      <ion-icon *ngIf="allSelected()" name="chevron-collapse"></ion-icon>
-      <ion-icon *ngIf="!allSelected()" name="chevron-expand"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  <ion-fab *ngIf="countSelected() > 0" slot="fixed" horizontal="end" vertical="bottom">
-    <ion-fab-button class="text" color="tertiary" (click)="navigateWithWeapons()">
-      <ion-icon name="analytics-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
