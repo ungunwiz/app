@@ -29,7 +29,11 @@
     </ion-item>
   </ion-list>
 
-  <ion-list class="contentList" *ngIf="isApp">
+  <!-- DEBUG: slider for download prgress -->
+  <ion-range min="0" max="100" step="1" [(ngModel)]="downloadProgress" color="tertiary"></ion-range>
+
+  <!-- DEBUG: Remove: || true -->
+  <ion-list class="contentList" *ngIf="isApp || true">
     <ion-list-header>
       <ion-label>
         App Update
@@ -52,11 +56,24 @@
         Latest release: <ion-text color="tertiary">{{updateInfo.version}}</ion-text>
       </ion-label>
       <ion-spinner color="tertiary" slot="end" *ngIf="updateSearching"></ion-spinner>
-      <ion-button class="textButton" slot="end" *ngIf="!updateSearching && updateInfo.updateAvailable"
+      <ion-button class="textButton" slot="end"
+        *ngIf="!updateSearching && updateInfo.updateAvailable && fileUri == '' && downloadProgress == 0"
         (click)="downloadUpdate()">
         Download
       </ion-button>
-      <ion-button class="iconButton" slot="end" *ngIf="!updateSearching" (click)="checkForUpdate()">
+      <div id="progressBarContainer" *ngIf="fileUri == '' && downloadProgress != 0 && downloadProgress < 100">
+        <div id="progressBar" [ngStyle]="{
+          'width': downloadProgress + '%',
+        }">
+        </div>
+        {{downloadProgress | number:'1.1-1'}}%
+      </div>
+      <ion-button class="textButton" id="installButton" slot="end" *ngIf="fileUri != '' && downloadProgress == 100"
+        (click)="installUpdate()">
+        Install
+      </ion-button>
+      <ion-button class="iconButton" slot="end" *ngIf="!updateSearching && !updateInfo.updateAvailable"
+        (click)="checkForUpdate()">
         <ion-icon slot="icon-only" name="reload"></ion-icon>
       </ion-button>
     </ion-item>
@@ -91,7 +108,7 @@
       <span class="appName">{{appName}}</span> v{{appVersion}}
       {{settings.developer.developerMode ? '| build ' + appBuild : null }}
       <br>
-      by Frederik Shull
+      by Frederik 'zlyfer' Shull
     </span>
   </div>
 </ion-content>

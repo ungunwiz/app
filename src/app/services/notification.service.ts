@@ -32,7 +32,7 @@ export class NotificationService {
     ][options.type];
     if (options.header === '') {
       if (options.type == 1) options.header = 'Info';
-      if (options.type == 2) options.header = 'Fehler';
+      if (options.type == 2) options.header = 'Error';
     }
 
     this.toast = await this.toastController.create({

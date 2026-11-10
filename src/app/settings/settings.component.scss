@@ -30,18 +30,47 @@ ion-item {
     font-size: 1em;
     font-weight: bold;
     color: var(--ion-color-medium) !important;
+
     & .appName {
       color: rgba(var(--ion-color-primary-rgb), 0.85);
       font-weight: bold;
     }
   }
-}
-.versionBox:active {
-  background: rgba(var(--ion-color-dark-rgb), 0.15);
-  border: 2px solid rgba(var(--ion-color-dark-rgb), 0.25);
+
+  &:active {
+    background: rgba(var(--ion-color-dark-rgb), 0.15);
+    border: 2px solid rgba(var(--ion-color-dark-rgb), 0.25);
+  }
 }
 
 /* ---------- Update Check ---------- */
+
+div#progressBarContainer {
+  border-radius: var(--borderRadius);
+  border: 2px solid #dbbcfa;
+  background: rgba(var(--ion-color-tertiary-rgb), 0.1);
+  color: var(--ion-color-tertiary);
+  font-weight: bold;
+  width: 110px;
+  height: 32px;
+  position: relative;
+  text-align: center;
+  line-height: 28px;
+  font-size: 0.8em;
+  overflow: hidden;
+}
+
+div#progressBar {
+  position: absolute;
+  height: 100%;
+  background-color: #f0e2ff;
+  z-index: -1;
+  transition: width 0.2s ease;
+}
+
+#installButton {
+  --background: #e6cfff;
+}
 
 ion-spinner {
   margin-right: 10px;

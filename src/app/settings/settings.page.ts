@@ -16,26 +16,29 @@ export class SettingsPage implements OnInit {
     private notificationService: NotificationService,
     private wordingService: WordingService,
     private appUpdateService: AppUpdateService
-  ) {}
+  ) { }
 
-  public settings = this.settingsService.settings;
+  public settings: any = this.settingsService.settings;
   public appName: any;
   public appVersion: any;
   public appBuild: any;
-  public allowDevMode =
+  public allowDevMode: boolean =
     localStorage.getItem('allowDevMode') === 'true' || false;
-  public isApp = environment.platform === 'app';
-  public updateSearching = false;
-  public updateSearched = false;
+  public isApp: boolean = environment.platform === 'app';
+  public updateSearching: boolean = false;
+  public updateSearched: boolean = false;
   public updateInfo: any = {
     updateAvailable: false,
   };
+  public downloadProgress: number = 0;
+  public fileUri: string = '';
 
   private buildTaps = 0;
   private buildTimeout: any;
 
   ngOnInit() {
     this.getAppDetails();
+    this.checkForUpdate();
   }
 
   private getAppDetails() {
@@ -56,7 +59,23 @@ export class SettingsPage implements OnInit {
   }
 
   public async downloadUpdate() {
-    this.appUpdateService.downloadUpdate(this.updateInfo.apkUrl);
+    console.debug(`this.updateInfo.apkUrl:`, this.updateInfo.apkUrl);
+    this.appUpdateService
+      .downloadUpdateWithProgress(this.updateInfo.apkUrl, (percentage) => {
+        this.downloadProgress = percentage;
+      })
+      .then((fileUri) => {
+        console.debug(`fileUri:`, fileUri);
+        this.fileUri = fileUri;
+      })
+      .catch((error) => {
+        this.notificationService.createCustom('Download failed.', { type: 2 });
+        console.debug(`error:`, error);
+      });
+  }
+
+  public installUpdate() {
+    this.appUpdateService.installUpdate(this.fileUri);
   }
 
   public resetSettings() {
@@ -70,9 +89,8 @@ export class SettingsPage implements OnInit {
   }
 
   public showDevModeMessage() {
-    const title = `Developer mode ${
-      this.settings.developer.developerMode ? 'enabled' : 'disabled'
-    }.`;
+    const title = `Developer mode ${this.settings.developer.developerMode ? 'enabled' : 'disabled'
+      }.`;
     const message = `Please ${this.wordingService.getWord(
       'restart'
     )} the ${this.wordingService.getWord('app')} to apply the changes.`;

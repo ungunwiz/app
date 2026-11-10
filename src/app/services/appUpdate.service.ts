@@ -20,7 +20,7 @@ export class AppUpdateService {
     private http: HttpClient,
 
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   private settings = this.settingsService.settings;
 
@@ -66,57 +66,135 @@ export class AppUpdateService {
     });
   }
 
-  async downloadUpdate(url: string) {
+  // async downloadUpdate(url: string, onProgress: (percentage: number) => void) {
+  //   try {
+  //     const response = await fetch(url, {
+  //       headers: {
+  //         'Content-Type': this.content_type,
+  //       },
+  //       method: 'GET',
+  //     });
+
+  //     console.debug(response);
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     const contentLength = response.headers.get('content-length');
+  //     if (!contentLength) {
+  //       throw new Error('Content-Length response header is missing');
+  //     }
+  //     const total = parseInt(contentLength, 10);
+  //     let loaded = 0;
+  //     const reader = response.body?.getReader();
+  //     const stream = new ReadableStream({
+  //       async start(controller) {
+  //         while (true) {
+  //           const { done, value } = await reader?.read()!;
+  //           if (done) {
+  //             break;
+  //           }
+
+  //           loaded += value.length;
+  //           onProgress((loaded / total) * 100);
+  //           controller.enqueue(value);
+  //         }
+  //         controller.close();
+  //       },
+  //     });
+  //     const blob = await new Response(stream).blob();
+  //     return this.writeFile(blob);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+
+  async downloadUpdateWithProgress(
+    url: string,
+    onProgress: (percentage: number) => void
+  ) {
     try {
-      const response: any = await CapacitorHttp.get({
-        url,
-        headers: {
-          'Content-Type': this.content_type,
-        },
+      const totalSize = await this.getFileSize(url);
+      let loaded = 0;
+
+      const response = await CapacitorHttp.request({
+        method: 'GET',
+        url: url,
         responseType: 'blob',
       });
 
-      Filesystem.checkPermissions()
-        .then(async (result: any) => {
-          if (result.publicStorage === 'granted') {
-            const writeResult = await Filesystem.writeFile({
-              path: `apks/ungunwiz.apk`,
-              data: response.data,
-              directory: Directory.Data,
-              recursive: true,
-            });
-            await InstallPermission.checkPermission()
-              .then((result: { granted: boolean }) => {
-                if (result.granted) {
-                  this.installUpdate(writeResult.uri);
-                } else {
-                  InstallPermission.requestPermission();
-                }
-              })
-              .catch((error: any) => {
-                console.error(error);
-              });
+      const reader = response.data?.getReader();
+      const stream = new ReadableStream({
+        async start(controller) {
+          while (true) {
+            const { done, value } = await reader?.read()!;
+            if (done) {
+              break;
+            }
+
+            loaded += value.length;
+            onProgress((loaded / totalSize) * 100);
+            controller.enqueue(value);
           }
-        })
-        .catch((error: any) => {
-          console.error(`error:`, error);
-        });
+          controller.close();
+        },
+      });
+
+      const blob = await new Response(stream).blob();
+      return this.writeFile(blob);
     } catch (error) {
-      console.error('Error fetching or processing blob:', error);
       throw error;
     }
   }
 
-  async installUpdate(uri: string) {
-    console.debug('installUpdate');
+  private async getFileSize(url: string): Promise<number> {
     try {
-      const fileOpenerOptions: FileOpenerOptions = {
-        filePath: uri,
-        contentType: this.content_type,
-      };
-      await FileOpener.open(fileOpenerOptions);
-    } catch (e) {
-      console.log('Error opening file', e);
+      const response = await CapacitorHttp.request({
+        method: 'GET',
+        url: url,
+        responseType: 'blob',
+      });
+
+      console.debug(`GET response:`, response);
+
+      if (!response.data) {
+        throw new Error('No data received');
+      }
+
+      return response.data.size;
+    } catch (error) {
+      console.error('Error in getFileSize:', error);
+      throw error;
     }
+  }
+
+  /* ---------------- - --------------- */
+
+  private async writeFile(blob: Blob) {
+    const permission = await Filesystem.requestPermissions();
+    if (permission.publicStorage !== 'granted') {
+      throw new Error('Permission denied');
+    }
+    const writeResult = await Filesystem.writeFile({
+      path: `apks/ungunwiz.apk`,
+      data: blob,
+      directory: Directory.Data,
+      recursive: true,
+    });
+
+    return writeResult.uri;
+  }
+
+  async installUpdate(uri: string) {
+    await InstallPermission.checkPermission()
+      .then((result: { granted: boolean }) => {
+        if (result.granted) {
+          this.installUpdate(uri);
+        } else {
+          InstallPermission.requestPermission();
+        }
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
   }
 }
