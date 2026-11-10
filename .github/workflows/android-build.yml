@@ -13,6 +13,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve Release Tag
+        id: tag
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG=$(git describe --tags --abbrev=0)
+            git checkout "$TAG"
+          fi
+          echo "TAG_NAME=$TAG" >> $GITHUB_ENV
 
       - name: Pull Game Assets
         uses: actions/checkout@v4
@@ -84,7 +97,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: android/app/build/outputs/apk/release/ungunwiz.apk
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ env.TAG_NAME }}
           name: Release v${{ env.VERSION_NAME }}
           draft: false
           prerelease: false
